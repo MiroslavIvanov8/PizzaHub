@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzaHub.Infrastructure.Data.Models;
 using PizzaHub.Infrastructure.Data.SeedDb;
 
-namespace PizzaHub.Data
+namespace PizzaHub.Infrastructure
 {
     public class PizzaHubDbContext : IdentityDbContext
     {
