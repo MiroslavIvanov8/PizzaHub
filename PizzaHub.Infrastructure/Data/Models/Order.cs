@@ -25,6 +25,8 @@ namespace PizzaHub.Infrastructure.Data.Models
         public int RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; }
 
+        public Receipt Receipt { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }

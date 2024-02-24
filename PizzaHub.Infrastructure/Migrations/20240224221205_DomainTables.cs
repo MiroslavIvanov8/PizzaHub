@@ -147,25 +147,6 @@ namespace PizzaHub.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Receipts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Receipts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Receipts_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Admins_RestaurantId",
                 table: "Admins",
@@ -211,11 +192,6 @@ namespace PizzaHub.Infrastructure.Migrations
                 name: "IX_Orders_RestaurantId",
                 table: "Orders",
                 column: "RestaurantId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Receipts_OrderId",
-                table: "Receipts",
-                column: "OrderId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -225,9 +201,6 @@ namespace PizzaHub.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "MenuItems");
-
-            migrationBuilder.DropTable(
-                name: "Receipts");
 
             migrationBuilder.DropTable(
                 name: "Orders");

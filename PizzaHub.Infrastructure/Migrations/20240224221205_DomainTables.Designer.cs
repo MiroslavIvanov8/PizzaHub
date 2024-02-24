@@ -12,7 +12,7 @@ using PizzaHub.Data;
 namespace PizzaHub.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaHubDbContext))]
-    [Migration("20240224215704_DomainTables")]
+    [Migration("20240224221205_DomainTables")]
     partial class DomainTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -351,24 +351,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Receipt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Receipts");
-                });
-
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Restaurant", b =>
                 {
                     b.Property<int>("Id")
@@ -523,17 +505,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Restaurant");
-                });
-
-            modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Receipt", b =>
-                {
-                    b.HasOne("PizzaHub.Infrastructure.Data.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Courier", b =>

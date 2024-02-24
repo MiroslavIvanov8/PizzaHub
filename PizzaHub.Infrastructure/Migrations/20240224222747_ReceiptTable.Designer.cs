@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzaHub.Data;
 
@@ -11,9 +12,10 @@ using PizzaHub.Data;
 namespace PizzaHub.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaHubDbContext))]
-    partial class PizzaHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240224222747_ReceiptTable")]
+    partial class ReceiptTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -529,7 +531,7 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.HasOne("PizzaHub.Infrastructure.Data.Models.Order", "Order")
                         .WithOne("Receipt")
                         .HasForeignKey("PizzaHub.Infrastructure.Data.Models.Receipt", "OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
