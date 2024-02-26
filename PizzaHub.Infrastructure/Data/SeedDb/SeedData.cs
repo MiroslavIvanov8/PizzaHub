@@ -22,6 +22,12 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         public MenuItem SecondItem { get; set; }
         public MenuItem ThirdItem { get; set; }
 
+        public OrderStatus FirstStatus { get; set; }
+        public OrderStatus SecondStatus { get; set; }
+        public OrderStatus ThirdStatus { get; set; }
+
+        public OrderStatus ForthStatus { get; set; }
+
 
         public SeedData()
         {
@@ -31,9 +37,36 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             SeedAdmin();
             SeedRestaurant();
             SeedMenuItems();
-
+            SeedOrderStatuses();
         }
-        
+
+        private void SeedOrderStatuses()
+        {
+            FirstStatus = new OrderStatus()
+            {
+                Id = 1,
+                Name = "In Progress"
+            };
+
+            SecondStatus = new OrderStatus()
+            {
+                Id = 2,
+                Name = "Out for Delivery"
+            };
+
+            ThirdStatus = new OrderStatus()
+            {
+                Id = 3,
+                Name = "Delivered"
+            };
+
+            ForthStatus = new OrderStatus()
+            {
+                Id = 4,
+                Name = "Canceled"
+            };
+        }
+
         private void SeedUsers()
         {
             var hasher = new PasswordHasher<IdentityUser>();

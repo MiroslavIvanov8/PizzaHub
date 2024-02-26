@@ -21,6 +21,8 @@ namespace PizzaHub.Infrastructure
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
 
         public DbSet<Receipt> Receipts { get; set; } = null!;
+
+        public DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -31,6 +33,7 @@ namespace PizzaHub.Infrastructure
             builder.ApplyConfiguration(new RestaurantConfiguration());
             builder.ApplyConfiguration(new MenuItemConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new OrderStatusConfiguration());
             builder.ApplyConfiguration(new ReceiptConfiguration());
 
             base.OnModelCreating(builder);

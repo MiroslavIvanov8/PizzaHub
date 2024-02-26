@@ -16,5 +16,12 @@
             public const int IngredientsMaxLength = 500;
             public const int IngredientsMinLength = 30;
         }
+
+        public static class OrderStatus
+        {
+            public const int StatusNameMaxLength = 20;
+            public const int StatusNameMinLength = 10;
+        }
+
     }
 }

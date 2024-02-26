@@ -25,6 +25,10 @@ namespace PizzaHub.Infrastructure.Data.Models
         public int RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; }
 
+        [Required]
+        public int StatusId { get; set; }
+        public OrderStatus Status { get; set; } = null!;
+
         public Receipt Receipt { get; set; }
 
         [Required]
