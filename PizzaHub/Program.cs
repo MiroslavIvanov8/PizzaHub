@@ -1,4 +1,7 @@
 using PizzaHub.Extensions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using PizzaHub.Infrastructure;
 
 namespace PizzaHub
 {
@@ -7,7 +10,7 @@ namespace PizzaHub
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            
             builder.Services.AddApplicationDbContext(builder.Configuration);
             builder.Services.AddApplicationIdentity(builder.Configuration);
             
@@ -18,6 +21,7 @@ namespace PizzaHub
 
             if (app.Environment.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseMigrationsEndPoint();
             }
             else
@@ -26,7 +30,7 @@ namespace PizzaHub
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-
+            
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

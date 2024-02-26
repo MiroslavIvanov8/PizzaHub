@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzaHub.Infrastructure;
 
@@ -11,9 +12,10 @@ using PizzaHub.Infrastructure;
 namespace PizzaHub.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaHubDbContext))]
-    partial class PizzaHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240226143311_AdminRestaurantRelationFixed")]
+    partial class AdminRestaurantRelationFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -137,56 +139,6 @@ namespace PizzaHub.Infrastructure.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "00000856-c198-4129-b3f3-b893d8395082",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ed003bc-660e-4d52-97f3-6419d440a4b9",
-                            Email = "admin@mail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "admin@mail.com",
-                            NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAECCOR3RgKgA7dCuEdiyxzm4EqQs2jUG14+bYYDmV+dt3aEgZEC06J+Efdff/IivcBA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "be9db993-7ac2-4118-a8c0-713f1e72d29e",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@mail.com"
-                        },
-                        new
-                        {
-                            Id = "11111856-c198-4129-b3f3-b893d8395082",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e1275fb-65c7-47be-831e-2f1ddb2c6a41",
-                            Email = "courier@mail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "courier@mail.com",
-                            NormalizedUserName = "courier@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ3yoMN7ZgUfhANHqoaS7vK6SuuMz5xSI7pUyUrwXbbXT8/J7s3EiWLJjxuangcIXQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "566b730b-5d3c-4373-a87d-91b87e96f557",
-                            TwoFactorEnabled = false,
-                            UserName = "courier@mail.com"
-                        },
-                        new
-                        {
-                            Id = "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "1fce75b1-2e4c-408f-a6d8-00a23f6a9c30",
-                            Email = "customer@mail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedEmail = "customer@mail.com",
-                            NormalizedUserName = "customer@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPh9f6wpx9bJ8DMIdjJGk4vMLpim+JibUFvklTSoB9WY4WDB341DglSQr5Do/mQfnw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "71ba3331-80f4-41c0-aca5-cc8ac5596fa5",
-                            TwoFactorEnabled = false,
-                            UserName = "customer@mail.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -294,14 +246,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Admins");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RestaurantId = 1,
-                            UserId = "00000856-c198-4129-b3f3-b893d8395082"
-                        });
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Courier", b =>
@@ -321,13 +265,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Couriers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            UserId = "11111856-c198-4129-b3f3-b893d8395082"
-                        });
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Customer", b =>
@@ -347,13 +284,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Customers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            UserId = "222220ce-d726-4fc8-83d9-d6b3ac1f591e"
-                        });
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.MenuItem", b =>
@@ -378,6 +308,9 @@ namespace PizzaHub.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -386,38 +319,11 @@ namespace PizzaHub.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("OrderId");
+
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("MenuItems");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ImageUrl = "https://i.ytimg.com/vi/4VSW29yWPlA/hqdefault.jpg",
-                            Ingredients = "Pizza Dough, Tomatoes, Fresh Mozzarella Balls, Fresh Basil, Olive Oil & Salt",
-                            Name = "Margherita",
-                            Price = 9.99m,
-                            RestaurantId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqrokvH7PmBozzFJT-k4Jar8oiBvAQZMAbevgZh_ACbQpBWxoAKsdPzfUjiqlUFe54thw&usqp=CAU",
-                            Ingredients = "Pizza Dough, Tomatoes, Crushed Red Pepper Flakes, Sliced Pepperoni, Crushed Tomatoes with Basil, Olive Oil & Salt",
-                            Name = "Pepperoni",
-                            Price = 13.50m,
-                            RestaurantId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            ImageUrl = "https://thumbs.dreamstime.com/z/toscana-pizza-wooden-plate-isolated-white-background-218130024.jpg",
-                            Ingredients = "Pizza Dough, Tomatoes, Cheese, Mushrooms, Diced Chicken, Mixed Peppers, Olive Oil & Salt",
-                            Name = "Toscana",
-                            Price = 14.99m,
-                            RestaurantId = 1
-                        });
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Order", b =>
@@ -449,32 +355,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("MenuItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Receipt", b =>
@@ -518,14 +398,6 @@ namespace PizzaHub.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Restaurants");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AdminId = 1,
-                            Name = "PizzaHub"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -614,6 +486,10 @@ namespace PizzaHub.Infrastructure.Migrations
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.MenuItem", b =>
                 {
+                    b.HasOne("PizzaHub.Infrastructure.Data.Models.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("PizzaHub.Infrastructure.Data.Models.Restaurant", "Restaurant")
                         .WithMany("MenuItems")
                         .HasForeignKey("RestaurantId")
@@ -648,25 +524,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Restaurant");
-                });
-
-            modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.OrderItem", b =>
-                {
-                    b.HasOne("PizzaHub.Infrastructure.Data.Models.MenuItem", "MenuItem")
-                        .WithMany()
-                        .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PizzaHub.Infrastructure.Data.Models.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MenuItem");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Receipt", b =>

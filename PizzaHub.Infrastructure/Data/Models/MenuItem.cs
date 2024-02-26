@@ -19,6 +19,13 @@ namespace PizzaHub.Infrastructure.Data.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
+        [Required] 
+        public string ImageUrl { get; set; } = null!;
+
+        [Required]
+        [StringLength(IngredientsMaxLength)]
+        public string Ingredients { get; set; } = null!;
+
         [ForeignKey(nameof(RestaurantId))]
         public int RestaurantId { get; set; }
 

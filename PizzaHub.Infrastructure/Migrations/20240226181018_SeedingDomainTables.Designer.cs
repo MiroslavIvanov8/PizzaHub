@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzaHub.Infrastructure;
 
@@ -11,9 +12,10 @@ using PizzaHub.Infrastructure;
 namespace PizzaHub.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaHubDbContext))]
-    partial class PizzaHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240226181018_SeedingDomainTables")]
+    partial class SeedingDomainTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -143,15 +145,15 @@ namespace PizzaHub.Infrastructure.Migrations
                         {
                             Id = "00000856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ed003bc-660e-4d52-97f3-6419d440a4b9",
+                            ConcurrencyStamp = "ebb36f54-b6ff-4e04-9224-71e7bcd1a990",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAECCOR3RgKgA7dCuEdiyxzm4EqQs2jUG14+bYYDmV+dt3aEgZEC06J+Efdff/IivcBA==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBu5Xjiv/GJY5xdek3gb686bkQRA4Q1QJ7awcOaClizOaxf3mVtWbdpR2WT9ddZfhw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "be9db993-7ac2-4118-a8c0-713f1e72d29e",
+                            SecurityStamp = "165ba727-0bbe-4af3-8e2f-0185e958454a",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         },
@@ -159,15 +161,15 @@ namespace PizzaHub.Infrastructure.Migrations
                         {
                             Id = "11111856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6e1275fb-65c7-47be-831e-2f1ddb2c6a41",
+                            ConcurrencyStamp = "c819ade5-e010-419e-a9ee-e132208c8f6f",
                             Email = "courier@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "courier@mail.com",
                             NormalizedUserName = "courier@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJ3yoMN7ZgUfhANHqoaS7vK6SuuMz5xSI7pUyUrwXbbXT8/J7s3EiWLJjxuangcIXQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEMfmECKzrl0o1l7a9swGS4Qln8kjHNo7acmXUBV6TyRzzN0FzoeEeYWTHNAaAeqqkA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "566b730b-5d3c-4373-a87d-91b87e96f557",
+                            SecurityStamp = "f74089dc-1797-4922-ac65-ac0739ff5c96",
                             TwoFactorEnabled = false,
                             UserName = "courier@mail.com"
                         },
@@ -175,15 +177,15 @@ namespace PizzaHub.Infrastructure.Migrations
                         {
                             Id = "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1fce75b1-2e4c-408f-a6d8-00a23f6a9c30",
+                            ConcurrencyStamp = "bd6cb1f5-a515-4e45-929c-be23b97ab66a",
                             Email = "customer@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "customer@mail.com",
                             NormalizedUserName = "customer@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEPh9f6wpx9bJ8DMIdjJGk4vMLpim+JibUFvklTSoB9WY4WDB341DglSQr5Do/mQfnw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEHDwVlD1IAgwlWkLPMkj89XumwX7rDnXY7ObBHPRyTUJXj7S01XkXD7qV8BEsMaNEg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "71ba3331-80f4-41c0-aca5-cc8ac5596fa5",
+                            SecurityStamp = "af99db39-e2da-47e5-be32-e781182de959",
                             TwoFactorEnabled = false,
                             UserName = "customer@mail.com"
                         });
@@ -378,6 +380,9 @@ namespace PizzaHub.Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -385,6 +390,8 @@ namespace PizzaHub.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("RestaurantId");
 
@@ -449,32 +456,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.HasIndex("RestaurantId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("MenuItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MenuItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Receipt", b =>
@@ -614,6 +595,10 @@ namespace PizzaHub.Infrastructure.Migrations
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.MenuItem", b =>
                 {
+                    b.HasOne("PizzaHub.Infrastructure.Data.Models.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("PizzaHub.Infrastructure.Data.Models.Restaurant", "Restaurant")
                         .WithMany("MenuItems")
                         .HasForeignKey("RestaurantId")
@@ -648,25 +633,6 @@ namespace PizzaHub.Infrastructure.Migrations
                     b.Navigation("Customer");
 
                     b.Navigation("Restaurant");
-                });
-
-            modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.OrderItem", b =>
-                {
-                    b.HasOne("PizzaHub.Infrastructure.Data.Models.MenuItem", "MenuItem")
-                        .WithMany()
-                        .HasForeignKey("MenuItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PizzaHub.Infrastructure.Data.Models.Order", "Order")
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MenuItem");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("PizzaHub.Infrastructure.Data.Models.Receipt", b =>

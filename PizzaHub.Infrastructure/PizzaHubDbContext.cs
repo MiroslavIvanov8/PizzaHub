@@ -21,10 +21,18 @@ namespace PizzaHub.Infrastructure
         public DbSet<MenuItem> MenuItems { get; set; } = null!;
 
         public DbSet<Receipt> Receipts { get; set; } = null!;
-
+        
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.ApplyConfiguration(new AdminConfiguration());
+            builder.ApplyConfiguration(new CourierConfiguration());
+            builder.ApplyConfiguration(new UserConfiguration());
+            builder.ApplyConfiguration(new CustomerConfiguration());
+            builder.ApplyConfiguration(new RestaurantConfiguration());
+            builder.ApplyConfiguration(new MenuItemConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
+            builder.ApplyConfiguration(new ReceiptConfiguration());
+
             base.OnModelCreating(builder);
         }
     }

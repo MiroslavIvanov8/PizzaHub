@@ -7,7 +7,7 @@ namespace PizzaHub.Infrastructure.Data.Models
     {
         public Order()
         {
-            this.Items = new HashSet<MenuItem>();
+            this.Items = new HashSet<OrderItem>();
         }
 
         [Key]
@@ -30,7 +30,8 @@ namespace PizzaHub.Infrastructure.Data.Models
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
-        public virtual ICollection<MenuItem> Items { get; set; }
+
+        public virtual ICollection<OrderItem> Items { get; set; }
 
     }
 }

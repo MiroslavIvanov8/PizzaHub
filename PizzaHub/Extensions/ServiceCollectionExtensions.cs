@@ -1,9 +1,9 @@
-﻿using PizzaHub.Infrastructure;
-
-namespace PizzaHub.Extensions
+﻿namespace PizzaHub.Extensions
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+
+    using Infrastructure;
 
     public static class ServiceCollectionExtensions
     {
