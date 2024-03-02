@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PizzaHub.Core\PizzaHub.Core.csproj" />
     <ProjectReference Include="..\PizzaHub.Infrastructure\PizzaHub.Infrastructure.csproj" />
   </ItemGroup>
 

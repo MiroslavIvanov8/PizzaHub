@@ -1,0 +1,29 @@
+﻿@model IEnumerable<PizzaHub.Core.ViewModels.MenuItem.MenuItemViewModel>
+@{
+    ViewBag.Title = "Our Menu";
+}
+
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div class="text-center row">
+    @foreach (var i in Model)
+    {
+        <div class="card col-4" style="width: 20rem; ">
+            <div class="card-body">
+                <img class="card-img-top" style="width: 18rem;"
+                     src="@i.ImageUrl" alt="Book Image">
+                <h5 class="card-title mt-1">@i.Name</h5>
+                <h5 class="card-title mt-1">@i.Price</h5>
+            </div>
+            
+            <a asp-controller="Seminar" asp-action="Edit" asp-route-id="@i.Id" class="btn btn-warning mb-2 w-100 p-3 fw-bold">Add to Cart</a>
+            
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -164,7 +164,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 Id = 1,
                 Name = "Margherita",
                 Ingredients = "Pizza Dough, Tomatoes, Fresh Mozzarella Balls, Fresh Basil, Olive Oil & Salt",
-                ImageUrl = "https://i.ytimg.com/vi/4VSW29yWPlA/hqdefault.jpg",
+                ImageUrl = "https://media.istockphoto.com/id/1168754685/photo/pizza-margarita-with-cheese-top-view-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=psLRwd-hX9R-S_iYU-sihB4Jx2aUlUr26fkVrxGDfNg=",
                 Price = 9.99M,
                 RestaurantId = 1,
             };
@@ -174,7 +174,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 Id = 2,
                 Name = "Pepperoni",
                 Ingredients = "Pizza Dough, Tomatoes, Crushed Red Pepper Flakes, Sliced Pepperoni, Crushed Tomatoes with Basil, Olive Oil & Salt",
-                ImageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqrokvH7PmBozzFJT-k4Jar8oiBvAQZMAbevgZh_ACbQpBWxoAKsdPzfUjiqlUFe54thw&usqp=CAU",
+                ImageUrl = "https://media.istockphoto.com/id/1413684626/photo/classic-pepperoni-pizza-with-cut-slices-isolated-on-white.jpg?s=612x612&w=0&k=20&c=498sVNGAyb7IQb9T9z5X9pnnv0YZpDWgWWKZeDO6lKw=",
                 Price = 13.50M,
                 RestaurantId = 1,
             };
@@ -184,7 +184,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 Id = 3,
                 Name = "Toscana",
                 Ingredients = "Pizza Dough, Tomatoes, Cheese, Mushrooms, Diced Chicken, Mixed Peppers, Olive Oil & Salt",
-                ImageUrl = "https://thumbs.dreamstime.com/z/toscana-pizza-wooden-plate-isolated-white-background-218130024.jpg",
+                ImageUrl = "https://media.istockphoto.com/id/635675852/photo/pizza-on-white-background.jpg?s=612x612&w=0&k=20&c=3z6N8hYH4yNRK8EbGJ4Pt7vszNw7dL_l8QwnNUz2Z_o=",
                 Price = 14.99M,
                 RestaurantId = 1,
             };

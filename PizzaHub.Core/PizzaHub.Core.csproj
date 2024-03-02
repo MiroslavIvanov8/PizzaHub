@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PizzaHub.Infrastructure\PizzaHub.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

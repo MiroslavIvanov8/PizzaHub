@@ -4,11 +4,15 @@
     using Microsoft.EntityFrameworkCore;
 
     using Infrastructure;
+    using PizzaHub.Core.Contracts;
+    using PizzaHub.Core.Interfaces;
 
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IRestaurantService, RestaurantService>();
+
             return services;
         }
 

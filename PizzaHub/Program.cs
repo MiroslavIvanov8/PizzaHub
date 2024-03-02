@@ -1,6 +1,8 @@
 using PizzaHub.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using PizzaHub.Core.Contracts;
+using PizzaHub.Core.Interfaces;
 using PizzaHub.Infrastructure;
 
 namespace PizzaHub
@@ -17,6 +19,7 @@ namespace PizzaHub
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddApplicationServices();
+
             var app = builder.Build();
             
             if (app.Environment.IsDevelopment())
