@@ -23,5 +23,10 @@
             public const int StatusNameMinLength = 10;
         }
 
+        public static class Order
+        {
+            public const int AddressMaxLength = 100;
+            public const int AddressMinLength = 3;
+        }
     }
 }

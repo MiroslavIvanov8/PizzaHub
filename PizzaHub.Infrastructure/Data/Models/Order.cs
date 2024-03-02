@@ -1,8 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace PizzaHub.Infrastructure.Data.Models
+﻿namespace PizzaHub.Infrastructure.Data.Models
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    using static PizzaHub.Infrastructure.Constants.DataConstants.Order;
+
     public class Order
     {
         public Order()
@@ -24,6 +26,11 @@ namespace PizzaHub.Infrastructure.Data.Models
         [ForeignKey(nameof(RestaurantId))]
         public int RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; }
+
+        [Required]
+        [StringLength(AddressMaxLength)]
+        public string Address { get; set; } = null!;
+
 
         [Required]
         public int StatusId { get; set; }
