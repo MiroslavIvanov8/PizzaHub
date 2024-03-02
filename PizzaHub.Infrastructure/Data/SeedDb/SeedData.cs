@@ -28,6 +28,13 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
 
         public OrderStatus ForthStatus { get; set; }
 
+        public IdentityRole AdminRole { get; set; }
+
+        public IdentityRole CourierRole { get; set; }
+
+        public IdentityUserRole<string> UserCourier { get; set; }
+
+        public IdentityUserRole<string> UserAdmin { get; set; }
 
         public SeedData()
         {
@@ -38,8 +45,11 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             SeedRestaurant();
             SeedMenuItems();
             SeedOrderStatuses();
+            SeedRoles();
+            SeedUserRoles();
         }
 
+        
         private void SeedOrderStatuses()
         {
             FirstStatus = new OrderStatus()
@@ -181,5 +191,37 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
 
             
         }
+        private void SeedUserRoles()
+        {
+            UserAdmin = new IdentityUserRole<string>
+            {
+                UserId = "00000856-c198-4129-b3f3-b893d8395082",
+                RoleId = "00000856-0000-0000-0000-b893d8395082"
+            };
+
+            UserCourier = new IdentityUserRole<string>
+            {
+                UserId = "11111856-c198-4129-b3f3-b893d8395082",
+                RoleId = "22222222-2222-2222-2222-b893d8395082"
+            };
+
+        }
+
+        private void SeedRoles()
+        {
+            AdminRole = new IdentityRole
+            {
+                Id = "00000856-0000-0000-0000-b893d8395082",
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            };
+            CourierRole = new IdentityRole
+            {
+                Id = "22222222-2222-2222-2222-b893d8395082",
+                Name = "Courier",
+                NormalizedName = "COURIER"
+            };
+        }
+
     }
 }
