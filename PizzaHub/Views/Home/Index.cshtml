@@ -1,13 +1,10 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin-top: 50px;">
+﻿
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; margin-top: 50px;">
     <h1>Welcome to PizzaHub!</h1>
     <h3><p>We offer tasty pizza for hungry gamers.</p></h3>
     <h3><p>So, are you hungry?</p></h3>
-    <div class="card">
+    <div class="card" style="align-self: flex-start;">
         <p>Choose an option below:</p>
-
         <form asp-controller="Home" asp-action="ShowMenu" method="get" style="display: inline-block; margin-right: 10px;">
             <button type="submit">Yes, Show Me the Menu!</button>
         </form>
@@ -17,4 +14,3 @@
         </form>
     </div>
 </div>
-
