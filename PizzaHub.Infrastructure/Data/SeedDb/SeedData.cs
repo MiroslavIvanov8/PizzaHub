@@ -32,6 +32,9 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
 
         public IdentityRole CourierRole { get; set; }
 
+        public IdentityRole CustomerRole { get; set; }
+
+        public IdentityUserRole<string> UserCustomer { get; set; }
         public IdentityUserRole<string> UserCourier { get; set; }
 
         public IdentityUserRole<string> UserAdmin { get; set; }
@@ -205,6 +208,11 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 RoleId = "22222222-2222-2222-2222-b893d8395082"
             };
 
+            UserCustomer = new IdentityUserRole<string>
+            {
+                UserId = "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
+                RoleId = "11111111-1111-1111-1111-b893d8395082"
+            };
         }
 
         private void SeedRoles()
@@ -215,6 +223,14 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 Name = "Admin",
                 NormalizedName = "ADMIN"
             };
+
+            CustomerRole = new IdentityRole
+            {
+                Id = "11111111-1111-1111-1111-b893d8395082",
+                Name = "Customer",
+                NormalizedName = "CUSTOMER"
+            };
+
             CourierRole = new IdentityRole
             {
                 Id = "22222222-2222-2222-2222-b893d8395082",

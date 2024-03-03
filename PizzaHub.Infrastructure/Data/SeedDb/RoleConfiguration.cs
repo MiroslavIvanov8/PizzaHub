@@ -10,7 +10,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         {
             var data = new SeedData();
 
-            builder.HasData(new IdentityRole[] { data.AdminRole, data.CourierRole });
+            builder.HasData(new IdentityRole[] { data.AdminRole, data.CourierRole, data.CustomerRole });
         }
     }
 }
