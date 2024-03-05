@@ -1,4 +1,9 @@
-﻿namespace PizzaHub.Extensions
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using PizzaHub.Core.Contracts.Messages;
+using PizzaHub.Core.Interfaces.Messages;
+using IEmailSender = Microsoft.AspNetCore.Identity.UI.Services.IEmailSender;
+
+namespace PizzaHub.Extensions
 {
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -12,6 +17,7 @@
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<ISenderEmail, EmailSender>();
             
             return services;
         }
