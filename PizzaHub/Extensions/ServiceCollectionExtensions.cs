@@ -4,8 +4,8 @@
     using Microsoft.EntityFrameworkCore;
 
     using Infrastructure;
-    using PizzaHub.Core.Contracts;
-    using PizzaHub.Core.Interfaces;
+    using PizzaHub.Core.Contracts.Restaurant;
+    using PizzaHub.Core.Interfaces.Restaurant;
 
     public static class ServiceCollectionExtensions
     {

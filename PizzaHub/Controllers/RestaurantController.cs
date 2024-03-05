@@ -3,8 +3,8 @@
 namespace PizzaHub.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using PizzaHub.Core.Contracts.Restaurant;
 
-    using PizzaHub.Core.Contracts;
     public class RestaurantController : Controller
     {
         private readonly IRestaurantService restaurantService;

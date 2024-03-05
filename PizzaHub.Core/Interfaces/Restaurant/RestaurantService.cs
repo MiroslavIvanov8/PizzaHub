@@ -1,10 +1,10 @@
-﻿namespace PizzaHub.Core.Interfaces
+﻿namespace PizzaHub.Core.Interfaces.Restaurant
 {
     using Microsoft.EntityFrameworkCore;
 
-    using Contracts;
     using ViewModels.MenuItem;
     using Infrastructure;
+    using PizzaHub.Core.Contracts.Restaurant;
 
     public class RestaurantService : IRestaurantService
     {
@@ -17,7 +17,7 @@
 
         public async Task<IEnumerable<MenuItemViewModel>> GetMenu()
         {
-            return await this.dbContext.MenuItems.Select(i => new MenuItemViewModel()
+            return await dbContext.MenuItems.Select(i => new MenuItemViewModel()
             {
                 Id = i.Id,
                 Name = i.Name,
