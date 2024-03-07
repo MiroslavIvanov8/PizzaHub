@@ -1,9 +1,10 @@
-﻿namespace PizzaHub.Controllers
+﻿
+
+namespace PizzaHub.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
-
-    using Models;
+    using PizzaHub.Core.ViewModels;
 
     public class HomeController : Controller
     {

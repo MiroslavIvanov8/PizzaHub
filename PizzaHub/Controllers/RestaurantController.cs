@@ -17,6 +17,6 @@ namespace PizzaHub.Controllers
         {
             IEnumerable<MenuItemViewModel> menu = await this.restaurantService.GetMenu();
             return View(menu);
-        }
+        } 
     }
 }

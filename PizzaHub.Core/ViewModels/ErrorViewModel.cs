@@ -1,4 +1,4 @@
-namespace PizzaHub.Models
+namespace PizzaHub.Core.ViewModels
 {
     public class ErrorViewModel
     {
