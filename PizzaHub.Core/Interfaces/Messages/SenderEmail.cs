@@ -5,11 +5,11 @@ using System.Net.Mail;
 
 namespace PizzaHub.Core.Interfaces.Messages
 {
-    public class EmailSender : ISenderEmail
+    public class SenderEmail : ISenderEmail
     {
         private readonly IConfiguration _configuration;
 
-        public EmailSender(IConfiguration configuration)
+        public SenderEmail(IConfiguration configuration)
         {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }

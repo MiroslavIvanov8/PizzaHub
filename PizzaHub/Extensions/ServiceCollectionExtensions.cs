@@ -17,8 +17,8 @@ namespace PizzaHub.Extensions
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
-            services.AddScoped<ISenderEmail, EmailSender>();
-            
+            services.AddScoped<ISenderEmail, SenderEmail>();
+
             return services;
         }
 
