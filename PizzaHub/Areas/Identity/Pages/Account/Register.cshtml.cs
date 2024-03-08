@@ -12,6 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using PizzaHub.Infrastructure;
+using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {
@@ -126,7 +127,11 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     await _userManager.AddToRoleAsync(user, "Customer");
-
+                    await _context.Customers.AddAsync(new Customer()
+                    {
+                        UserId = user.Id,
+                    });
+                    await this._context.SaveChangesAsync();
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
