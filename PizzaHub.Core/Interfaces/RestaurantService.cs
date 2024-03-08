@@ -21,6 +21,7 @@
             {
                 Id = i.Id,
                 Name = i.Name,
+                Ingredients = i.Ingredients,
                 ImageUrl = i.ImageUrl,
                 Price = i.Price
             })

@@ -15,7 +15,6 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
 
         public Customer Customer { get; set; }
         public Courier Courier { get; set; }
-
         public Admin Admin { get; set; }
 
         public MenuItem FirstItem { get; set; }
@@ -25,7 +24,6 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         public OrderStatus FirstStatus { get; set; }
         public OrderStatus SecondStatus { get; set; }
         public OrderStatus ThirdStatus { get; set; }
-
         public OrderStatus ForthStatus { get; set; }
 
         public IdentityRole AdminRole { get; set; }

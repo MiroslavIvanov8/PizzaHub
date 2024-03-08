@@ -14,9 +14,9 @@
             <div class="card-body">
                 <img class="card-img-top" style="width: 18rem;" src="@i.ImageUrl" alt="Pizza Image">
                 <h5 class="card-title mt-1">@i.Name</h5>
-                <h5 class="card-title mt-1">@i.Price</h5>
+                <h7 class="card-title mt-1">@i.Ingredients</h7>
+                <h5 class="card-title mt-1">$@i.Price</h5>
             </div>
-
             <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
                 <input type="hidden" name="itemId" value="@i.Id" />
 
