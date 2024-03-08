@@ -8,6 +8,7 @@
         public Customer()
         {
             this.OrdersHistory = new HashSet<Order>();
+            this.CustomerCart = new HashSet<CustomerCart>();
         }
 
         [Key]
@@ -19,6 +20,8 @@
         public virtual IdentityUser User { get; set; } = null!;
 
         public virtual ICollection<Order> OrdersHistory { get; set; }
-        
+
+        public virtual ICollection<CustomerCart> CustomerCart { get; set; }
+
     }
 }

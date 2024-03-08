@@ -23,6 +23,8 @@ namespace PizzaHub.Infrastructure
         public DbSet<Receipt> Receipts { get; set; } = null!;
 
         public DbSet<OrderStatus> OrderStatuses { get; set; } = null!;
+
+        public DbSet<CustomerCart> CustomerCart { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -37,6 +39,7 @@ namespace PizzaHub.Infrastructure
             builder.ApplyConfiguration(new ReceiptConfiguration());
             builder.ApplyConfiguration(new RoleConfiguration());
             builder.ApplyConfiguration(new UserRoleConfiguration());
+            builder.ApplyConfiguration(new CustomerCartConfiguration());
 
             base.OnModelCreating(builder);
         }

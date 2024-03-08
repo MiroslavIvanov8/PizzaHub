@@ -8,6 +8,10 @@ namespace PizzaHub.Infrastructure.Data.Models
     using static DataConstants.MenuItem;
     public class MenuItem
     {
+        public MenuItem()
+        {
+            this.CustomerCart = new HashSet<CustomerCart>();
+        }
         [Key]
         public int Id { get; set; }
 
@@ -30,5 +34,7 @@ namespace PizzaHub.Infrastructure.Data.Models
         public int RestaurantId { get; set; }
 
         public Restaurant Restaurant { get; set; } = null!;
+
+        public virtual ICollection<CustomerCart> CustomerCart { get; set; }
     }
 }

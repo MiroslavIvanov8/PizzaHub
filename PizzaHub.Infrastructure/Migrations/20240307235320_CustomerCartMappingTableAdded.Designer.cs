@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzaHub.Infrastructure;
 
@@ -11,9 +12,10 @@ using PizzaHub.Infrastructure;
 namespace PizzaHub.Infrastructure.Migrations
 {
     [DbContext(typeof(PizzaHubDbContext))]
-    partial class PizzaHubDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240307235320_CustomerCartMappingTableAdded")]
+    partial class CustomerCartMappingTableAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,21 +54,21 @@ namespace PizzaHub.Infrastructure.Migrations
                         new
                         {
                             Id = "00000856-0000-0000-0000-b893d8395082",
-                            ConcurrencyStamp = "f84053ad-eddd-4ef9-9908-b4b7df43615c",
+                            ConcurrencyStamp = "35ccd8fe-c8fb-409b-bfd3-8f6bad9441bf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "22222222-2222-2222-2222-b893d8395082",
-                            ConcurrencyStamp = "ccc414d0-8774-43cc-a8a4-b33411ea5248",
+                            ConcurrencyStamp = "20608177-74f8-4c1c-9474-2eb0e13799c3",
                             Name = "Courier",
                             NormalizedName = "COURIER"
                         },
                         new
                         {
                             Id = "11111111-1111-1111-1111-b893d8395082",
-                            ConcurrencyStamp = "935dbdea-caca-40b1-889a-cfb65f02cfce",
+                            ConcurrencyStamp = "0a0f7a34-d4de-406f-989f-3448571807ef",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -166,15 +168,15 @@ namespace PizzaHub.Infrastructure.Migrations
                         {
                             Id = "00000856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8b7251a9-1520-49ed-a884-360ae557c80e",
+                            ConcurrencyStamp = "46c68d0a-c8a5-464d-b0a0-cedc0ddd9f39",
                             Email = "admin@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "admin@mail.com",
                             NormalizedUserName = "admin@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEDq/upyO1/QtOkkke18Mys4N3hL2V4KMZ/6b6GC1C3PWCTlbOf2Bw/RraD8vc0ROWg==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEIzfOdtT/EkMUXsn5NRF6YK7c7jdI8gCKV9MqsVJJl810iYldvIUUcHKCvPwNpt0Zg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f68f9ef5-5bfb-4c9e-b2ce-5a25018043c5",
+                            SecurityStamp = "1dd558d5-2684-46b1-a39f-21f62f60aa8a",
                             TwoFactorEnabled = false,
                             UserName = "admin@mail.com"
                         },
@@ -182,15 +184,15 @@ namespace PizzaHub.Infrastructure.Migrations
                         {
                             Id = "11111856-c198-4129-b3f3-b893d8395082",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7f188005-273f-46f8-8fb6-3ff61e040a76",
+                            ConcurrencyStamp = "5e132490-9c84-49e1-84dd-7b9de097bf41",
                             Email = "courier@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "courier@mail.com",
                             NormalizedUserName = "courier@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEOEHlQgCA7NZMxQFPO0CCdO+hOiE1orfLbePlC9iy73+I7N086z49BvnsJLAzpntsQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEP6ng8IkH1gy7F7H4i8MmX+aUHfkvV17T65kzJl5II2zGobRAHumcuirDOy8y2jIqA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7649fdb4-f306-4b35-9e2d-708b59f3a934",
+                            SecurityStamp = "4ba0c90c-896c-4fea-8582-5f68e84cd981",
                             TwoFactorEnabled = false,
                             UserName = "courier@mail.com"
                         },
@@ -198,15 +200,15 @@ namespace PizzaHub.Infrastructure.Migrations
                         {
                             Id = "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e14d2ed2-6f2f-4385-8c3d-aa9231efb40a",
+                            ConcurrencyStamp = "b8d75f77-a8f8-415f-9e16-cd357a0cac34",
                             Email = "customer@mail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "customer@mail.com",
                             NormalizedUserName = "customer@mail.com",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF49WzhZHMdHTQktCWL1lYc8ATzDhaLkTvigWoqKfRIC8De9cXplVlDk8NaWPjjqEw==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEM8ZORkc0zHoqb4/hVlqC7kZaARZXs5c9GieIjG2LAfgyxZ5g7jvjvPVZVJS8bIgCA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "36a4779b-91bd-4d2a-9b9a-adb590be3812",
+                            SecurityStamp = "af25ffb0-75cd-48c4-b26f-3ce187257ab9",
                             TwoFactorEnabled = false,
                             UserName = "customer@mail.com"
                         });
@@ -398,9 +400,6 @@ namespace PizzaHub.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("MenuItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("CustomerId", "MenuItemId");
