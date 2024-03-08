@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using PizzaHub.Core.Contracts.Messages;
-using PizzaHub.Core.Interfaces.Messages;
 using IEmailSender = Microsoft.AspNetCore.Identity.UI.Services.IEmailSender;
 
 namespace PizzaHub.Extensions
@@ -9,14 +7,17 @@ namespace PizzaHub.Extensions
     using Microsoft.EntityFrameworkCore;
 
     using Infrastructure;
-    using PizzaHub.Core.Contracts.Restaurant;
-    using PizzaHub.Core.Interfaces.Restaurant;
+    using PizzaHub.Core.Contracts;
+    using PizzaHub.Core.Interfaces;
 
     public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IRestaurantService, RestaurantService>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICartService, CartService>();
+
             services.AddScoped<ISenderEmail, SenderEmail>();
 
             return services;
@@ -44,9 +45,11 @@ namespace PizzaHub.Extensions
                         config.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
                     options.Password.RequireUppercase = config.GetValue<bool>("Identity:Password:RequireUppercase");
                 })
+                .AddRoles<IdentityRole>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<PizzaHubDbContext>();
+
             services.AddRazorPages();
 
             return services;

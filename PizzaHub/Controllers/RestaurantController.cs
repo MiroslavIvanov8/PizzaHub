@@ -1,9 +1,8 @@
-﻿using PizzaHub.Core.ViewModels.MenuItem;
-
-namespace PizzaHub.Controllers
+﻿namespace PizzaHub.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using PizzaHub.Core.Contracts.Restaurant;
+    using PizzaHub.Core.Contracts;
+    using PizzaHub.Core.ViewModels.MenuItem;
 
     public class RestaurantController : Controller
     {
@@ -15,7 +14,8 @@ namespace PizzaHub.Controllers
         }
         public async Task<IActionResult> Menu()
         {
-            IEnumerable<MenuItemViewModel> menu = await this.restaurantService.GetMenu();
+            IEnumerable<MenuItemViewModel> menu = await this.restaurantService.GetMenuAsync();
+
             return View(menu);
         } 
     }
