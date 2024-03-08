@@ -1,0 +1,14 @@
+﻿using PizzaHub.Core.ViewModels.MenuItem;
+
+namespace PizzaHub.Core.Contracts
+{
+    public interface IRestaurantService
+    {
+        public Task<IEnumerable<MenuItemViewModel>> GetMenuAsync();
+
+        public Task<MenuItemViewModel> GetItemAsync(int id);
+
+        public Task<bool> MenuItemExists(int id);
+
+    }
+}

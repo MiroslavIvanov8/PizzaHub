@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Configuration;
-using PizzaHub.Core.Contracts.Messages;
+using PizzaHub.Core.Contracts;
 using System.Net;
 using System.Net.Mail;
 
-namespace PizzaHub.Core.Interfaces.Messages
+namespace PizzaHub.Core.Interfaces
 {
     public class SenderEmail : ISenderEmail
     {
@@ -24,21 +24,21 @@ namespace PizzaHub.Core.Interfaces.Messages
                 int port = int.Parse(_configuration["EmailSettings:MailPort"]);
 
                 var client = new SmtpClient(mailServer, port);
-                
-                    client.Credentials = new NetworkCredential(fromEmail, password);
-                    client.EnableSsl = true;
+
+                client.Credentials = new NetworkCredential(fromEmail, password);
+                client.EnableSsl = true;
 
                 var mailMessage = new MailMessage(fromEmail, toEmail, subject, body);
-                
-                    mailMessage.IsBodyHtml = isBodyHtml;
-                    await Task.Run(() => client.Send(mailMessage));
-                
-                
+
+                mailMessage.IsBodyHtml = isBodyHtml;
+                await Task.Run(() => client.Send(mailMessage));
+
+
             }
             catch (Exception ex)
             {
                 // Log the exception
-                Console.WriteLine($"Error sending email: {ex.Message}"); 
+                Console.WriteLine($"Error sending email: {ex.Message}");
                 throw; // Rethrow the exception to propagate it
             }
         }

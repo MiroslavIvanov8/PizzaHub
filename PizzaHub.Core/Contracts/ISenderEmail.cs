@@ -1,4 +1,4 @@
-﻿namespace PizzaHub.Core.Contracts.Messages
+﻿namespace PizzaHub.Core.Contracts
 {
     public interface ISenderEmail
     {
