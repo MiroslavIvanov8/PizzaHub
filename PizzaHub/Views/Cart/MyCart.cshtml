@@ -1,0 +1,48 @@
+﻿@model ICollection<PizzaHub.Core.ViewModels.CartItemViewModel>
+@{
+    decimal totalSum = 0;
+    foreach (var item in Model)
+    {
+        totalSum += item.Price * item.Quantity;
+    }
+}
+<div class="container mt-5">
+    <h2>Your Cart</h2>
+
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>$@item.Price</td>
+                    <td>@item.Quantity</td>
+                    <td>$@(item.Price * item.Quantity)</td>
+                </tr>
+            }
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="3"><strong>Total:</strong></td>
+                <td><strong>$@totalSum</strong></td>
+            </tr>
+            </tfoot>
+        </table>
+    }
+    else
+    {
+        <p>Your cart is empty.</p>
+    }
+
+    <a asp-controller="Checkout" asp-action="Index" class="btn btn-primary">Proceed to Checkout</a>
+</div>
