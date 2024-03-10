@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels;
 using PizzaHub.Extensions;
 
 namespace PizzaHub.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CartController : Controller
     {
         private readonly ICartService cartService;
