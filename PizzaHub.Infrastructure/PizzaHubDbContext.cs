@@ -28,12 +28,12 @@ namespace PizzaHub.Infrastructure
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new AdminConfiguration());
-            builder.ApplyConfiguration(new CourierConfiguration());
             builder.ApplyConfiguration(new UserConfiguration());
             builder.ApplyConfiguration(new CustomerConfiguration());
-            builder.ApplyConfiguration(new RestaurantConfiguration());
+            builder.ApplyConfiguration(new AdminConfiguration());
+            builder.ApplyConfiguration(new CourierConfiguration());
             builder.ApplyConfiguration(new MenuItemConfiguration());
+            builder.ApplyConfiguration(new RestaurantConfiguration());
             builder.ApplyConfiguration(new OrderConfiguration());
             builder.ApplyConfiguration(new OrderStatusConfiguration());
             builder.ApplyConfiguration(new ReceiptConfiguration());

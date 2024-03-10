@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Collections.ObjectModel;
+using Microsoft.AspNetCore.Identity;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Infrastructure.Data.SeedDb
@@ -153,9 +154,9 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             {
                 Id = 1,
                 Name = "PizzaHub",
-                AdminId = Admin.Id,
+                AdminId = Admin.Id
             };
-            
+
         }
         private void SeedMenuItems()
         {

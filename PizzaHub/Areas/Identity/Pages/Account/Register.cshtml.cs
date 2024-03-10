@@ -132,6 +132,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                         UserId = user.Id,
                     });
                     await this._context.SaveChangesAsync();
+
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",

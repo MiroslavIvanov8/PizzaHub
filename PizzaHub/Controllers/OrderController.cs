@@ -1,47 +1,40 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels.MenuItem;
-using PizzaHub.Infrastructure.Data.Models;
+using PizzaHub.Core.ViewModels;
+using PizzaHub.Extensions;
+using System.Threading.Tasks;
 
 
 namespace PizzaHub.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Customer")]
     public class OrderController : Controller
     {
-        private readonly IRestaurantService restaurantService;
         private readonly ICustomerService customerService;
+        private readonly ICartService cartService;
 
-        public OrderController(IRestaurantService restaurantService , ICustomerService customerService)
+        public OrderController(ICustomerService customerService, ICartService cartService)
         {
-            this.restaurantService = restaurantService;
             this.customerService = customerService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Order(int pizzaId)
-        {
-            if (!User.Identity.IsAuthenticated)
-            {
-                return RedirectToPage("/Login");
-            }
-
-            MenuItemViewModel model = await this.restaurantService.GetItemAsync(pizzaId);
-
-            return RedirectToAction("OrderDetails" ,"Order", model);
+            this.cartService = cartService;
         }
 
         [HttpGet]
-        public IActionResult OrderDetails(MenuItemViewModel model)
+        public async Task<IActionResult> Checkout()
         {
-            return View(model);
+            int customerId = await this.customerService.GetCustomerId(User.GetUserId());
+
+            ICollection<CartItemViewModel> models = await this.cartService.MyCartAsync(customerId);
+
+            return View(models);
+            
         }
 
-        
-        public Task<IActionResult> ConfirmOrder(int pizzaId, int quantity, string address)
+        [HttpPost]
+        public IActionResult CreateOrder(string address, string paymentMethod)
         {
-            
+
             return null;
         }
     }
