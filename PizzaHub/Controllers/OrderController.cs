@@ -13,11 +13,13 @@ namespace PizzaHub.Controllers
     {
         private readonly ICustomerService customerService;
         private readonly ICartService cartService;
+        private readonly IOrderService orderService;
 
-        public OrderController(ICustomerService customerService, ICartService cartService)
+        public OrderController(ICustomerService customerService, ICartService cartService, IOrderService orderService)
         {
             this.customerService = customerService;
             this.cartService = cartService;
+            this.orderService = orderService;
         }
 
         [HttpGet]
@@ -32,10 +34,18 @@ namespace PizzaHub.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateOrder(string address, string paymentMethod)
+        public async Task<IActionResult> CreateOrder(string address, string paymentMethod)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToPage("404");
+            }
 
-            return null;
+            int customerId = await this.customerService.GetCustomerId(User.GetUserId());
+
+            bool result = await this.orderService.CreateOrderFromCartAsync(customerId, address, paymentMethod);
+
+            return View(result);
         }
     }
 }

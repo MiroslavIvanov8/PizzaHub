@@ -1,31 +1,87 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿
+using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
+using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Core.Interfaces
 {
     public class OrderService : IOrderService
     {
-        private readonly IOrderService orderService;
+        private readonly PizzaHubDbContext dbContext;
 
-        public OrderService(IOrderService orderService)
+        public OrderService(PizzaHubDbContext dbContext)
         {
-            this.orderService = orderService;
+            this.dbContext = dbContext;
         }
-        public Task<int> Create(int customerId,int pizzaId, int quantity)
+
+        public async Task<bool> CreateOrderFromCartAsync(int customerId, string address, string paymentMethod)
         {
-            Order order = new Order()
+            
+            // Get customer cart items
+            var cartItems = await dbContext.CustomerCart
+                .Where(cart => cart.CustomerId == customerId)
+                .Select(cart => new
+                {
+                    cart.MenuItemId,
+                    cart.Quantity
+                })
+                .ToListAsync();
+
+            if (cartItems.Any())
             {
-                CustomerId = customerId,
+                // Create a new order
 
-            };
+                var order = new Order
+                {
+                    CustomerId = customerId,
+                    RestaurantId = 1,
+                    PaymentMethodId = paymentMethod == "cash" ? 1 : 2,
+                    Address = address,
+                    StatusId = 1,
+                    TotalAmount = 0, // Will fill out in next step
+                };
 
-            return null;
+                await dbContext.Orders.AddAsync(order);
+                await dbContext.SaveChangesAsync();
+
+                // Add order items from cart
+                foreach (var cartItem in cartItems)
+                {
+                    var menuItem = await dbContext.MenuItems.FindAsync(cartItem.MenuItemId);
+
+                    if (menuItem != null)
+                    {
+                        var orderItem = new OrderItem
+                        {
+                            OrderId = order.Id,
+                            MenuItemId = cartItem.MenuItemId,
+                            Quantity = cartItem.Quantity,
+                            Price = menuItem.Price
+                        };
+
+                        order.TotalAmount += orderItem.Price * orderItem.Quantity;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+
+                // Remove items from the customer cart
+                var cartItemsToRemove = dbContext.CustomerCart
+                    .Where(cart => cart.CustomerId == customerId)
+                    .ToList();
+
+                dbContext.CustomerCart.RemoveRange(cartItemsToRemove);
+
+                await dbContext.SaveChangesAsync();
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
+  

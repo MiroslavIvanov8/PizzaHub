@@ -8,6 +8,6 @@ namespace PizzaHub.Core.Contracts
 {
     public interface IOrderService
     {
-        Task<int> Create(int customerId, int pizzaId, int quantity);
+        Task<bool> CreateOrderFromCartAsync(int customerId, string address, string paymentMethod);
     }
 }
