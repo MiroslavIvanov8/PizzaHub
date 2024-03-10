@@ -9,7 +9,7 @@
     {
         public Order()
         {
-            this.Items = new HashSet<OrderItem>();
+            this.Items = new HashSet<MenuItem>();
         }
 
         [Key]
@@ -20,8 +20,8 @@
         public virtual Customer Customer { get; set; }
 
         [ForeignKey(nameof(CourierId))]
-        public int CourierId { get; set; }
-        public virtual Courier Courier { get; set; }
+        public int? CourierId { get; set; }
+        public virtual Courier? Courier { get; set; }
 
         [ForeignKey(nameof(RestaurantId))]
         public int RestaurantId { get; set; }
@@ -46,7 +46,7 @@
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
 
-        public virtual ICollection<OrderItem> Items { get; set; }
+        public virtual ICollection<MenuItem> Items { get; set; }
 
     }
 }
