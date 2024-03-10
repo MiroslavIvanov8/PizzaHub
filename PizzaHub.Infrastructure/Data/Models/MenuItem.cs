@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using PizzaHub.Infrastructure.Constants;
+﻿using DataConstants = PizzaHub.Infrastructure.Constants.DataConstants;
 
 namespace PizzaHub.Infrastructure.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
-    
+    using System.ComponentModel.DataAnnotations.Schema;
+
     using static DataConstants.MenuItem;
     public class MenuItem
     {

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels;
 using PizzaHub.Extensions;
-using System.Threading.Tasks;
 
 
 namespace PizzaHub.Controllers
