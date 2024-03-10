@@ -38,6 +38,9 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
 
         public IdentityUserRole<string> UserAdmin { get; set; }
 
+        public PaymentMethod WithCard { get; set; }
+        public PaymentMethod WithCash { get; set; }
+
         public SeedData()
         {
             SeedUsers();
@@ -49,8 +52,8 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             SeedOrderStatuses();
             SeedRoles();
             SeedUserRoles();
+            SeedPaymentMethods();
         }
-
         
         private void SeedOrderStatuses()
         {
@@ -235,6 +238,22 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 Id = "22222222-2222-2222-2222-b893d8395082",
                 Name = "Courier",
                 NormalizedName = "COURIER"
+            };
+        }
+
+
+        private void SeedPaymentMethods()
+        {
+            WithCash = new PaymentMethod()
+            {
+                Id = 1,
+                Name = "Cash"
+            };
+
+            WithCard = new PaymentMethod()
+            {
+                Id = 2,
+                Name = "Card"
             };
         }
 

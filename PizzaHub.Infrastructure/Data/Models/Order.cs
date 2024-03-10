@@ -31,6 +31,10 @@
         [StringLength(AddressMaxLength)]
         public string Address { get; set; } = null!;
 
+        [Required]
+        [ForeignKey(nameof(PaymentMethodId))]
+        public int PaymentMethodId { get; set; }
+        public PaymentMethod PaymentMethod { get; set; }
 
         [Required]
         public int StatusId { get; set; }
