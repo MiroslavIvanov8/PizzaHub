@@ -61,6 +61,7 @@ namespace PizzaHub.Core.Interfaces
                         };
 
                         order.TotalAmount += orderItem.Price * orderItem.Quantity;
+                        await this.dbContext.OrderItems.AddAsync(orderItem);
                     }
                     else
                     {
