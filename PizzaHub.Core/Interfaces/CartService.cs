@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels;
+using PizzaHub.Core.ViewModels.Cart;
 using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Data.Models;
 

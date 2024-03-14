@@ -1,4 +1,4 @@
-﻿@model ICollection<PizzaHub.Core.ViewModels.CartItemViewModel>
+﻿@model ICollection<PizzaHub.Core.ViewModels.Cart.CartItemViewModel>
 @{
     decimal totalSum = 0;
     foreach (var item in Model)
@@ -7,45 +7,61 @@
     }
 }
 
-    <div class="container mt-5">
-        <h2>Your Cart</h2>
+<div class="container mt-5">
+    <h2>Your Cart</h2>
 
-        @if (Model.Any())
-        {
-            <table class="table">
-                <thead>
+    @if (Model.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
                     <tr>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th>Total</th>
+                        <td>@item.Name</td>
+                        <td>$@item.Price</td>
+                        <td>
+                            <span id="quantity_@item.Quantity">@item.Quantity</span>
+                            <button type="button" onclick="updateQuantity(@item.Quantity, -1)">-</button>
+                            <button type="button" onclick="updateQuantity(@item.Quantity, 1)">+</button>
+                        </td>
+                        <td>$@(item.Price * item.Quantity)</td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>@item.Name</td>
-                            <td>$@item.Price</td>
-                            <td>@item.Quantity</td>
-                            <td>$@(item.Price * item.Quantity)</td>
-                        </tr>
-                    }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3"><strong>Total:</strong></td>
-                        <td><strong>$@totalSum</strong></td>
-                    </tr>
-                </tfoot>
-            </table>
-            
-            <form asp-controller="Order" asp-action="Checkout" method="get">
-                <button type="submit" class="btn btn-primary">Go to Checkout</button>
-            </form>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"><strong>Total:</strong></td>
+                    <td><strong>$@totalSum</strong></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <form asp-controller="Order" asp-action="Checkout" method="get">
+            <button type="submit" class="btn btn-primary">Go to Checkout</button>
+        </form>
+    }
+    else
+    {
+        <p>Your cart is empty.</p>
+    }
+</div>
+
+<script>
+    function updateQuantity(itemId, change) {
+        var quantityElement = document.getElementById('quantity_' + itemId);
+        var currentQuantity = parseInt(quantityElement.innerText);
+        var newQuantity = currentQuantity + change;
+
+        if (newQuantity >= 0) {
+            quantityElement.innerText = newQuantity;
         }
-        else
-        {
-            <p>Your cart is empty.</p>
-        }
-    </div>
+    }
+</script>

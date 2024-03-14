@@ -1,4 +1,4 @@
-﻿namespace PizzaHub.Core.ViewModels
+﻿namespace PizzaHub.Core.ViewModels.Cart
 {
     public class CartItemViewModel
     {
