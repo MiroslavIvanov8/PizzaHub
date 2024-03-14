@@ -1,4 +1,5 @@
 ﻿
+using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure;
@@ -8,18 +9,18 @@ namespace PizzaHub.Core.Interfaces
 {
     public class OrderService : IOrderService
     {
-        private readonly PizzaHubDbContext dbContext;
+        private readonly IRepository repository;
 
-        public OrderService(PizzaHubDbContext dbContext)
+        public OrderService(IRepository repository)
         {
-            this.dbContext = dbContext;
+            this.repository = repository;
         }
 
         public async Task<bool> CreateOrderFromCartAsync(int customerId, string address, string paymentMethod)
         {
             
             // Get customer cart items
-            var cartItems = await dbContext.CustomerCart
+            var cartItems = await this.repository.All<CustomerCart>()
                 .Where(cart => cart.CustomerId == customerId)
                 .Select(cart => new
                 {
@@ -42,13 +43,13 @@ namespace PizzaHub.Core.Interfaces
                     TotalAmount = 0, // Will fill out in next step
                 };
 
-                await dbContext.Orders.AddAsync(order);
-                await dbContext.SaveChangesAsync();
+                await this.repository.AddAsync(order);
+                await this.repository.SaveChangesAsync();
 
                 // Add order items from cart
                 foreach (var cartItem in cartItems)
                 {
-                    var menuItem = await dbContext.MenuItems.FindAsync(cartItem.MenuItemId);
+                    var menuItem = await this.repository.AllReadOnly<MenuItem>().FirstOrDefaultAsync(mi => mi.Id == cartItem.MenuItemId);
 
                     if (menuItem != null)
                     {
@@ -61,7 +62,7 @@ namespace PizzaHub.Core.Interfaces
                         };
 
                         order.TotalAmount += orderItem.Price * orderItem.Quantity;
-                        await this.dbContext.OrderItems.AddAsync(orderItem);
+                        await this.repository.AddAsync(orderItem);
                     }
                     else
                     {
@@ -70,13 +71,13 @@ namespace PizzaHub.Core.Interfaces
                 }
 
                 // Remove items from the customer cart
-                var cartItemsToRemove = dbContext.CustomerCart
+                var cartItemsToRemove = await this.repository.All<CustomerCart>()
                     .Where(cart => cart.CustomerId == customerId)
-                    .ToList();
+                    .ToListAsync();
 
-                dbContext.CustomerCart.RemoveRange(cartItemsToRemove);
+                await this.repository.RemoveRange(cartItemsToRemove);
 
-                await dbContext.SaveChangesAsync();
+                await this.repository.SaveChangesAsync();
 
                 return true;
             }

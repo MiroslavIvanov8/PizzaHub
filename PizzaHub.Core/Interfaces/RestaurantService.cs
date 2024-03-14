@@ -1,23 +1,24 @@
-﻿namespace PizzaHub.Core.Interfaces
+﻿using HouseRentingSystem.Infrastructure.Data.Common;
+using PizzaHub.Infrastructure.Data.Models;
+
+namespace PizzaHub.Core.Interfaces
 {
     using Microsoft.EntityFrameworkCore;
-
-    using ViewModels.MenuItem;
-    using Infrastructure;
     using PizzaHub.Core.Contracts;
+    using ViewModels.MenuItem;
 
     public class RestaurantService : IRestaurantService
     {
-        private readonly PizzaHubDbContext dbContext;
+        private readonly IRepository repository;
 
-        public RestaurantService(PizzaHubDbContext dbContext)
+        public RestaurantService(IRepository repository)
         {
-            this.dbContext = dbContext;
+            this.repository = repository;
         }
 
         public async Task<IEnumerable<MenuItemViewModel>> GetMenuAsync()
         {
-            return await dbContext.MenuItems.Select(i => new MenuItemViewModel()
+            return await this.repository.AllReadOnly<MenuItem>().Select(i => new MenuItemViewModel()
             {
                 Id = i.Id,
                 Name = i.Name,
@@ -30,7 +31,7 @@
 
         public async Task<MenuItemViewModel> GetItemAsync(int id)
         { 
-            MenuItemViewModel? model = await this.dbContext.MenuItems
+            MenuItemViewModel? model = await this.repository.AllReadOnly<MenuItem>()
                 .Select(i => new MenuItemViewModel()
                 {
                     Id = i.Id,
@@ -44,7 +45,7 @@
 
         public async Task<bool> MenuItemExists(int id)
         {
-            return await this.dbContext.MenuItems.AnyAsync(m => m.Id == id);
+            return await this.repository.AllReadOnly<MenuItem>().AnyAsync(m => m.Id == id);
         }
     }
 }

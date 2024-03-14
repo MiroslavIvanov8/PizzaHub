@@ -1,24 +1,23 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HouseRentingSystem.Infrastructure.Data.Common;
+using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels;
 using PizzaHub.Core.ViewModels.Cart;
-using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Core.Interfaces
 {
     public class CartService : ICartService
     {
-        private readonly PizzaHubDbContext dbContext;
+        private readonly IRepository repository;
         private readonly IRestaurantService restaurantService;
         private readonly ICustomerService customerService;
         
 
-        public CartService(PizzaHubDbContext dbContext,
+        public CartService(IRepository repository,
             IRestaurantService restaurantService,
             ICustomerService customerService)
         {
-            this.dbContext = dbContext;
+            this.repository = repository;
             this.restaurantService = restaurantService;
             this.customerService = customerService;
         }
@@ -45,15 +44,15 @@ namespace PizzaHub.Core.Interfaces
             };
 
 
-            await this.dbContext.CustomerCart.AddAsync(cc);
-            await dbContext.SaveChangesAsync();
+            await this.repository.AddAsync(cc);
+            await repository.SaveChangesAsync();
 
             return cc;
         }
 
         public async Task<ICollection<CartItemViewModel>> MyCartAsync(int customerId)
         {
-            ICollection<CartItemViewModel> cartItems = await this.dbContext.CustomerCart
+            ICollection<CartItemViewModel> cartItems = await this.repository.All<CustomerCart>()
                 .Where(ci => ci.CustomerId == customerId)
                 .Select(i => new CartItemViewModel()
                 {

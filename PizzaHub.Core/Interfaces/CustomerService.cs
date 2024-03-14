@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HouseRentingSystem.Infrastructure.Data.Common;
+using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Data.Models;
@@ -7,17 +8,17 @@ namespace PizzaHub.Core.Interfaces
 {
     public class CustomerService : ICustomerService
     {
-        private readonly PizzaHubDbContext dbContext;
+        private readonly IRepository repository;
 
-        public CustomerService(PizzaHubDbContext dbContext)
+        public CustomerService(IRepository repository)
         {
-            this.dbContext = dbContext;
+            this.repository = repository;
         }
         public async Task<int> GetCustomerId(string userId)
         {
             if (await CustomerExists(userId))
             {
-                Customer? customer = await this.dbContext.Customers.FirstOrDefaultAsync(c => c.UserId == userId);
+                Customer? customer = await this.repository.AllReadOnly<Customer>().FirstOrDefaultAsync(c => c.UserId == userId);
                 return customer.Id;
             }
 
@@ -26,7 +27,7 @@ namespace PizzaHub.Core.Interfaces
 
         public async Task<bool> CustomerExists(string userId)
         {
-            return await this.dbContext.Customers.AnyAsync(c => c.UserId == userId);
+            return await this.repository.AllReadOnly<Customer>().AnyAsync(c => c.UserId == userId);
         }
     }
 }

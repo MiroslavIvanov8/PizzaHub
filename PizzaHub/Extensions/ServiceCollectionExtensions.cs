@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using HouseRentingSystem.Infrastructure.Data.Common;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using IEmailSender = Microsoft.AspNetCore.Identity.UI.Services.IEmailSender;
 
 namespace PizzaHub.Extensions
@@ -18,6 +19,7 @@ namespace PizzaHub.Extensions
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IRepository, Repository>();
 
             services.AddScoped<ISenderEmail, SenderEmail>();
 

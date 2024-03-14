@@ -32,6 +32,12 @@ namespace HouseRentingSystem.Infrastructure.Data.Common
             await this.DbSet<T>().AddAsync(entity);
         }
 
+        public async Task RemoveRange<T>(IEnumerable<T> entities) where T : class
+        {
+            DbSet<T>().RemoveRange(entities);
+            await SaveChangesAsync();
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await this.dbContext.SaveChangesAsync();

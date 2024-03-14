@@ -8,6 +8,8 @@
 
         Task AddAsync<T>(T entity) where T : class;
 
+        Task RemoveRange<T>(IEnumerable<T> entities) where T : class;
+
         Task<int> SaveChangesAsync();
     }
 }
