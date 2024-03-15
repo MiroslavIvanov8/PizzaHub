@@ -30,7 +30,7 @@ namespace PizzaHub.Controllers
             ICollection<CartItemViewModel> models = await this.cartService.MyCartAsync(customerId);
 
             return View(models);
-            
+
         }
 
         [HttpPost]

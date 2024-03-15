@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels;
 using PizzaHub.Core.ViewModels.Cart;
 using PizzaHub.Extensions;
 

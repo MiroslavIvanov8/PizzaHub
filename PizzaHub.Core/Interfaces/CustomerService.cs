@@ -1,11 +1,11 @@
-﻿using HouseRentingSystem.Infrastructure.Data.Common;
-using Microsoft.EntityFrameworkCore;
-using PizzaHub.Core.Contracts;
-using PizzaHub.Infrastructure;
-using PizzaHub.Infrastructure.Data.Models;
-
-namespace PizzaHub.Core.Interfaces
+﻿namespace PizzaHub.Core.Interfaces
 {
+    using HouseRentingSystem.Infrastructure.Data.Common;
+    using Microsoft.EntityFrameworkCore;
+    using PizzaHub.Core.Contracts;
+    using PizzaHub.Core.ViewModels.Order;
+    using PizzaHub.Infrastructure.Data.Models;
+
     public class CustomerService : ICustomerService
     {
         private readonly IRepository repository;
@@ -28,6 +28,25 @@ namespace PizzaHub.Core.Interfaces
         public async Task<bool> CustomerExists(string userId)
         {
             return await this.repository.AllReadOnly<Customer>().AnyAsync(c => c.UserId == userId);
+        }
+
+        public async Task<IEnumerable<OrderViewModel>> ShowOrders(int userId)
+        {
+            var userOrders = await this.repository
+                .All<Order>()
+                .Where(o => o.CustomerId == userId)
+                .Select(o => new OrderViewModel()
+                {
+                    Id = o.Id,
+                    CustomerId = o.CustomerId,
+                    RestaurantId = o.RestaurantId,
+                    Status = o.Status.Name,
+                    OrderItems = o.Items.Select(oi => oi.Name)
+                })
+                .ToListAsync();
+
+            return userOrders;
+
         }
     }
 }
