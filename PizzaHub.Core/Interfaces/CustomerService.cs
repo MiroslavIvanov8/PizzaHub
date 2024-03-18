@@ -32,21 +32,22 @@
 
         public async Task<IEnumerable<OrderViewModel>> ShowOrders(int userId)
         {
-            var userOrders = await this.repository
-                .All<Order>()
-                .Where(o => o.CustomerId == userId)
-                .Select(o => new OrderViewModel()
-                {
-                    Id = o.Id,
-                    CustomerId = o.CustomerId,
-                    RestaurantId = o.RestaurantId,
-                    Status = o.Status.Name,
-                    OrderItems = o.Items.Select(oi => oi.Name)
-                })
-                .ToListAsync();
+            // Retrieve all orders for the given userId
+            var orders = await this.repository.All<Order>()
+                .Where(o => o.CustomerId == userId).ToListAsync();
+                
 
-            return userOrders;
+            // Map Order entities to OrderViewModels
+            var orderViewModels = orders.Select(order => new OrderViewModel
+            {
+                Id = order.Id,
+                Restaurant = order.Restaurant.Name,
+                Status = order.Status.Name,
+                Amount = order.TotalAmount,
+                OrderItems = order.Items.Select(oi => oi.MenuItem.Name)
+            });
 
+            return orderViewModels;
         }
     }
 }

@@ -30,7 +30,11 @@ namespace PizzaHub.Extensions
         {
             var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             services.AddDbContext<PizzaHubDbContext>(options =>
-                options.UseSqlServer(connectionString));
+                {
+                    options.UseSqlServer(connectionString);
+                    options.UseLazyLoadingProxies();
+                }
+            );
             
             services.AddDatabaseDeveloperPageExceptionFilter();
 
