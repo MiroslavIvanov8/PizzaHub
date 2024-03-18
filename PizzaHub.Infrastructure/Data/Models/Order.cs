@@ -9,7 +9,7 @@
     {
         public Order()
         {
-            this.Items = new HashSet<MenuItem>();
+            this.Items = new HashSet<OrderItem>();
         }
 
         [Key]
@@ -34,19 +34,19 @@
         [Required]
         [ForeignKey(nameof(PaymentMethodId))]
         public int PaymentMethodId { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
 
         [Required]
         public int StatusId { get; set; }
-        public OrderStatus Status { get; set; } = null!;
+        public virtual OrderStatus Status { get; set; } = null!;
 
-        public Receipt Receipt { get; set; }
+        public virtual Receipt Receipt { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }
 
-        public virtual ICollection<MenuItem> Items { get; set; }
+        public virtual ICollection<OrderItem> Items { get; set; }
 
     }
 }

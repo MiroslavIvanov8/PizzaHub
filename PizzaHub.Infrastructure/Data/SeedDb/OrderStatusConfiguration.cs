@@ -15,7 +15,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         {
             var data = new SeedData();
 
-            builder.HasData(new OrderStatus[] { data.FirstStatus, data.SecondStatus, data.ThirdStatus, data.ForthStatus});
+            builder.HasData(new OrderStatus[] { data.FirstStatus, data.SecondStatus, data.ThirdStatus, data.ForthStatus, data.FifthStatus});
         }
     }
 }

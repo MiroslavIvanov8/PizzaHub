@@ -9,6 +9,7 @@
         {
             this.MenuItems = new HashSet<MenuItem>();
             this.OrdersHistory = new HashSet<Order>();
+            this.Admins = new HashSet<Admin>();
         }
 
         [Key]
@@ -17,12 +18,9 @@
         [StringLength(NameMaxLength)]
         public string Name { get; set; } = null!;
 
+        public virtual ICollection<Admin> Admins { get; set; }
 
-        [ForeignKey(nameof(AdminId))]
-        public int AdminId { get; set; } 
-        public Admin Admin { get; set; } = null!;
-
-        public ICollection<Order> OrdersHistory { get; set; }
+        public virtual ICollection<Order> OrdersHistory { get; set; }
         public virtual ICollection<MenuItem> MenuItems { get; set; } 
     }
 }

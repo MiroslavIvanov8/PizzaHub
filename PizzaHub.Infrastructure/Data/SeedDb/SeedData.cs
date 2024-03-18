@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Infrastructure.Data.SeedDb
@@ -26,6 +25,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         public OrderStatus SecondStatus { get; set; }
         public OrderStatus ThirdStatus { get; set; }
         public OrderStatus ForthStatus { get; set; }
+        public OrderStatus FifthStatus { get; set; }
 
         public IdentityRole AdminRole { get; set; }
 
@@ -48,11 +48,11 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             SeedCourier();
             SeedAdmin();
             SeedRestaurant();
-            SeedMenuItems();
             SeedOrderStatuses();
             SeedRoles();
             SeedUserRoles();
             SeedPaymentMethods();
+            SeedMenuItems();
         }
         
         private void SeedOrderStatuses()
@@ -79,6 +79,11 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             {
                 Id = 4,
                 Name = "Canceled"
+            };
+            FifthStatus = new OrderStatus()
+            {
+                Id = 5,
+                Name = "Pending"
             };
         }
 
@@ -152,14 +157,13 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         }
 
         private void SeedRestaurant()
-        { 
+        {
             Restaurant = new Restaurant()
             {
                 Id = 1,
                 Name = "PizzaHub",
-                AdminId = Admin.Id
+                Admins = new List<Admin>()
             };
-
         }
         private void SeedMenuItems()
         {

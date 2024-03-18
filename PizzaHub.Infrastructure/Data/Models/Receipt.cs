@@ -11,6 +11,6 @@ namespace PizzaHub.Infrastructure.Data.Models
         [ForeignKey(nameof(OrderId))]
         public int OrderId { get; set; }
 
-        public Order Order { get; set; } = null!;
+        public virtual Order Order { get; set; } = null!;
     }
 }

@@ -33,7 +33,7 @@ namespace PizzaHub.Infrastructure.Data.Models
         [ForeignKey(nameof(RestaurantId))]
         public int RestaurantId { get; set; }
 
-        public Restaurant Restaurant { get; set; } = null!;
+        public virtual  Restaurant Restaurant { get; set; } = null!;
 
         public virtual ICollection<CustomerCart> CustomerCart { get; set; }
     }

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="6.0.28" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\PizzaHub.Infrastructure\PizzaHub.Infrastructure.csproj" />
   </ItemGroup>
 

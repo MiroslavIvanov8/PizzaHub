@@ -14,8 +14,8 @@
 
         public virtual IdentityUser User { get; set; } = null!;
 
-        [ForeignKey(nameof(RestaurantId))]
-        public int RestaurantId { get; set; }
+        [ForeignKey(nameof(Restaurant))]
+        public int? RestaurantId { get; set; }
         public virtual Restaurant Restaurant { get; set; } = null!;
 
     }

@@ -10,11 +10,11 @@ namespace PizzaHub.Infrastructure.Data.Models
 
         [ForeignKey(nameof(Order))]
         public int OrderId { get; set; }
-        public Order Order { get; set; } = null!;
+        public virtual Order Order { get; set; } = null!;
 
         [ForeignKey(nameof(MenuItem))]
         public int MenuItemId { get; set; }
-        public MenuItem MenuItem { get; set; } = null!;
+        public virtual MenuItem MenuItem { get; set; } = null!;
 
         [Required]
         public int Quantity { get; set; }

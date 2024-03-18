@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PizzaHub.Infrastructure.Data.Models;
 
@@ -15,8 +10,9 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         {
             builder
                 .HasOne(a => a.Restaurant)
-                .WithOne(r => r.Admin)
-                .HasForeignKey<Restaurant>(r => r.AdminId);
+                .WithMany(r => r.Admins)
+                .HasForeignKey(a => a.RestaurantId)
+                .IsRequired(false);
 
             var data = new SeedData();
 
