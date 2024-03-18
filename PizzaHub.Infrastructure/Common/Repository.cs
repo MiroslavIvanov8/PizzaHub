@@ -38,6 +38,23 @@ namespace HouseRentingSystem.Infrastructure.Data.Common
             await SaveChangesAsync();
         }
 
+        public async Task<bool> Remove<T>(T entity) where T : class
+        {
+            try
+            {
+                DbSet<T>().Remove(entity);
+
+                await SaveChangesAsync();
+
+                return true; 
+            }
+            catch (Exception ex)
+            {
+                
+                return false; 
+            }
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await this.dbContext.SaveChangesAsync();
