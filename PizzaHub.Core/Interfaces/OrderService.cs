@@ -84,6 +84,18 @@ namespace PizzaHub.Core.Interfaces
 
             return false;
         }
+
+        public async Task<IEnumerable<string>> GetOrderItemNames(int orderId)
+        {
+            var orderItems = await repository.All<OrderItem>()
+                .Where(oi => oi.OrderId == orderId)
+                .ToListAsync();
+
+            // Extract MenuItem names from OrderItems
+            var menuItemNames = orderItems.Select(oi => oi.MenuItem.Name);
+
+            return menuItemNames;
+        }
     }
 }
   

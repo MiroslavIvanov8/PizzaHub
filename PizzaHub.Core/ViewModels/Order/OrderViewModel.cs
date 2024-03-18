@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace PizzaHub.Core.ViewModels.Order
 {
     public class OrderViewModel
@@ -12,11 +7,11 @@ namespace PizzaHub.Core.ViewModels.Order
         {
             this.OrderItems = new List<string>();
         }
-        public int Id { get; set; }
 
-        public int CustomerId { get; set; }
-        public int RestaurantId { get; set; }
+        public int Id { get; set; }
+        public string Restaurant { get; set; }
         public string Status { get; set; }
+        public decimal Amount { get; set; }
 
         public IEnumerable<string> OrderItems { get; set; }
     }
