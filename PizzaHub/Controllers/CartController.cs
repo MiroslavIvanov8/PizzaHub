@@ -18,6 +18,7 @@ namespace PizzaHub.Controllers
             this.customerService = customerService;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Add(int itemId, int quantity)
         {
             if (!User.Identity.IsAuthenticated)
@@ -30,13 +31,34 @@ namespace PizzaHub.Controllers
             return RedirectToAction("Menu", "Restaurant");
         }
 
+        [HttpGet]
         public async Task<IActionResult> MyCart()
         {
-            int customerId = await this.customerService.GetCustomerId(User.GetUserId());
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
 
             ICollection<CartItemViewModel> models = await this.cartService.MyCartAsync(customerId);
 
             return View(models);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteFromCart(int itemId)
+        {
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
+
+            await this.cartService.DeleteFromCartAsync(itemId, customerId);
+
+            return RedirectToAction("MyCart");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateQuantity(int itemId, int newQuantity)
+        {
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
+
+            decimal newTotalAmount = await this.cartService.UpdateQuantityAsync(itemId, newQuantity, customerId);
+
+            return null;
         }
     }
 }
