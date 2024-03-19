@@ -22,30 +22,38 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.Name</td>
-                        <td>$@item.Price</td>
-                        <td>
-                            <span id="quantity_@item.Quantity">@item.Quantity</span>
-                            <button type="button" onclick="updateQuantity('@item.ItemId', -1)">-</button>
-                            <button type="button" onclick="updateQuantity('@item.ItemId', 1)">+</button>
-                            <form asp-controller="Cart" asp-action="DeleteFromCart" method="post" class="d-inline">
-                                <input type="hidden" name="itemId" value="@item.ItemId" />
-                                <button type="submit" class="btn btn-sm btn-danger delete-button" style="margin-left: 10rem;">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </form>
-                        </td>
-                        <td>$@(item.Price * item.Quantity)</td>
-                    </tr>
-                }
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>$@item.Price</td>
+                    <td>
+                        <span id="quantity_@item.ItemId">@item.Quantity</span>
+                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
+                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                            <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
+                            <button type="submit" class="btn btn-sm btn-primary">-</button>
+                        </form>
+                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
+                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                            <input type="hidden" name="newQuantity" value="@(item.Quantity + 1)" />
+                            <button type="submit" class="btn btn-sm btn-primary">+</button>
+                        </form>
+                        <form asp-controller="Cart" asp-action="DeleteFromCart" method="post" class="d-inline">
+                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                            <button type="submit" class="btn btn-sm btn-danger delete-button" style="margin-left: 10px;">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </form>
+                    </td>
+                    <td>$@(item.Price * item.Quantity)</td>
+                </tr>
+            }
             </tbody>
             <tfoot>
                 <tr>
                     <td colspan="3"><strong>Total:</strong></td>
-                    <td><strong>$@totalSum</strong></td>
+                    <td><strong >$@totalSum</strong></td>
                 </tr>
             </tfoot>
         </table>
@@ -59,35 +67,3 @@
         <p>Your cart is empty.</p>
     }
 </div>
-
-<script>
-    // AJAX function to update item quantity
-    function updateQuantity(itemId, changeAmount) {
-        // Retrieve the current quantity from the input field
-        var currentQuantity = parseInt($('#quantity_' + itemId).text());
-
-        // Calculate the new quantity
-        var newQuantity = currentQuantity + changeAmount;
-
-        // Ensure the new quantity is not negative
-        if (newQuantity < 0) {
-            return;
-        }
-
-        // Update the quantity in the UI immediately for better user experience
-        $('#quantity_' + itemId).text(newQuantity);
-
-        // Send the AJAX request to update the quantity on the server
-        $.ajax({
-            url: '/Cart/UpdateQuantity',
-            method: 'POST',
-            data: { itemId: itemId, newQuantity: newQuantity },
-            success: function (response) {
-                // Handle success (if needed)
-            },
-            error: function (xhr, status, error) {
-                // Handle errors (if needed)
-            }
-        });
-    }
-</script>

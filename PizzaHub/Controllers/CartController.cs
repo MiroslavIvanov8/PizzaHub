@@ -58,7 +58,7 @@ namespace PizzaHub.Controllers
 
             decimal newTotalAmount = await this.cartService.UpdateQuantityAsync(itemId, newQuantity, customerId);
 
-            return null;
+            return RedirectToAction(nameof(MyCart));
         }
     }
 }
