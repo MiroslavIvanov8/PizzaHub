@@ -25,7 +25,7 @@ namespace PizzaHub.Controllers
         [HttpGet]
         public async Task<IActionResult> Checkout()
         {
-            int customerId = await this.customerService.GetCustomerId(User.GetUserId());
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
 
             ICollection<CartItemViewModel> models = await this.cartService.MyCartAsync(customerId);
 
@@ -41,7 +41,7 @@ namespace PizzaHub.Controllers
                 return RedirectToPage("404");
             }
 
-            int customerId = await this.customerService.GetCustomerId(User.GetUserId());
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
 
             bool result = await this.orderService.CreateOrderFromCartAsync(customerId, address, paymentMethod);
 

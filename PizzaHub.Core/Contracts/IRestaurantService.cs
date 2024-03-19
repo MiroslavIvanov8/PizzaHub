@@ -8,7 +8,7 @@ namespace PizzaHub.Core.Contracts
 
         public Task<MenuItemViewModel> GetItemAsync(int id);
 
-        public Task<bool> MenuItemExists(int id);
+        public Task<bool> MenuItemExistsAsync(int id);
 
     }
 }

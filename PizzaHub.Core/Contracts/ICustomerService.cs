@@ -9,9 +9,9 @@ namespace PizzaHub.Core.Contracts
 {
     public interface ICustomerService
     {
-        Task<int> GetCustomerId(string userId);
-        Task<bool> CustomerExists(string userId);
+        Task<int> GetCustomerIdAsync(string userId);
+        Task<bool> CustomerExistsAsync(string userId);
 
-        Task<IEnumerable<OrderViewModel>> ShowOrders(int userId);
+        Task<IEnumerable<OrderViewModel>> ShowOrdersAsync(int userId);
     }
 }

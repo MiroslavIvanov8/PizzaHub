@@ -17,9 +17,9 @@ namespace PizzaHub.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowOrders()
         {
-            int customerId = await this.customerService.GetCustomerId(User.GetUserId());
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
 
-            return View(await this.customerService.ShowOrders(customerId));
+            return View(await this.customerService.ShowOrdersAsync(customerId));
         }
     }
 }

@@ -2,7 +2,6 @@
 using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
-using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Core.Interfaces
@@ -39,7 +38,7 @@ namespace PizzaHub.Core.Interfaces
                     RestaurantId = 1,
                     PaymentMethodId = paymentMethod == "cash" ? 1 : 2,
                     Address = address,
-                    StatusId = 1,
+                    StatusId = 5,
                     TotalAmount = 0, // Will fill out in next step
                 };
 
@@ -85,7 +84,7 @@ namespace PizzaHub.Core.Interfaces
             return false;
         }
 
-        public async Task<IEnumerable<string>> GetOrderItemNames(int orderId)
+        public async Task<IEnumerable<string>> GetOrderItemNamesAsync(int orderId)
         {
             var orderItems = await repository.All<OrderItem>()
                 .Where(oi => oi.OrderId == orderId)

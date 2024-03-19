@@ -1,4 +1,5 @@
-﻿using HouseRentingSystem.Infrastructure.Data.Common;
+﻿using Castle.Core.Resource;
+using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Cart;
@@ -24,17 +25,17 @@ namespace PizzaHub.Core.Interfaces
 
         public async Task<CustomerCart> AddToCartAsync(int itemId, string userId , int quantity)
         {
-            if (!await this.customerService.CustomerExists(userId))
+            if (!await this.customerService.CustomerExistsAsync(userId))
             {
                 return null;
             }
 
-            if (!await this.restaurantService.MenuItemExists(itemId))
+            if (!await this.restaurantService.MenuItemExistsAsync(itemId))
             {
                 return null;
             }
 
-            int customerId = await this.customerService.GetCustomerId(userId);
+            int customerId = await this.customerService.GetCustomerIdAsync(userId);
 
             CustomerCart cc = new CustomerCart()
             {
@@ -55,7 +56,8 @@ namespace PizzaHub.Core.Interfaces
             ICollection<CartItemViewModel> cartItems = await this.repository.All<CustomerCart>()
                 .Where(ci => ci.CustomerId == customerId)
                 .Select(i => new CartItemViewModel()
-                {
+                {   
+                    ItemId = i.MenuItemId,
                     Name = i.MenuItem.Name,
                     Price = i.MenuItem.Price,
                     Quantity = i.Quantity
@@ -63,5 +65,46 @@ namespace PizzaHub.Core.Interfaces
 
             return cartItems;
         }
+        public async Task<decimal> UpdateQuantityAsync(int itemId, int newQuantity, int customerId)
+        {
+            var itemToUpdate = await this.repository
+                                                    .All<CustomerCart>()
+                                                    .Where(cc => cc.MenuItemId == itemId && cc.CustomerId == customerId)
+                                                    .FirstOrDefaultAsync();
+            if (itemToUpdate != null)
+            {
+                itemToUpdate.Quantity = newQuantity;
+                await this.repository.SaveChangesAsync();
+            }
+
+            // Calculate the total amount of the cart
+            decimal totalAmount = await this.repository
+                    .AllReadOnly<CustomerCart>()
+                    .Where(cc => cc.CustomerId == customerId)
+                    .Include(cc => cc.MenuItem)
+                    .SumAsync(cc => cc.Quantity * cc.MenuItem.Price);
+
+            return totalAmount;
+        }
+
+        public async Task<bool> DeleteFromCartAsync(int itemId, int customerId)
+        {
+            var itemToRemove = await this.repository
+                .All<CustomerCart>()
+                .Where(cc => cc.MenuItemId == itemId && cc.CustomerId == customerId)
+                .FirstOrDefaultAsync();
+
+            if (itemToRemove != null)
+            {
+                bool result = await this.repository.Remove(itemToRemove);
+
+                return true;
+            }
+
+            return false;
+
+        }
+
+        
     }
 }

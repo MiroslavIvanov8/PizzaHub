@@ -43,7 +43,7 @@ namespace PizzaHub.Core.Interfaces
             return model;
         }
 
-        public async Task<bool> MenuItemExists(int id)
+        public async Task<bool> MenuItemExistsAsync(int id)
         {
             return await this.repository.AllReadOnly<MenuItem>().AnyAsync(m => m.Id == id);
         }
