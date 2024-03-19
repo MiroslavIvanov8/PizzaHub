@@ -26,6 +26,7 @@ namespace PizzaHub.Controllers
                 return RedirectToPage("/Login");
             }
 
+            //if we return null something went wrong
             await this.cartService.AddToCartAsync(itemId, User.GetUserId(), quantity);
             
             return RedirectToAction("Menu", "Restaurant");

@@ -37,18 +37,41 @@ namespace PizzaHub.Core.Interfaces
 
             int customerId = await this.customerService.GetCustomerIdAsync(userId);
 
-            CustomerCart cc = new CustomerCart()
+            // check if there is an existing item in the cart if so just add the new quantity to the existing record
+            if (await this.repository.AllReadOnly<CustomerCart>()
+                    .AnyAsync(cc => cc.CustomerId == customerId && cc.MenuItemId == itemId))
             {
-                CustomerId = customerId,
-                MenuItemId = itemId,
-                Quantity = quantity
-            };
+                CustomerCart? existingItem = await this.repository.All<CustomerCart>()
+                    .Where(cc => cc.CustomerId == customerId && cc.MenuItemId == itemId)
+                    .FirstOrDefaultAsync();
 
+                if (existingItem != null)
+                {
+                    existingItem.Quantity += quantity;
 
-            await this.repository.AddAsync(cc);
-            await repository.SaveChangesAsync();
+                    await this.repository.SaveChangesAsync();
 
-            return cc;
+                    return existingItem;
+                }
+            }
+
+            else
+            {
+                CustomerCart cc = new CustomerCart()
+                {
+                    CustomerId = customerId,
+                    MenuItemId = itemId,
+                    Quantity = quantity
+                };
+
+                await this.repository.AddAsync(cc);
+
+                await repository.SaveChangesAsync();
+
+                return cc;
+            }
+
+            return null;
         }
 
         public async Task<ICollection<CartItemViewModel>> MyCartAsync(int customerId)
