@@ -2,6 +2,7 @@
 {
     public static class DataConstants
     {
+        public const string DateFormat = "dd/MM/yyyy HH:mm:ss";
         public static class Restaurant
         {
             public const int NameMaxLength = 50;

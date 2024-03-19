@@ -32,7 +32,7 @@
                         <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
-                            <button type="submit" class="btn btn-sm btn-primary">-</button>
+                            <button type="submit" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
                         </form>
                         <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
                             <input type="hidden" name="itemId" value="@item.ItemId" />

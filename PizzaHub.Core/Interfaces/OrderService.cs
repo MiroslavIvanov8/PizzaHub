@@ -39,6 +39,7 @@ namespace PizzaHub.Core.Interfaces
                     PaymentMethodId = paymentMethod == "cash" ? 1 : 2,
                     Address = address,
                     StatusId = 5,
+                    CreatedOn = DateTime.UtcNow,
                     TotalAmount = 0, // Will fill out in next step
                 };
 

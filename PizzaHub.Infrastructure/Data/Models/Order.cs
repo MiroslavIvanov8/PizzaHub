@@ -40,6 +40,8 @@
         public int StatusId { get; set; }
         public virtual OrderStatus Status { get; set; } = null!;
 
+        [Required]
+        public DateTime CreatedOn { get; set; }
         public virtual Receipt Receipt { get; set; }
 
         [Required]

@@ -1,4 +1,6 @@
-﻿namespace PizzaHub.Core.Interfaces
+﻿using PizzaHub.Infrastructure.Constants;
+
+namespace PizzaHub.Core.Interfaces
 {
     using HouseRentingSystem.Infrastructure.Data.Common;
     using Microsoft.EntityFrameworkCore;
@@ -44,8 +46,9 @@
                 Restaurant = order.Restaurant.Name,
                 Status = order.Status.Name,
                 Amount = order.TotalAmount,
+                CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                 OrderItems = order.Items.Select(oi => oi.MenuItem.Name)
-            });
+            }).OrderByDescending(o => o.CreatedOn);
 
             return orderViewModels;
         }
