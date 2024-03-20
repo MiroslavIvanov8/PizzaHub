@@ -13,11 +13,13 @@ namespace PizzaHub.Areas.Identity.Pages.Account
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager,UserManager<IdentityUser> userManager, ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
             _logger = logger;
         }
 
@@ -108,8 +110,26 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    var user = await _userManager.FindByEmailAsync(Input.Email); 
+                    var isAdmin = await _userManager.IsInRoleAsync(user, "Admin"); 
+
+                    if (isAdmin)
+                    {
+                        return RedirectToAction("Index", "Admin"); // Redirect to the admin index page
+                    }
+                    else if (User.IsInRole("Courier"))
+                    {
+                        // Redirect to the courier area index
+                        return LocalRedirect(returnUrl);
+                    }
+                    else
+                    {
+                        // Redirect to the default returnUrl for customers
+                        return LocalRedirect(returnUrl);
+                    }
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
