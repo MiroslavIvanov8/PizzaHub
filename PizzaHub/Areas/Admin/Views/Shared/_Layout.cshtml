@@ -27,41 +27,20 @@
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
+
                 </ul>
                 <span>Hello, @User.Identity.Name!</span>
 
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/")" method="post">
-                    <button type="submit" class="nav-link btn btn-primary">Logout</button>
-                </form>
+                <ul class="nav-item">
+                    <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button  type="submit" class="nav-link btn btn-primary">Logout</button>
+                    </form>
+                </ul>
             </div>
         </div>
     </nav>
 </header>
-    <!-- ======= Sidebar ======= -->
-    <aside id="sidebar" class="sidebar">
-
-        <ul class="sidebar-nav" id="sidebar-nav">
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-blank.html">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>Blank</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
-
-            <li >Pages</li>
-
-            <li class="nav-item">
-                <a class="nav-link collapsed" href="pages-blank.html">
-                    <i class="bi bi-file-earmark"></i>
-                    <span>Blank</span>
-                </a>
-            </li><!-- End Blank Page Nav -->
-
-        </ul>
-
-    </aside>
-    <!-- End Sidebar-->
+    
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
