@@ -112,13 +112,12 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
 
                     var user = await _userManager.FindByEmailAsync(Input.Email); 
-                    var isAdmin = await _userManager.IsInRoleAsync(user, "Admin"); 
 
-                    if (isAdmin)
+                    if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
                         return RedirectToAction("Index", "Admin"); // Redirect to the admin index page
                     }
-                    else if (User.IsInRole("Courier"))
+                    else if (await _userManager.IsInRoleAsync(user, "Courier"))
                     {
                         // Redirect to the courier area index
                         return LocalRedirect(returnUrl);
