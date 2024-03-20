@@ -1,18 +1,13 @@
-using PizzaHub.Extensions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using PizzaHub.Core.Contracts;
-using PizzaHub.Core.Interfaces;
-using PizzaHub.Infrastructure;
-
 namespace PizzaHub
 {
+    using Extensions;
     public class Program
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             
+
             builder.Services.AddApplicationDbContext(builder.Configuration);
             builder.Services.AddApplicationIdentity(builder.Configuration);
             
@@ -41,9 +36,17 @@ namespace PizzaHub
 
             app.UseAuthentication();
             app.UseAuthorization();
+            
+            app.UseEndpoints(endpoint =>
+            {
+                endpoint.MapAreaControllerRoute(
+                    name: "Admin",
+                    areaName: "Admin",
+                    pattern: "Admin/{controller=Admin}/{action=Index}/{id?}");
 
-            app.MapDefaultControllerRoute();
-            app.MapRazorPages();
+                endpoint.MapDefaultControllerRoute();
+                endpoint.MapRazorPages();
+            });
 
             app.Run();
         }

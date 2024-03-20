@@ -10,6 +10,7 @@ namespace PizzaHub.Extensions
     using Infrastructure;
     using PizzaHub.Core.Contracts;
     using PizzaHub.Core.Interfaces;
+    using Microsoft.AspNetCore.Mvc.Razor;
 
     public static class ServiceCollectionExtensions
     {
