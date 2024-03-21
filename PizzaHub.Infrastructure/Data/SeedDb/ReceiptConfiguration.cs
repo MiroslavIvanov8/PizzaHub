@@ -15,7 +15,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         public void Configure(EntityTypeBuilder<Receipt> builder)
         {
             builder.HasOne(r => r.Order)
-                .WithOne(o => o.Receipt)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

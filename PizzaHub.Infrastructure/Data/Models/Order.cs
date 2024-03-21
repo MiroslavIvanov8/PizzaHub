@@ -34,16 +34,13 @@ namespace PizzaHub.Infrastructure.Data.Models
         public string Address { get; set; } = null!;
 
         [Required]
-        [ForeignKey(nameof(PaymentMethodId))]
         public int PaymentMethodId { get; set; }
-        public virtual PaymentMethod PaymentMethod { get; set; }
 
         [Required]
         public OrderStatusEnum StatusId { get; set; }
 
         [Required]
         public DateTime CreatedOn { get; set; }
-        public virtual Receipt Receipt { get; set; }
 
         [Required]
         [Column(TypeName = "decimal(18,2)")]
