@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using HouseRentingSystem.Infrastructure.Data.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Order;
+using PizzaHub.Infrastructure.Constants;
+using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Areas.Admin.Controllers
 {
@@ -12,7 +16,7 @@ namespace PizzaHub.Areas.Admin.Controllers
         private readonly IOrderService orderService;
         private readonly IAdminService adminService;
 
-        public AdminController(IOrderService orderService, IAdminService adminService)
+        public AdminController(IOrderService orderService, IAdminService adminService, IRepository repository)
         {
             this.orderService = orderService;
             this.adminService = adminService;
@@ -20,6 +24,14 @@ namespace PizzaHub.Areas.Admin.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowOrders()
+        {
+            var models = await this.adminService.ShowTodayOrdersAsync();
+
+            return View(models);
         }
 
         [HttpGet]

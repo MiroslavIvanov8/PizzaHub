@@ -1,10 +1,11 @@
-﻿using Microsoft.Extensions.Configuration;
-using PizzaHub.Core.Contracts;
-using System.Net;
-using System.Net.Mail;
-
-namespace PizzaHub.Core.Interfaces
+﻿namespace PizzaHub.Core.Interfaces
 {
+    using Microsoft.Extensions.Configuration;
+    using System.Net;
+    using System.Net.Mail;
+
+    using Contracts;
+
     public class SenderEmail : ISenderEmail
     {
         private readonly IConfiguration _configuration;

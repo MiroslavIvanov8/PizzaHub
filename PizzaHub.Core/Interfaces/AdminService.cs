@@ -6,6 +6,9 @@ namespace PizzaHub.Core.Interfaces
 {
     using Contracts;
     using Infrastructure.Data.Models;
+    using PizzaHub.Core.ViewModels.Order;
+    using PizzaHub.Infrastructure.Constants;
+
     public class AdminService : IAdminService
     {
         private IRepository repository;
@@ -24,6 +27,24 @@ namespace PizzaHub.Core.Interfaces
             }
 
             await this.repository.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<ShowOrderViewModel>> ShowTodayOrdersAsync()
+        {
+            var models = await this.repository.AllReadOnly<Order>()
+                .OrderByDescending(o => o.CreatedOn)
+                .Select(o => new ShowOrderViewModel()
+                {
+                    Id = o.Id,
+                    Restaurant = o.Restaurant.Name,
+                    Status = o.OrderStatus.Name,
+                    Amount = o.TotalAmount,
+                    CreatedOn = o.CreatedOn.ToString(DataConstants.DateFormat),
+
+                })
+                .ToListAsync();
+
+            return models;
         }
     }
 }

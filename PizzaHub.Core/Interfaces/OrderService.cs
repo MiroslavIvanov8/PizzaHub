@@ -1,5 +1,4 @@
-﻿
-using HouseRentingSystem.Infrastructure.Data.Common;
+﻿using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.MenuItem;
@@ -137,7 +136,7 @@ namespace PizzaHub.Core.Interfaces
                     CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                     Amount = order.TotalAmount,
                     Customer = order.Customer.User.UserName,
-                    Status = order.OrderStatusId.ToString(),
+                    Status = order.OrderStatus.Name,
                     OrderItems = orderItemsWithQuantity
                 };
 
