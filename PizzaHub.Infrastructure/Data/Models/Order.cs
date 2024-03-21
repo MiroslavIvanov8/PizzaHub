@@ -34,10 +34,14 @@ namespace PizzaHub.Infrastructure.Data.Models
         public string Address { get; set; } = null!;
 
         [Required]
+        [ForeignKey(nameof(PaymentMethod))]
         public int PaymentMethodId { get; set; }
+        public virtual PaymentMethod PaymentMethod { get; set; }
 
         [Required]
-        public OrderStatusEnum StatusId { get; set; }
+        [ForeignKey(nameof(OrderStatusId))]
+        public int OrderStatusId { get; set; }
+        public virtual OrderStatus OrderStatus { get; set; }
 
         [Required]
         public DateTime CreatedOn { get; set; }

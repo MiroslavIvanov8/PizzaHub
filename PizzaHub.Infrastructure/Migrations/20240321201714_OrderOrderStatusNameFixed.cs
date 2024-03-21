@@ -4,55 +4,86 @@
 
 namespace PizzaHub.Infrastructure.Migrations
 {
-    public partial class RemovedFromOrderReceiptNavigationalProperty : Migration
+    public partial class OrderOrderStatusNameFixed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.RenameColumn(
+                name: "StatusId",
+                table: "Orders",
+                newName: "OrderStatusId");
+
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "00000856-0000-0000-0000-b893d8395082",
                 column: "ConcurrencyStamp",
-                value: "59010c42-15f4-4549-94eb-30c91c2eeec1");
+                value: "cbd53f31-0dc1-47c8-ba08-88bdfbb84045");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "11111111-1111-1111-1111-b893d8395082",
                 column: "ConcurrencyStamp",
-                value: "3eb3fb5e-6a62-47fb-9b46-95cf0219e456");
+                value: "c54a42da-caf2-43c1-b806-765fe8056e37");
 
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",
                 keyValue: "22222222-2222-2222-2222-b893d8395082",
                 column: "ConcurrencyStamp",
-                value: "0e82a591-b182-4c46-aebc-720e4808685b");
+                value: "47fdfa99-01c8-40c2-99aa-97869eed9296");
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "00000856-c198-4129-b3f3-b893d8395082",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "e5bede36-e6d0-4f20-9a3e-890686237c37", "AQAAAAEAACcQAAAAECZilxE630G60yeaGOqzy0lLjH0tXJ5+lwScRpedZ7+oesKR/IzT9H2lCW6jSj4W1Q==", "24ca37eb-deb6-42fe-8e73-a61bb1e5bf02" });
+                values: new object[] { "949c2b43-f2e6-42d8-8845-7c16ed52a5d1", "AQAAAAEAACcQAAAAEDYT0kqV11naaZS+93O0zGSNbCoyh1MYBs8s1BhRw47wsKqfYa6vJr/WMJ9ELNYJWQ==", "0ebd0d0c-967a-48f9-b8cb-708b1209e2aa" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "11111856-c198-4129-b3f3-b893d8395082",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "05c77637-6c9b-411b-a32d-5888de134be2", "AQAAAAEAACcQAAAAENvzCi9y3iOVKvScMW2EIvtPY1+Ao6nsCTxdZtLaV35bypkKwWiZKcujD2qhwX7+5w==", "b4db5e7a-f4bd-4e77-bfb9-f0ba136b7fdf" });
+                values: new object[] { "7be1f661-8b5d-47d6-9b51-061f7281fc62", "AQAAAAEAACcQAAAAEHPfJFLnT61DwRnGhvvv2xlKn3io2AMWfyhAOu47+/xgE0DhaYHt9cZX30Y0tNFL6A==", "c4cb930a-9bff-4f01-acdf-73d1d6fd7db9" });
 
             migrationBuilder.UpdateData(
                 table: "AspNetUsers",
                 keyColumn: "Id",
                 keyValue: "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
                 columns: new[] { "ConcurrencyStamp", "PasswordHash", "SecurityStamp" },
-                values: new object[] { "25ae3b35-d34f-4e7f-9ba0-76f66c6c1642", "AQAAAAEAACcQAAAAEP4HYaMvFM51iQjN61kYFFqH2px08E493T1SAXPHAXNfSItqCp/8BgUPRGc/o4jT+Q==", "93d683ca-02a7-4433-8f59-caae8ed0157e" });
+                values: new object[] { "9f0edab6-a63a-48fb-a446-d7cbdbc83a6b", "AQAAAAEAACcQAAAAEKV6XCtYkVMyOcD7mS6T9MOqMGwx18bbOfxk/O6igyPLSoyQa7wVCcGy9A+vCyP3Tg==", "192cc12f-f8ee-459b-9d72-900e3dcf4ff1" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Orders_OrderStatusId",
+                table: "Orders",
+                column: "OrderStatusId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Orders_OrderStatuses_OrderStatusId",
+                table: "Orders",
+                column: "OrderStatusId",
+                principalTable: "OrderStatuses",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Orders_OrderStatuses_OrderStatusId",
+                table: "Orders");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Orders_OrderStatusId",
+                table: "Orders");
+
+            migrationBuilder.RenameColumn(
+                name: "OrderStatusId",
+                table: "Orders",
+                newName: "StatusId");
+
             migrationBuilder.UpdateData(
                 table: "AspNetRoles",
                 keyColumn: "Id",

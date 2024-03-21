@@ -22,7 +22,11 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 .WithMany(r => r.OrdersHistory)
                 .HasForeignKey(o => o.RestaurantId)
                 .OnDelete(DeleteBehavior.Restrict);
-            
+
+            builder.HasOne(o => o.PaymentMethod)
+                .WithMany()
+                .HasForeignKey(o => o.PaymentMethodId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

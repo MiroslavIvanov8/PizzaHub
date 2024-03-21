@@ -42,7 +42,7 @@ namespace PizzaHub.Core.Interfaces
                     RestaurantId = 1,
                     PaymentMethodId = paymentMethod == "cash" ? 1 : 2,
                     Address = address,
-                    StatusId = OrderStatusEnum.Pending,
+                    OrderStatusId = (int)OrderStatusEnum.Pending,
                     CreatedOn = DateTime.UtcNow,
                     TotalAmount = 0, // Will fill out in next step
                 };
@@ -120,7 +120,7 @@ namespace PizzaHub.Core.Interfaces
         public async Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync()
         {
             var orders = await this.repository.All<Order>()
-                .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.StatusId == OrderStatusEnum.Pending)
+                .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.OrderStatusId == (int)OrderStatusEnum.Pending)
                 .ToListAsync();
 
             var orderViewModels = new List<AdminOrderViewmodel>();
@@ -137,7 +137,7 @@ namespace PizzaHub.Core.Interfaces
                     CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                     Amount = order.TotalAmount,
                     Customer = order.Customer.User.UserName,
-                    Status = order.StatusId.ToString(),
+                    Status = order.OrderStatusId.ToString(),
                     OrderItems = orderItemsWithQuantity
                 };
 

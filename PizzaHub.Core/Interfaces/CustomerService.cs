@@ -47,7 +47,7 @@ namespace PizzaHub.Core.Interfaces
             {
                 Id = order.Id,
                 Restaurant = order.Restaurant.Name,
-                Status = order.StatusId.ToString(),
+                Status = order.OrderStatusId.ToString(),
                 Amount = order.TotalAmount,
                 CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                 OrderItems = order.Items.Select(oi => oi.MenuItem.Name)

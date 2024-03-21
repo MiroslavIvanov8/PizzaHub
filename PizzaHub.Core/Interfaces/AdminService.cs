@@ -20,7 +20,7 @@ namespace PizzaHub.Core.Interfaces
 
             if (order != null)
             {
-                order.StatusId = OrderStatusEnum.InProgress;
+                order.OrderStatusId = (int)OrderStatusEnum.InProgress;
             }
 
             await this.repository.SaveChangesAsync();
