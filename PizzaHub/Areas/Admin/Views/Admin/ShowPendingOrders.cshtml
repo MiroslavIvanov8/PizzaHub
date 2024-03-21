@@ -1,0 +1,55 @@
+﻿@model IEnumerable<PizzaHub.Core.ViewModels.Order.AdminOrderViewmodel>
+
+<h1>Pending Orders</h1>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Order ID</th>
+        <th>Restaurant</th>
+        <th>Customer</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Amount</th>
+        <th>Created On</th>
+        <th>Order Items</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Restaurant</td>
+            <td>@order.Customer</td>
+            <td>@order.Address</td>
+            <td style="background-color: orange; font-weight: bold;">@order.Status</td> 
+            <td>$@order.Amount</td>
+            <td>@order.CreatedOn</td>
+            <td>
+                @foreach (var item in order.OrderItems)
+                {
+                    <span>@item.Name x @item.Quantity</span>
+                    if (!ReferenceEquals(item, order.OrderItems.Last()))
+                    {
+                        <span>, </span>
+                    }
+                }
+            </td>
+            <td>
+                @if (order.Status == "Pending")
+                {
+                    <form asp-action="TakeOrder" asp-route-orderId="@order.Id">
+                        <button type="submit" class="btn btn-primary">Take Order</button>
+                    </form>
+                }
+                else
+                {
+                    <span class="text-success">In Progress</span>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

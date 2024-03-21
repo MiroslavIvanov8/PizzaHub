@@ -17,8 +17,8 @@ namespace PizzaHub.Controllers
             this.cartService = cartService;
             this.customerService = customerService;
         }
+        
 
-        [HttpPost]
         public async Task<IActionResult> Add(int itemId, int quantity)
         {
             if (!User.Identity.IsAuthenticated)

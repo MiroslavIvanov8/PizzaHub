@@ -2,6 +2,9 @@
 using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
+using PizzaHub.Core.ViewModels.MenuItem;
+using PizzaHub.Core.ViewModels.Order;
+using PizzaHub.Infrastructure.Constants;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Core.Interfaces
@@ -95,6 +98,52 @@ namespace PizzaHub.Core.Interfaces
             var menuItemNames = orderItems.Select(oi => oi.MenuItem.Name);
 
             return menuItemNames;
+        }
+
+        public async Task<IEnumerable<OrderMenuItemWithQuantityViewmodel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId)
+        {
+            var orderItems = await repository.All<OrderItem>()
+                .Where(oi => oi.OrderId == orderId)
+                .ToListAsync();
+
+            var orderItemsWithQuantity = orderItems.Select(o => new OrderMenuItemWithQuantityViewmodel()
+            {
+                Id = o.OrderId,
+                Name = o.MenuItem.Name,
+                Quantity = o.Quantity,
+            });
+
+            return orderItemsWithQuantity;
+        }
+
+        public async Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync()
+        {
+            var orders = await this.repository.All<Order>()
+                .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.Status.Name == "Pending")
+                .ToListAsync();
+
+            var orderViewModels = new List<AdminOrderViewmodel>();
+
+            foreach (var order in orders)
+            {
+                var orderItemsWithQuantity = await GetOrderMenuItemWithQuantityViewmodelAsync(order.Id);
+
+                var orderViewModel = new AdminOrderViewmodel
+                {
+                    Id = order.Id,
+                    Address = order.Address,
+                    Restaurant = order.Restaurant.Name,
+                    CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
+                    Amount = order.TotalAmount,
+                    Customer = order.Customer.User.UserName,
+                    Status = order.Status.Name,
+                    OrderItems = orderItemsWithQuantity
+                };
+
+                orderViewModels.Add(orderViewModel);
+            }
+
+            return orderViewModels;
         }
     }
 }
