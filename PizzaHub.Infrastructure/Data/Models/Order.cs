@@ -1,4 +1,6 @@
-﻿namespace PizzaHub.Infrastructure.Data.Models
+﻿using PizzaHub.Infrastructure.Enums;
+
+namespace PizzaHub.Infrastructure.Data.Models
 {
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -37,8 +39,7 @@
         public virtual PaymentMethod PaymentMethod { get; set; }
 
         [Required]
-        public int StatusId { get; set; }
-        public virtual OrderStatus Status { get; set; } = null!;
+        public OrderStatusEnum StatusId { get; set; }
 
         [Required]
         public DateTime CreatedOn { get; set; }
