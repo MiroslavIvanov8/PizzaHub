@@ -1,4 +1,5 @@
 ﻿using PizzaHub.Infrastructure.Constants;
+using PizzaHub.Infrastructure.Enums;
 
 namespace PizzaHub.Core.Interfaces
 {
@@ -16,11 +17,13 @@ namespace PizzaHub.Core.Interfaces
         {
             this.repository = repository;
         }
+
         public async Task<int> GetCustomerIdAsync(string userId)
         {
             if (await CustomerExistsAsync(userId))
             {
-                Customer? customer = await this.repository.AllReadOnly<Customer>().FirstOrDefaultAsync(c => c.UserId == userId);
+                Customer? customer = await this.repository.AllReadOnly<Customer>()
+                    .FirstOrDefaultAsync(c => c.UserId == userId);
                 return customer.Id;
             }
 
@@ -37,14 +40,14 @@ namespace PizzaHub.Core.Interfaces
             // Retrieve all orders for the given userId
             var orders = await this.repository.All<Order>()
                 .Where(o => o.CustomerId == userId).ToListAsync();
-                
+
 
             // Map Order entities to OrderViewModels
             var orderViewModels = orders.Select(order => new OrderViewModel
             {
                 Id = order.Id,
                 Restaurant = order.Restaurant.Name,
-                Status = order.Status.Name,
+                Status = order.StatusId.ToString(),
                 Amount = order.TotalAmount,
                 CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                 OrderItems = order.Items.Select(oi => oi.MenuItem.Name)
@@ -54,3 +57,4 @@ namespace PizzaHub.Core.Interfaces
         }
     }
 }
+

@@ -40,8 +40,8 @@
             <td>
                 @if (order.Status == "Pending")
                 {
-                    <form asp-action="TakeOrder" asp-route-orderId="@order.Id">
-                        <button type="submit" class="btn btn-primary">Take Order</button>
+                        <form asp-action="MarkOrderAccepted" asp-route-orderId="@order.Id">
+                        <button type="submit" class="btn btn-primary">Accept Order</button>
                     </form>
                 }
                 else

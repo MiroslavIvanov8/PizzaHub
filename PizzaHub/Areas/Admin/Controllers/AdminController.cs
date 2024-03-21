@@ -10,10 +10,12 @@ namespace PizzaHub.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly IOrderService orderService;
+        private readonly IAdminService adminService;
 
-        public AdminController(IOrderService orderService)
+        public AdminController(IOrderService orderService, IAdminService adminService)
         {
             this.orderService = orderService;
+            this.adminService = adminService;
         }
         public IActionResult Index()
         {
@@ -26,6 +28,14 @@ namespace PizzaHub.Areas.Admin.Controllers
             IEnumerable<AdminOrderViewmodel> orderViewModels = await this.orderService.GetPendingOrdersAsync();
 
             return View(orderViewModels);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkOrderAccepted(int orderId)
+        {
+            await this.adminService.MarkOrderAcceptedAsync(orderId);
+
+            return RedirectToAction(nameof(ShowPendingOrders));
         }
     }
 }

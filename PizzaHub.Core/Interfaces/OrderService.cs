@@ -6,6 +6,7 @@ using PizzaHub.Core.ViewModels.MenuItem;
 using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Infrastructure.Constants;
 using PizzaHub.Infrastructure.Data.Models;
+using PizzaHub.Infrastructure.Enums;
 
 namespace PizzaHub.Core.Interfaces
 {
@@ -41,7 +42,7 @@ namespace PizzaHub.Core.Interfaces
                     RestaurantId = 1,
                     PaymentMethodId = paymentMethod == "cash" ? 1 : 2,
                     Address = address,
-                    StatusId = 5,
+                    StatusId = OrderStatusEnum.Pending,
                     CreatedOn = DateTime.UtcNow,
                     TotalAmount = 0, // Will fill out in next step
                 };
@@ -100,13 +101,13 @@ namespace PizzaHub.Core.Interfaces
             return menuItemNames;
         }
 
-        public async Task<IEnumerable<OrderMenuItemWithQuantityViewmodel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId)
+        public async Task<IEnumerable<OrderMenuItemWithQuantityViewModel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId)
         {
             var orderItems = await repository.All<OrderItem>()
                 .Where(oi => oi.OrderId == orderId)
                 .ToListAsync();
 
-            var orderItemsWithQuantity = orderItems.Select(o => new OrderMenuItemWithQuantityViewmodel()
+            var orderItemsWithQuantity = orderItems.Select(o => new OrderMenuItemWithQuantityViewModel()
             {
                 Id = o.OrderId,
                 Name = o.MenuItem.Name,
@@ -119,7 +120,7 @@ namespace PizzaHub.Core.Interfaces
         public async Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync()
         {
             var orders = await this.repository.All<Order>()
-                .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.Status.Name == "Pending")
+                .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.StatusId == OrderStatusEnum.Pending)
                 .ToListAsync();
 
             var orderViewModels = new List<AdminOrderViewmodel>();
@@ -136,7 +137,7 @@ namespace PizzaHub.Core.Interfaces
                     CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                     Amount = order.TotalAmount,
                     Customer = order.Customer.User.UserName,
-                    Status = order.Status.Name,
+                    Status = order.StatusId.ToString(),
                     OrderItems = orderItemsWithQuantity
                 };
 

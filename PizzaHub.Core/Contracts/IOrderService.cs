@@ -12,7 +12,7 @@ namespace PizzaHub.Core.Contracts
     {
         Task<bool> CreateOrderFromCartAsync(int customerId, string address, string paymentMethod);
         Task<IEnumerable<string>> GetOrderItemNamesAsync(int orderId);
-        Task<IEnumerable<OrderMenuItemWithQuantityViewmodel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId);
+        Task<IEnumerable<OrderMenuItemWithQuantityViewModel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId);
         Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync();
         
     }

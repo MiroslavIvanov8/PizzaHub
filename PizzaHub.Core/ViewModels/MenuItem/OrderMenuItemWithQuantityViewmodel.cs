@@ -1,6 +1,6 @@
 ﻿namespace PizzaHub.Core.ViewModels.MenuItem
 {
-    public class OrderMenuItemWithQuantityViewmodel
+    public class OrderMenuItemWithQuantityViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;

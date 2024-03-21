@@ -20,6 +20,7 @@ namespace PizzaHub.Extensions
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IRepository, Repository>();
 
             services.AddScoped<ISenderEmail, SenderEmail>();
