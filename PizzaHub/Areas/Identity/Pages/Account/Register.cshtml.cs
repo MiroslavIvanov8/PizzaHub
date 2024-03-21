@@ -2,17 +2,17 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
+using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using PizzaHub.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
-using PizzaHub.Infrastructure;
-using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {
@@ -25,7 +25,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
-        private readonly PizzaHubDbContext _context;
+        private readonly IRepository _repository;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -34,7 +34,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
-            PizzaHubDbContext dbContext)
+            IRepository repository)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,7 +43,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
             _logger = logger;
             _emailSender = emailSender;
             _roleManager = roleManager;
-            _context = dbContext;
+            _repository = repository;
         }
 
         /// <summary>
@@ -127,11 +127,12 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     await _userManager.AddToRoleAsync(user, "Customer");
-                    await _context.Customers.AddAsync(new Customer()
+                    await _repository.AddAsync(new Customer()
                     {
                         UserId = user.Id,
+
                     });
-                    await this._context.SaveChangesAsync();
+                    await this._repository.SaveChangesAsync();
 
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(

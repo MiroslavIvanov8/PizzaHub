@@ -125,6 +125,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     else
                     {
                         // Redirect to the default returnUrl for customers
+                        //TODO Fix issue when return url gets 405 when asked to log and then proceed
                         return LocalRedirect(returnUrl);
                     }
                 }
