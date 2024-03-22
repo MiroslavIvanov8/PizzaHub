@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PizzaHub.Areas.Admin.Models.Order;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Order;
-using PizzaHub.Infrastructure.Constants;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Areas.Admin.Controllers
@@ -15,11 +15,13 @@ namespace PizzaHub.Areas.Admin.Controllers
     {
         private readonly IOrderService orderService;
         private readonly IAdminService adminService;
+        private readonly IRepository repository;
 
         public AdminController(IOrderService orderService, IAdminService adminService, IRepository repository)
         {
             this.orderService = orderService;
             this.adminService = adminService;
+            this.repository = repository;
         }
         public IActionResult Index()
         {
@@ -27,19 +29,29 @@ namespace PizzaHub.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowOrders()
+        public async Task<IActionResult> ShowTodayOrders([FromQuery] AllTodayOrdersViewModel model)
         {
-            var models = await this.adminService.ShowTodayOrdersAsync();
+            IEnumerable<ShowOrderViewModel> todayOrders = await this.adminService.ShowTodayOrdersAsync(model.CurrentPage, 10);
 
-            return View(models);
+            model.Orders = todayOrders;
+            model.TotalOrdersToday = this.repository
+                .AllReadOnly<Order>()
+                .Count(o => o.CreatedOn.Date == DateTime.UtcNow.Date);
+
+            return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowPendingOrders()
+        public async Task<IActionResult> ShowPendingOrders([FromQuery] AllPendingTodayOrdersViewModel model)
         {
-            IEnumerable<AdminOrderViewmodel> orderViewModels = await this.orderService.GetPendingOrdersAsync();
+            IEnumerable<AdminOrderViewmodel> orderViewModels = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
 
-            return View(orderViewModels);
+            model.Orders = orderViewModels;
+            model.TotalOrdersToday = this.repository
+                .AllReadOnly<Order>()
+                .Count(o => o.CreatedOn.Date == DateTime.UtcNow.Date);
+
+            return View(model);
         }
 
         [HttpPost]

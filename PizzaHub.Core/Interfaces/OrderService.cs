@@ -115,36 +115,6 @@ namespace PizzaHub.Core.Interfaces
 
             return orderItemsWithQuantity;
         }
-
-        public async Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync()
-        {
-            var orders = await this.repository.All<Order>()
-                .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.OrderStatusId == (int)OrderStatusEnum.Pending)
-                .ToListAsync();
-
-            var orderViewModels = new List<AdminOrderViewmodel>();
-
-            foreach (var order in orders)
-            {
-                var orderItemsWithQuantity = await GetOrderMenuItemWithQuantityViewmodelAsync(order.Id);
-
-                var orderViewModel = new AdminOrderViewmodel
-                {
-                    Id = order.Id,
-                    Address = order.Address,
-                    Restaurant = order.Restaurant.Name,
-                    CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
-                    Amount = order.TotalAmount,
-                    Customer = order.Customer.User.UserName,
-                    Status = order.OrderStatus.Name,
-                    OrderItems = orderItemsWithQuantity
-                };
-
-                orderViewModels.Add(orderViewModel);
-            }
-
-            return orderViewModels;
-        }
     }
 }
   

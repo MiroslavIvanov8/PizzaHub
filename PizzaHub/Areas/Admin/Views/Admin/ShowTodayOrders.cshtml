@@ -1,0 +1,90 @@
+﻿@model PizzaHub.Core.ViewModels.Order.AllTodayOrdersViewModel
+
+@{
+    ViewData["Title"] = "Today's Orders List";
+
+    string GetStatusColor(string status)
+    {
+        switch (status.ToLower())
+        {
+            case "pending":
+                return "orange";
+            case "in progress":
+                return "#add8e6";
+            case "out for delivery":
+                return "yellow";
+            case "delivered":
+                return "green";
+            case "canceled":
+                return "gray";
+            default:
+                return "";
+        }
+    }
+}
+
+<h2>Today's Orders</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Created On</th>
+            <th>Restaurant</th>
+            <th>Status</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.CreatedOn</td>
+                <td>@order.Restaurant</td>
+                <td style="background-color: @GetStatusColor(order.Status)">@order.Status</td>
+                <td>$@order.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalOrdersToday /
+                               Model.OrdersPerPage);
+}
+<div class="row mb-5">
+    <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-area="Admin"
+           asp-controller="Admin"
+           asp-action="ShowTodayOrders"
+           asp-route-currentPage="@previousPage">Previous</a>
+    </div>
+
+    <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-center align-items-center">
+        <!-- Button for navigating to past orders -->
+        <a class="btn btn-secondary"
+           asp-area="Admin"
+           asp-controller="Admin"
+           asp-action="PastOrders">Past Orders</a>
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage ||
+        !Model.Orders.Any();
+    }
+
+    <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-area="Admin"
+           asp-controller="Admin"
+           asp-action="ShowTodayOrders"
+           asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
+    </div>
+</div>

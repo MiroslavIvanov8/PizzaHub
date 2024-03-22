@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PizzaHub.Core.ViewModels.Order
+namespace PizzaHub.Areas.Admin.Models.Order
 {
     public class ShowOrderViewModel
     {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using PizzaHub.Core.ViewModels.MenuItem;
+﻿using PizzaHub.Core.ViewModels.MenuItem;
 
 namespace PizzaHub.Core.ViewModels.Order
 {
@@ -11,7 +6,7 @@ namespace PizzaHub.Core.ViewModels.Order
     {
         public AdminOrderViewmodel()
         {
-            this.OrderItems = new List<OrderMenuItemWithQuantityViewModel>();
+            OrderItems = new List<OrderMenuItemWithQuantityViewModel>();
         }
 
         public int Id { get; set; }
