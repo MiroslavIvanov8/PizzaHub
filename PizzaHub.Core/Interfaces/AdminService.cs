@@ -38,7 +38,7 @@ namespace PizzaHub.Core.Interfaces
         {
             //All orders that go with today filter
             var ordersToShow = await this.repository.AllReadOnly<Order>()
-                .OrderByDescending(o => o.CreatedOn)
+                .OrderBy(o => o.CreatedOn)
                 .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date)
                 .Select(o => new ShowOrderViewModel()
                 {
@@ -63,6 +63,7 @@ namespace PizzaHub.Core.Interfaces
         public async Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync(int currentPage, int ordersPerPage)
         {
             var pendingOrders = await this.repository.All<Order>()
+                .OrderBy(o => o.CreatedOn)
                 .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.OrderStatusId == (int)OrderStatusEnum.Pending)
                 .ToListAsync();
 
@@ -94,6 +95,11 @@ namespace PizzaHub.Core.Interfaces
                 .ToList();
 
             return orders;
+        }
+
+        public Task<IEnumerable<ShowOrderViewModel>> GetPastOrdersAsync(int currentPage = 1, int ordersPerPage = 10)
+        {
+            throw new NotImplementedException();
         }
     }
 }

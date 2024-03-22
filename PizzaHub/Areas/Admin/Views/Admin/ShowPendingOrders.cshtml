@@ -6,13 +6,13 @@
     <thead>
     <tr>
         <th>Order ID</th>
+        <th>Status</th>
+        <th>Created On</th>
         <th>Restaurant</th>
         <th>Customer</th>
         <th>Address</th>
-        <th>Status</th>
-        <th>Amount</th>
-        <th>Created On</th>
         <th>Order Items</th>
+        <th>Amount</th>
         <th>Action</th>
     </tr>
     </thead>
@@ -21,12 +21,11 @@
     {
         <tr>
             <td>@order.Id</td>
+            <td style="background-color: orange; font-weight: bold;">@order.Status</td> 
+            <td>@order.CreatedOn</td>
             <td>@order.Restaurant</td>
             <td>@order.Customer</td>
             <td>@order.Address</td>
-            <td style="background-color: orange; font-weight: bold;">@order.Status</td> 
-            <td>$@order.Amount</td>
-            <td>@order.CreatedOn</td>
             <td>
                 @foreach (var item in order.OrderItems)
                 {
@@ -37,6 +36,7 @@
                     }
                 }
             </td>
+            <td>$@order.Amount</td>
             <td>
                 @if (order.Status == "Pending")
                 {

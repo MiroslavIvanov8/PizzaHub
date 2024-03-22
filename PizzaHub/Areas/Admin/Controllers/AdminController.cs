@@ -44,14 +44,20 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowPendingOrders([FromQuery] AllPendingTodayOrdersViewModel model)
         {
-            IEnumerable<AdminOrderViewmodel> orderViewModels = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
+            IEnumerable<AdminOrderViewmodel> pendingOrders = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
 
-            model.Orders = orderViewModels;
+            model.Orders = pendingOrders;
             model.TotalOrdersToday = this.repository
                 .AllReadOnly<Order>()
                 .Count(o => o.CreatedOn.Date == DateTime.UtcNow.Date);
 
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowPostOrders()
+        {
+            return View();
         }
 
         [HttpPost]

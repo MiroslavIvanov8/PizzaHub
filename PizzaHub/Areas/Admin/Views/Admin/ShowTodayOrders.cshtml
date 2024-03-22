@@ -10,7 +10,7 @@
             case "pending":
                 return "orange";
             case "in progress":
-                return "#add8e6";
+                return "#14D1D1";
             case "out for delivery":
                 return "yellow";
             case "delivered":
@@ -28,9 +28,9 @@
     <thead>
         <tr>
             <th>Order ID</th>
+            <th>Status</th>
             <th>Created On</th>
             <th>Restaurant</th>
-            <th>Status</th>
             <th>Amount</th>
         </tr>
     </thead>
@@ -39,9 +39,9 @@
         {
             <tr>
                 <td>@order.Id</td>
+                <td style="background-color: @GetStatusColor(order.Status)">@order.Status</td>
                 <td>@order.CreatedOn</td>
                 <td>@order.Restaurant</td>
-                <td style="background-color: @GetStatusColor(order.Status)">@order.Status</td>
                 <td>$@order.Amount</td>
             </tr>
         }
@@ -72,7 +72,7 @@
         <a class="btn btn-secondary"
            asp-area="Admin"
            asp-controller="Admin"
-           asp-action="PastOrders">Past Orders</a>
+           asp-action="ShowPostOrders">Past Orders</a>
     </div>
 
     @{

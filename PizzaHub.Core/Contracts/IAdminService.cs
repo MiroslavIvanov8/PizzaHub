@@ -9,5 +9,6 @@ namespace PizzaHub.Core.Contracts
         Task<IEnumerable<ShowOrderViewModel>> ShowTodayOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
 
         Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
+        Task<IEnumerable<ShowOrderViewModel>> GetPastOrdersAsync(int currentPage = 1, int ordersPerPage = 10);
     }
 }
