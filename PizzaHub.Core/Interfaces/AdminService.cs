@@ -36,7 +36,7 @@ namespace PizzaHub.Core.Interfaces
             await this.repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<AdminOrderViewmodel>> GetAllOrdersAsync(string status, FilterDays filterDays, int currentPage, int ordersPerPage)
+        public async Task<OrderQueryServiceModel> GetAllOrdersAsync(string status, FilterDays filterDays, int currentPage, int ordersPerPage)
         {
             var allOrders = this.repository.All<Order>().AsQueryable();
 
@@ -96,12 +96,15 @@ namespace PizzaHub.Core.Interfaces
                 .Skip((currentPage - 1) * ordersPerPage)
                 .Take(ordersPerPage)
                 .ToList();
-
-
-            return orders;
+            
+            return new OrderQueryServiceModel()
+            {
+                OrdersCount = allOrders.Count(),
+                Orders = orders
+            };
         }
 
-        public async Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync(int currentPage, int ordersPerPage)
+        public async Task<OrderQueryServiceModel> GetPendingOrdersAsync(int currentPage, int ordersPerPage)
         {
             var pendingOrders = await this.repository.All<Order>()
                 .OrderBy(o => o.CreatedOn)
@@ -134,10 +137,15 @@ namespace PizzaHub.Core.Interfaces
                 .Skip((currentPage - 1) * ordersPerPage)
                 .Take(ordersPerPage)
                 .ToList();
-
-            return orders;
+            
+            
+            return new OrderQueryServiceModel()
+            {
+                OrdersCount = pendingOrders.Count,
+                Orders = orders,
+            };
         }
 
-        }
     }
+}
 

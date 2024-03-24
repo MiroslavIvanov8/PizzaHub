@@ -31,15 +31,12 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowAllOrders([FromQuery] AllOrdersViewModel model)
         {
-            IEnumerable<AdminOrderViewmodel> allOrders = await this.adminService.GetAllOrdersAsync(model.Status, model.FilterDays, model.CurrentPage, 10);
-
+            OrderQueryServiceModel allOrders = await this.adminService.GetAllOrdersAsync(model.Status, model.FilterDays, model.CurrentPage, 10);
             
             model.Statuses = await this.orderService.GetStatusNamesAsync();
 
-            model.Orders = allOrders;
-            model.TotalOrders = this.repository
-                .AllReadOnly<Order>()
-                .Count();
+            model.TotalOrders = allOrders.OrdersCount;
+            model.Orders = allOrders.Orders;
 
             return View(model);
         }
@@ -47,12 +44,10 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowTodayPendingOrders([FromQuery] AllOrdersViewModel model)
         {
-            IEnumerable<AdminOrderViewmodel> pendingOrders = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
+            OrderQueryServiceModel pendingOrders = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
 
-            model.Orders = pendingOrders;
-            model.TotalOrders = this.repository
-                .AllReadOnly<Order>()
-                .Count(o => o.CreatedOn.Date == DateTime.UtcNow.Date);
+            model.Orders = pendingOrders.Orders;
+            model.TotalOrders = pendingOrders.OrdersCount;
 
             return View(model);
         }

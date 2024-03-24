@@ -7,8 +7,8 @@ namespace PizzaHub.Core.Contracts
     public interface IAdminService
     {
         Task MarkOrderAcceptedAsync(int orderId);
-        Task<IEnumerable<AdminOrderViewmodel>> GetAllOrdersAsync(string status,FilterDays filterDays, int currentPage = 1 , int ordersPerPage = 10);
+        Task<OrderQueryServiceModel> GetAllOrdersAsync(string status,FilterDays filterDays, int currentPage = 1 , int ordersPerPage = 10);
 
-        Task<IEnumerable<AdminOrderViewmodel>> GetPendingOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
+        Task<OrderQueryServiceModel> GetPendingOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
     }
 }
