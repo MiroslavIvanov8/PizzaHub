@@ -1,4 +1,6 @@
-﻿using PizzaHub.Areas.Admin.Models.Order;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using PizzaHub.Areas.Admin.Models.Order;
 using PizzaHub.Infrastructure.Enums;
 
 namespace PizzaHub.Core.ViewModels.Order
@@ -11,6 +13,8 @@ namespace PizzaHub.Core.ViewModels.Order
         }
 
         public string Status { get; set; } = "All";
+
+        [DisplayName("Filter Days")]
         public FilterDays FilterDays { get; set; }  
         public int OrdersPerPage { get; } = 10;
         public int CurrentPage { get; set; } = 1;

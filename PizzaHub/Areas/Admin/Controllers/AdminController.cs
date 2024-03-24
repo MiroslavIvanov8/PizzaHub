@@ -31,7 +31,8 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowAllOrders([FromQuery] AllOrdersViewModel model)
         {
-            OrderQueryServiceModel allOrders = await this.adminService.GetAllOrdersAsync(model.Status, model.FilterDays, model.CurrentPage, 10);
+            OrderQueryServiceModel allOrders = await this.adminService
+                .GetAllOrdersAsync(model.Status, model.FilterDays, model.CurrentPage, 10);
             
             model.Statuses = await this.orderService.GetStatusNamesAsync();
 

@@ -63,13 +63,18 @@ namespace PizzaHub.Core.Interfaces
                 case "Canceled":
                     allOrders = allOrders.Where(o => o.OrderStatus.Name == "Canceled");
                     break;
-                default:
+                default: 
                     break;
             }
-            
+
+            var orders = allOrders
+                .Skip((currentPage - 1) * ordersPerPage)
+                .Take(ordersPerPage)
+                .ToList();
+
             var orderViewModels = new List<AdminOrderViewmodel>();
 
-            foreach (var order in allOrders)
+            foreach (var order in orders)
             {
                 
                 var orderViewModel = new AdminOrderViewmodel
@@ -92,15 +97,10 @@ namespace PizzaHub.Core.Interfaces
                 orderViewModels.Add(orderViewModel);
             }
 
-            var orders = orderViewModels
-                .Skip((currentPage - 1) * ordersPerPage)
-                .Take(ordersPerPage)
-                .ToList();
-            
             return new OrderQueryServiceModel()
             {
                 OrdersCount = allOrders.Count(),
-                Orders = orders
+                Orders = orderViewModels
             };
         }
 
@@ -110,10 +110,15 @@ namespace PizzaHub.Core.Interfaces
                 .OrderBy(o => o.CreatedOn)
                 .Where(o => o.CreatedOn.Date == DateTime.UtcNow.Date && o.OrderStatusId == (int)OrderStatusEnum.Pending)
                 .ToListAsync();
-
+            
+            var orders = pendingOrders
+                .Skip((currentPage - 1) * ordersPerPage)
+                .Take(ordersPerPage)
+                .ToList();
+            
             var orderViewModels = new List<AdminOrderViewmodel>();
 
-            foreach (var order in pendingOrders)
+            foreach (var order in orders)
             {
                 var orderItemsWithQuantity =
                     await this.orderService.GetOrderMenuItemWithQuantityViewmodelAsync(order.Id);
@@ -133,16 +138,10 @@ namespace PizzaHub.Core.Interfaces
                 orderViewModels.Add(orderViewModel);
             }
 
-            var orders = orderViewModels
-                .Skip((currentPage - 1) * ordersPerPage)
-                .Take(ordersPerPage)
-                .ToList();
-            
-            
             return new OrderQueryServiceModel()
             {
                 OrdersCount = pendingOrders.Count,
-                Orders = orders,
+                Orders = orderViewModels,
             };
         }
 

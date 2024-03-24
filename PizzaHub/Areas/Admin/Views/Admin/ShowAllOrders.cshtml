@@ -41,9 +41,10 @@
             <label asp-for="FilterDays"></label>
             <select asp-for="FilterDays" class="form-control">
                 <option value="1">Today</option>
-                <option value="2">2 Days</option>
+                <option value="2">Last 2 Days</option>
                 <option value="7">1 Week</option>
                 <option value="30">1 Month</option>
+                <option value="0">All</option>
             </select>
         </div>
         <div class="form-group col-md-6 d-flex align-items-end justify-content-end">
@@ -94,36 +95,41 @@
 </table>
 
 @{
-    var previousPage = Model.CurrentPage - 1;
-    if (previousPage < 1)
-    {
-        previousPage = 1;
-    }
-
     var maxPage = Math.Ceiling((double)Model.TotalOrders / Model.OrdersPerPage);
+    var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Orders.Any() || Model.TotalOrders == 10;
 }
 
 <div class="row mb-5">
     <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-start">
+        @{
+            var previousPage = Model.CurrentPage - 1;
+            if (previousPage < 1)
+            {
+                previousPage = 1;
+            }
+        }
         <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-area="Admin"
            asp-controller="Admin"
            asp-action="ShowAllOrders"
-           asp-route-currentPage="@previousPage">Previous</a>
+           asp-route-currentPage="@previousPage"
+           asp-route-status="@Model.Status"
+           asp-route-filterDays="@Model.FilterDays">Previous</a>
     </div>
 
     <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-center align-items-center">
     </div>
 
-    @{
-        var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Orders.Any() || Model.TotalOrders == 10;
-    }
-
     <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-end">
+        @{
+            var nextPage = Model.CurrentPage + 1;
+        }
         <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
            asp-area="Admin"
            asp-controller="Admin"
            asp-action="ShowAllOrders"
-           asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
+           asp-route-currentPage="@nextPage"
+           asp-route-status="@Model.Status"
+           asp-route-filterDays="@Model.FilterDays">Next</a>
     </div>
 </div>
