@@ -54,11 +54,11 @@ namespace PizzaHub.Areas.Admin.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> ShowPostOrders()
-        {
-            return View();
-        }
+        //[HttpGet]
+        //public async Task<IActionResult> ShowPastOrders([FromQuery] AllPastOrdersViewModel model)
+        //{
+        //    return View();
+        //}
 
         [HttpPost]
         public async Task<IActionResult> MarkOrderAccepted(int orderId)

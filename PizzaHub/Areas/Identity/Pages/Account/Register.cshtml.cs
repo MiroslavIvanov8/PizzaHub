@@ -13,6 +13,7 @@ using PizzaHub.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
+using PizzaHub.Core.Contracts;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {
@@ -26,6 +27,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
         private readonly IRepository _repository;
+        private readonly ISenderEmail _senderEmail;
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -33,6 +35,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender,
+            ISenderEmail senderEmail,
             RoleManager<IdentityRole> roleManager,
             IRepository repository)
         {
@@ -42,6 +45,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _senderEmail = senderEmail;
             _roleManager = roleManager;
             _repository = repository;
         }
@@ -143,6 +147,10 @@ namespace PizzaHub.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    await _emailSender.SendEmailAsync(user.Email, "Confirm your Email please", code);
+
+                    await _senderEmail.SendEmailAsync(user.Email, "Confirm your email", code);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

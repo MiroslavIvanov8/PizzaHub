@@ -26,6 +26,8 @@
 
                 var client = new SmtpClient(mailServer, port);
 
+                client.UseDefaultCredentials = false;
+
                 client.Credentials = new NetworkCredential(fromEmail, password);
                 client.EnableSsl = true;
 
