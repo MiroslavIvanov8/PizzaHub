@@ -1,0 +1,131 @@
+﻿@model PizzaHub.Core.ViewModels.Order.AllOrdersViewModel
+
+@{
+    ViewData["Title"] = "Orders Menu";
+
+    string GetStatusColor(string status)
+    {
+        switch (status.ToLower())
+        {
+            case "pending":
+                return "orange"; // orange
+            case "in progress":
+                return "#14D1D1"; // sky blue
+            case "out for delivery":
+                return "#FAFC43"; // yellow
+            case "delivered":
+                return "#7CFC00"; //green
+            case "canceled":
+                return "gray"; // gray
+            default:
+                return "";
+        }
+    }
+}
+
+<h2>Orders Menu</h2>
+
+<form asp-area="Admin" asp-controller="Admin" asp-action="ShowAllOrders" method="get">
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <label for="statusFilter">Filter by Status:</label>
+            <select class="form-control" id="statusFilter" name="Status">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Out for Delivery">Out for Delivery</option>
+                <option value="Delivered">Delivered</option>
+                <option value="Canceled">Canceled</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label for="daysFilter">Filter by Days:</label>
+            <select class="form-control" id="daysFilter" name="Days">
+                <option value="0">All</option>
+                <option value="1">Today</option>
+                <option value="2">2 Days</option>
+                <option value="7">1 Week</option>
+                <option value="30">1 Month</option>
+            </select>
+        </div>
+        <div class="form-group col-md-4 d-flex align-items-end justify-content-end">
+            <button type="submit" class="btn btn-primary">Show Orders</button>
+        </div>
+    </div>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Created On</th>
+            <th>Restaurant</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Order Items</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td style="background-color: @GetStatusColor(order.Status) ">
+                    <strong>@order.Status</strong>
+                </td>
+                <td>@order.CreatedOn</td>
+                <td>@order.Restaurant</td>
+                <td>@order.Customer</td>
+                <td>@order.Address</td>
+                <td>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <span>@item.Name x @item.Quantity</span>
+                        if (!ReferenceEquals(item, order.OrderItems.Last()))
+                        {
+                            <span>, </span>
+                        }
+                    }
+                </td>
+                <td>$@order.Amount</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    var previousPage = Model.CurrentPage - 1;
+    if (previousPage < 1)
+    {
+        previousPage = 1;
+    }
+
+    var maxPage = Math.Ceiling((double)Model.TotalOrdersToday / Model.OrdersPerPage);
+}
+
+<div class="row mb-5">
+    <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-start">
+        <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+           asp-area="Admin"
+           asp-controller="Admin"
+           asp-action="ShowAllOrders"
+           asp-route-currentPage="@previousPage">Previous</a>
+    </div>
+
+    <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-center align-items-center">
+    </div>
+
+    @{
+        var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Orders.Any();
+    }
+
+    <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-end">
+        <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+           asp-area="Admin"
+           asp-controller="Admin"
+           asp-action="ShowAllOrders"
+           asp-route-currentPage="@(Model.CurrentPage + 1)">Next</a>
+    </div>
+</div>

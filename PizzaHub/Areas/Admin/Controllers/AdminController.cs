@@ -13,13 +13,11 @@ namespace PizzaHub.Areas.Admin.Controllers
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
-        private readonly IOrderService orderService;
         private readonly IAdminService adminService;
         private readonly IRepository repository;
 
-        public AdminController(IOrderService orderService, IAdminService adminService, IRepository repository)
+        public AdminController(IAdminService adminService, IRepository repository)
         {
-            this.orderService = orderService;
             this.adminService = adminService;
             this.repository = repository;
         }
@@ -29,20 +27,20 @@ namespace PizzaHub.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowTodayOrders([FromQuery] AllTodayOrdersViewModel model)
+        public async Task<IActionResult> ShowAllOrders([FromQuery] AllOrdersViewModel model)
         {
-            IEnumerable<ShowOrderViewModel> todayOrders = await this.adminService.ShowTodayOrdersAsync(model.CurrentPage, 10);
+            IEnumerable<AdminOrderViewmodel> todayOrders = await this.adminService.GetAllOrdersAsync(model.Status, model.Days, model.CurrentPage, 10);
 
             model.Orders = todayOrders;
             model.TotalOrdersToday = this.repository
                 .AllReadOnly<Order>()
-                .Count(o => o.CreatedOn.Date == DateTime.UtcNow.Date);
+                .Count();
 
             return View(model);
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowPendingOrders([FromQuery] AllPendingTodayOrdersViewModel model)
+        public async Task<IActionResult> ShowTodayPendingOrders([FromQuery] AllOrdersViewModel model)
         {
             IEnumerable<AdminOrderViewmodel> pendingOrders = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
 
@@ -53,19 +51,13 @@ namespace PizzaHub.Areas.Admin.Controllers
 
             return View(model);
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> ShowPastOrders([FromQuery] AllPastOrdersViewModel model)
-        //{
-        //    return View();
-        //}
-
+        
         [HttpPost]
         public async Task<IActionResult> MarkOrderAccepted(int orderId)
         {
             await this.adminService.MarkOrderAcceptedAsync(orderId);
 
-            return RedirectToAction(nameof(ShowPendingOrders));
+            return RedirectToAction(nameof(ShowTodayPendingOrders));
         }
     }
 }

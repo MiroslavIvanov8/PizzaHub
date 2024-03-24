@@ -1,4 +1,4 @@
-﻿@model PizzaHub.Core.ViewModels.Order.AllPendingTodayOrdersViewModel
+﻿@model PizzaHub.Core.ViewModels.Order.AllOrdersViewModel
 
 <h2>Pending Orders</h2>
 
@@ -68,8 +68,7 @@
         <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-area="Admin"
            asp-controller="Admin"
-           asp-action="ShowPendingOrders"
-        >Previous</a>
+           asp-action="ShowTodayPendingOrders">Previous</a>
     </div>
 
     @{
@@ -81,7 +80,7 @@
         <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
            asp-area="Admin"
            asp-controller="Admin"
-           asp-action="ShowPendingOrders"
+           asp-action="ShowTodayPendingOrders"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
         >Next</a>
     </div>
