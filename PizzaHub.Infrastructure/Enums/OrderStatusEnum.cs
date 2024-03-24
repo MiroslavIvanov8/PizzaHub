@@ -5,20 +5,20 @@ namespace PizzaHub.Infrastructure.Enums
 {
     public enum OrderStatusEnum
     {
+        [Description("Pending")]
+        Pending = 1,
+
         [Description("In Progress")] 
-        InProgress = 1,
+        InProgress = 2,
 
         [Description("Out For Delivery")]
-        OutForDelivery = 2,
+        OutForDelivery = 3,
 
         [Description("Delivered")] 
-        Delivered = 3,
+        Delivered = 4,
 
         [Description("Canceled")]
-        Canceled = 4,
-
-        [Description("Pending")]
-        Pending = 5,
-
+        Canceled = 5,
+        
     }
 }

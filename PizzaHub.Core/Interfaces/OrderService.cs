@@ -115,6 +115,14 @@ namespace PizzaHub.Core.Interfaces
 
             return orderItemsWithQuantity;
         }
+
+        public async Task<IEnumerable<string>> GetStatusNamesAsync()
+        {
+            return await this.repository
+                .AllReadOnly<OrderStatus>()
+                .Select(s => s.Name)
+                .ToListAsync();
+        }
     }
 }
   

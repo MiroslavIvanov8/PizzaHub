@@ -36,13 +36,13 @@ namespace PizzaHub.Core.Interfaces
             await this.repository.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<AdminOrderViewmodel>> GetAllOrdersAsync(string status, int days, int currentPage, int ordersPerPage)
+        public async Task<IEnumerable<AdminOrderViewmodel>> GetAllOrdersAsync(string status, FilterDays filterDays, int currentPage, int ordersPerPage)
         {
             var allOrders = this.repository.All<Order>().AsQueryable();
 
-            if (days > 0)
+            if ((int)filterDays > 0)
             {
-                var fromDate = DateTime.UtcNow.Date.AddDays(-days);
+                var fromDate = DateTime.UtcNow.Date.AddDays(-(int)filterDays);
                 allOrders = allOrders.Where(o => o.CreatedOn >= fromDate);
             }
 

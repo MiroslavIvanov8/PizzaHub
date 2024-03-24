@@ -15,11 +15,13 @@ namespace PizzaHub.Areas.Admin.Controllers
     {
         private readonly IAdminService adminService;
         private readonly IRepository repository;
+        private readonly IOrderService orderService;
 
-        public AdminController(IAdminService adminService, IRepository repository)
+        public AdminController(IAdminService adminService, IRepository repository, IOrderService orderService)
         {
             this.adminService = adminService;
             this.repository = repository;
+            this.orderService = orderService;
         }
         public IActionResult Index()
         {
@@ -29,10 +31,13 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowAllOrders([FromQuery] AllOrdersViewModel model)
         {
-            IEnumerable<AdminOrderViewmodel> todayOrders = await this.adminService.GetAllOrdersAsync(model.Status, model.Days, model.CurrentPage, 10);
+            IEnumerable<AdminOrderViewmodel> allOrders = await this.adminService.GetAllOrdersAsync(model.Status, model.FilterDays, model.CurrentPage, 10);
 
-            model.Orders = todayOrders;
-            model.TotalOrdersToday = this.repository
+            
+            model.Statuses = await this.orderService.GetStatusNamesAsync();
+
+            model.Orders = allOrders;
+            model.TotalOrders = this.repository
                 .AllReadOnly<Order>()
                 .Count();
 
@@ -45,7 +50,7 @@ namespace PizzaHub.Areas.Admin.Controllers
             IEnumerable<AdminOrderViewmodel> pendingOrders = await this.adminService.GetPendingOrdersAsync(model.CurrentPage);
 
             model.Orders = pendingOrders;
-            model.TotalOrdersToday = this.repository
+            model.TotalOrders = this.repository
                 .AllReadOnly<Order>()
                 .Count(o => o.CreatedOn.Date == DateTime.UtcNow.Date);
 
