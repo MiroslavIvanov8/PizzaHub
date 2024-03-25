@@ -6,11 +6,11 @@
 
 <h2>Become a Courier</h2>
 
-<form method="post" asp-controller="" asp-action="">
+<form method="post" asp-controller="Courier" asp-action="BecomeCourier">
     <div class="form-group">
-        <label asp-for="TelephoneNumber">Telephone Number:</label>
-        <input asp-for="TelephoneNumber" class="form-control" placeholder="Enter your telephone number" required />
-        <span asp-validation-for="TelephoneNumber" class="text-danger"></span>
+        <label asp-for="PhoneNumber">Telephone Number:</label>
+        <input asp-for="PhoneNumber" class="form-control" placeholder="Enter your telephone number" required />
+        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Description">Description:</label>
@@ -19,3 +19,7 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit Application</button>
 </form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

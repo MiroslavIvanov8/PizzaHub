@@ -45,8 +45,10 @@ namespace PizzaHub.Infrastructure.Constants
             public const int NameMaxLength = 100;
             public const int NameMinLength = 3;
 
-            public const string TelephoneNumberRegex = @"^\+\d{10}$";
-            public const string TelephoneNumberErrorMessage = "Telephone Number should be like +000 000 0000";
+            public const string PhoneNumberNumberRegex = @"^\+\d{10}$";
+            public const string PhoneNumberErrorMessage = "Telephone Number should be like +012 345 6789";
+            public const int PhoneNumberMaxLength = 11;
+            public const int PhoneNumberMinLength = 11;
 
             public const int DescriptionMaxLength = 500;
             public const int DescriptionMinLength = 50;

@@ -31,6 +31,8 @@ namespace PizzaHub.Infrastructure
         public DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
 
         public DbSet<OrderItem> OrderItems { get; set; } = null!;
+
+        public DbSet<CourierApplicationRequest> ApplicationRequests { get; set; } = null!;
         
         protected override void OnModelCreating(ModelBuilder builder)
         {

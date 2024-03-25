@@ -8,11 +8,12 @@ namespace PizzaHub.Core.ViewModels.Courier
     using static ErrorMessages;
     public class BecomeCourierForm
     {
-        public string UserId { get; set; } = null!;
+        public string UserId { get; set; } = string.Empty;
         
         [Required(ErrorMessage = RequiredErrorMessage)]
-        [RegularExpression(pattern: TelephoneNumberRegex, ErrorMessage = TelephoneNumberErrorMessage)]
-        public string TelephoneNumber { get; set; } = null!;
+        [RegularExpression(pattern: PhoneNumberNumberRegex, ErrorMessage = PhoneNumberErrorMessage)]
+        [StringLength(PhoneNumberMaxLength, MinimumLength = PhoneNumberMinLength)]
+        public string PhoneNumber { get; set; } = null!;
 
         [Required(ErrorMessage = RequiredErrorMessage)]
         [StringLength(DescriptionMaxLength,
@@ -20,6 +21,5 @@ namespace PizzaHub.Core.ViewModels.Courier
            ErrorMessage = LengthErrorMessage)]
         public string Description { get; set; } = null!;
 
-        //TODO add a dateBirth validation.
     }
 }
