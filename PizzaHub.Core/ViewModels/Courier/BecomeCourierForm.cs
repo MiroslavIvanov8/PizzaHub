@@ -8,14 +8,8 @@ namespace PizzaHub.Core.ViewModels.Courier
     using static ErrorMessages;
     public class BecomeCourierForm
     {
-        public int UserId { get; set; }
-
-        [Required(ErrorMessage = RequiredErrorMessage)]
-        [StringLength(NameMaxLength,
-            MinimumLength = NameMinLength,
-            ErrorMessage = LengthErrorMessage )]
-        public string Name { get; set; } = null!;
-
+        public string UserId { get; set; } = null!;
+        
         [Required(ErrorMessage = RequiredErrorMessage)]
         [RegularExpression(pattern: TelephoneNumberRegex, ErrorMessage = TelephoneNumberErrorMessage)]
         public string TelephoneNumber { get; set; } = null!;

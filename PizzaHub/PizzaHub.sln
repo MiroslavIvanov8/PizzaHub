@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaHub", "PizzaHub.csproj", "{70197392-EF62-4770-9500-462213DFAAAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaHub", "PizzaHub.csproj", "{70197392-EF62-4770-9500-462213DFAAAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaHub.Infrastructure", "..\PizzaHub.Infrastructure\PizzaHub.Infrastructure.csproj", "{CC7A1B7D-6CE5-4CD1-B46A-88891DEB3602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaHub.Infrastructure", "..\PizzaHub.Infrastructure\PizzaHub.Infrastructure.csproj", "{CC7A1B7D-6CE5-4CD1-B46A-88891DEB3602}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaHub.Core", "..\PizzaHub.Core\PizzaHub.Core.csproj", "{25082432-DEC2-41C1-8590-D928BEDBC155}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaHub.Core", "..\PizzaHub.Core\PizzaHub.Core.csproj", "{25082432-DEC2-41C1-8590-D928BEDBC155}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

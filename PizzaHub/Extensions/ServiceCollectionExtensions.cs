@@ -4,8 +4,10 @@ using PizzaHub.Infrastructure.Data.Models;
 namespace PizzaHub.Extensions
 {
     using Infrastructure;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
+    using PizzaHub.Authorization;
     using PizzaHub.Core.Contracts;
     using PizzaHub.Core.Interfaces;
 
@@ -19,6 +21,7 @@ namespace PizzaHub.Extensions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
 
             services.AddScoped<ISenderEmail, SenderEmail>();
 
@@ -55,6 +58,12 @@ namespace PizzaHub.Extensions
                 .AddDefaultTokenProviders()
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<PizzaHubDbContext>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CustomerOnlyPolicy", policy =>
+                    policy.Requirements.Add(new CustomerOnlyRequirement()));
+            });
 
             services.AddRazorPages();
 
