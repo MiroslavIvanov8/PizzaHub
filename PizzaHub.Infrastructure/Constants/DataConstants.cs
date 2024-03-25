@@ -29,5 +29,17 @@
             public const int AddressMaxLength = 100;
             public const int AddressMinLength = 3;
         }
+
+        public static class BecomeCourierForm
+        {
+            public const int NameMaxLength = 100;
+            public const int NameMinLength = 3;
+
+            public const string TelephoneNumberRegex = @"^\+\d{10}$";
+            public const string TelephoneNumberErrorMessage = "Telephone Number should be like +000 000 0000";
+
+            public const int DescriptionMaxLength = 500;
+            public const int DescriptionMinLength = 50;
+        }
     }
 }

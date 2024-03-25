@@ -14,13 +14,11 @@ namespace PizzaHub.Areas.Admin.Controllers
     public class AdminController : Controller
     {
         private readonly IAdminService adminService;
-        private readonly IRepository repository;
         private readonly IOrderService orderService;
 
-        public AdminController(IAdminService adminService, IRepository repository, IOrderService orderService)
+        public AdminController(IAdminService adminService, IOrderService orderService)
         {
             this.adminService = adminService;
-            this.repository = repository;
             this.orderService = orderService;
         }
         public IActionResult Index()

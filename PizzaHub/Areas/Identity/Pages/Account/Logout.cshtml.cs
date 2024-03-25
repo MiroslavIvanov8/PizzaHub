@@ -27,6 +27,12 @@ namespace PizzaHub.Areas.Identity.Pages.Account
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation("User logged out.");
+
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);
