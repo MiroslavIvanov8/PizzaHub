@@ -2,7 +2,7 @@
 {
     public class ErrorMessages
     {
-        public const string LengthErrorMessage = "{0} should be between {2} and {1} symbols long.";
+        public const string LengthErrorMessage = "The {0} must be at least {2} and at max {1} characters long.";
         public const string RequiredErrorMessage = "{0} is required.";
     }
 }

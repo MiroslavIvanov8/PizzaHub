@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Infrastructure.Data.Models;
 using PizzaHub.Infrastructure.Data.SeedDb;
 
 namespace PizzaHub.Infrastructure
 {
-    public class PizzaHubDbContext : IdentityDbContext
+    public class PizzaHubDbContext : IdentityDbContext<IdentityUser>
     {
         public PizzaHubDbContext(DbContextOptions<PizzaHubDbContext> options)
             : base(options)
@@ -13,6 +14,7 @@ namespace PizzaHub.Infrastructure
 
         }
 
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; } = null!;
         public DbSet<Customer> Customers { get; set; } = null!;
         public DbSet<Courier> Couriers { get; set; } = null!;
         public DbSet<Admin> Admins { get; set; } = null!;

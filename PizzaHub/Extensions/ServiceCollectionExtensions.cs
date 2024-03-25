@@ -1,16 +1,13 @@
 ﻿using HouseRentingSystem.Infrastructure.Data.Common;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using IEmailSender = Microsoft.AspNetCore.Identity.UI.Services.IEmailSender;
+using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Extensions
 {
+    using Infrastructure;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-
-    using Infrastructure;
     using PizzaHub.Core.Contracts;
     using PizzaHub.Core.Interfaces;
-    using Microsoft.AspNetCore.Mvc.Razor;
 
     public static class ServiceCollectionExtensions
     {
@@ -45,7 +42,7 @@ namespace PizzaHub.Extensions
 
         public static IServiceCollection AddApplicationIdentity(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
                     options.SignIn.RequireConfirmedAccount =
                         config.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");

@@ -12,7 +12,7 @@
         [ForeignKey(nameof(UserId))]
         public string UserId { get; set; } = null!;
 
-        public virtual IdentityUser User { get; set; } = null!;
+        public virtual ApplicationUser User { get; set; } = null!;
 
         [ForeignKey(nameof(Restaurant))]
         public int? RestaurantId { get; set; }

@@ -10,7 +10,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         {
             var data = new SeedData();
 
-            builder.HasData(data.FirstItem, data.SecondItem, data.ThirdItem );
+            builder.HasData(new MenuItem[] { data.FirstItem, data.SecondItem, data.ThirdItem});
         }
     }
 }

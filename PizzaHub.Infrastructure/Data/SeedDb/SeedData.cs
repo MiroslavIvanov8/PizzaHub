@@ -7,11 +7,11 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
     {
         public Restaurant Restaurant { get; set; }
 
-        public IdentityUser CustomerUser { get; set; }
+        public ApplicationUser CustomerUser { get; set; }
 
-        public IdentityUser CourierUser { get; set; }
+        public ApplicationUser CourierUser { get; set; }
 
-        public IdentityUser AdminUser { get; set; }
+        public ApplicationUser AdminUser { get; set; }
 
         public Customer Customer { get; set; }
         public Courier Courier { get; set; }
@@ -60,40 +60,43 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             FirstStatus = new OrderStatus()
             {
                 Id = 1,
-                Name = "In Progress"
+                Name = "Pending"
             };
 
             SecondStatus = new OrderStatus()
             {
                 Id = 2,
-                Name = "Out for Delivery"
+                Name = "In Progress"
             };
 
             ThirdStatus = new OrderStatus()
             {
                 Id = 3,
-                Name = "Delivered"
+                Name = "Out for Delivery"
             };
 
             ForthStatus = new OrderStatus()
             {
                 Id = 4,
-                Name = "Canceled"
+                Name = "Delivered"
             };
             FifthStatus = new OrderStatus()
             {
                 Id = 5,
-                Name = "Pending"
+                Name = "Canceled"
             };
         }
 
         private void SeedUsers()
         {
-            var hasher = new PasswordHasher<IdentityUser>();
+            var hasher = new PasswordHasher<ApplicationUser>();
 
-            AdminUser = new IdentityUser()
+            AdminUser = new ApplicationUser()
             {
-                Id = "00000856-c198-4129-b3f3-b893d8395082",
+                Id = "00000000-c198-4129-b3f3-b893d8395082",
+                FirstName = "Mister",
+                LastName = "Admin",
+                BirthDate = new DateTime(1998, 10, 1), 
                 UserName = "admin@mail.com",
                 NormalizedUserName = "admin@mail.com",
                 Email = "admin@mail.com",
@@ -103,9 +106,12 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             AdminUser.PasswordHash =
                 hasher.HashPassword(AdminUser, "admin123");
 
-            CourierUser = new IdentityUser()
+            CourierUser = new ApplicationUser()
             {
-                Id = "11111856-c198-4129-b3f3-b893d8395082",
+                Id = "22222222-c198-4129-b3f3-b893d8395082",
+                FirstName = "Mister",
+                LastName = "Courier",
+                BirthDate = new DateTime(1998, 10, 1),
                 UserName = "courier@mail.com",
                 NormalizedUserName = "courier@mail.com",
                 Email = "courier@mail.com",
@@ -115,9 +121,12 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             CourierUser.PasswordHash =
                 hasher.HashPassword(CourierUser, "courier123");
 
-            CustomerUser = new IdentityUser()
+            CustomerUser = new ApplicationUser()
             {
-                Id = "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
+                Id = "11111111-d726-4fc8-83d9-d6b3ac1f591e",
+                FirstName = "Mister",
+                LastName = "Customer",
+                BirthDate = new DateTime(1998, 10, 1),
                 UserName = "customer@mail.com",
                 NormalizedUserName = "customer@mail.com",
                 Email = "customer@mail.com",
@@ -133,7 +142,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             Customer = new Customer()
             {
                 Id = 1,
-                UserId = "222220ce-d726-4fc8-83d9-d6b3ac1f591e"
+                UserId = "11111111-d726-4fc8-83d9-d6b3ac1f591e"
             };
 
         }
@@ -143,7 +152,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             Admin = new Admin()
             {
                 Id = 1,
-                UserId = "00000856-c198-4129-b3f3-b893d8395082",
+                UserId = "00000000-c198-4129-b3f3-b893d8395082",
                 RestaurantId = 1
             };
         }
@@ -152,7 +161,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
             Courier = new Courier()
             {
                 Id = 1,
-                UserId = "11111856-c198-4129-b3f3-b893d8395082",
+                UserId = "22222222-c198-4129-b3f3-b893d8395082",
             };
         }
 
@@ -204,19 +213,19 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
         {
             UserAdmin = new IdentityUserRole<string>
             {
-                UserId = "00000856-c198-4129-b3f3-b893d8395082",
+                UserId = "00000000-c198-4129-b3f3-b893d8395082",
                 RoleId = "00000856-0000-0000-0000-b893d8395082"
             };
 
             UserCourier = new IdentityUserRole<string>
             {
-                UserId = "11111856-c198-4129-b3f3-b893d8395082",
+                UserId = "22222222-c198-4129-b3f3-b893d8395082",
                 RoleId = "22222222-2222-2222-2222-b893d8395082"
             };
 
             UserCustomer = new IdentityUserRole<string>
             {
-                UserId = "222220ce-d726-4fc8-83d9-d6b3ac1f591e",
+                UserId = "11111111-d726-4fc8-83d9-d6b3ac1f591e",
                 RoleId = "11111111-1111-1111-1111-b893d8395082"
             };
         }
