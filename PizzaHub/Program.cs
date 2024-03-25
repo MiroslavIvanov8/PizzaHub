@@ -44,6 +44,11 @@ namespace PizzaHub
                     areaName: "Admin",
                     pattern: "Admin/{controller=Admin}/{action=Index}/{id?}");
 
+                endpoint.MapAreaControllerRoute(
+                    name: "Courier",
+                    areaName: "Courier",
+                    pattern: "Courier/{controller=Courier}/{action=Index}/{id?}");
+
                 endpoint.MapDefaultControllerRoute();
                 endpoint.MapRazorPages();
             });

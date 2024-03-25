@@ -60,5 +60,11 @@ namespace PizzaHub.Areas.Admin.Controllers
 
             return RedirectToAction(nameof(ShowTodayPendingOrders));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowCourierApplicants()
+        {
+            return View();
+        }
     }
 }
