@@ -1,16 +1,16 @@
 ﻿using PizzaHub.Infrastructure.Common;
-using PizzaHub.Infrastructure.Data.Models;
-
 namespace PizzaHub.Extensions
 {
-    using HouseRentingSystem.Infrastructure.Data.Common;
-    using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-    using PizzaHub.Authorization;
-    using PizzaHub.Core.Contracts;
-    using PizzaHub.Core.Interfaces;
+
+    using Infrastructure;
+    using Authorization;
+    using Core.Contracts;
+    using Core.Interfaces;
+    using Infrastructure.Data.Models;
+    using Microsoft.AspNetCore.Mvc;
 
     public static class ServiceCollectionExtensions
     {
@@ -23,9 +23,14 @@ namespace PizzaHub.Extensions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICourierService, CourierService>();
             
-            services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
-
             services.AddScoped<ISenderEmail, SenderEmail>();
+
+            services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
+            
+            services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             return services;
         }
