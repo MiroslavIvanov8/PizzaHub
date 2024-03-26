@@ -3,6 +3,7 @@ using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Extensions
 {
+    using HouseRentingSystem.Infrastructure.Data.Common;
     using Infrastructure;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
@@ -21,7 +22,7 @@ namespace PizzaHub.Extensions
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICourierService, CourierService>();
-            services.AddScoped<IRepository, Repository>();
+            
             services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
 
             services.AddScoped<ISenderEmail, SenderEmail>();
@@ -38,7 +39,8 @@ namespace PizzaHub.Extensions
                     options.UseLazyLoadingProxies();
                 }
             );
-            
+            services.AddScoped<IRepository, Repository>();
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             return services;
@@ -50,10 +52,12 @@ namespace PizzaHub.Extensions
                 {
                     options.SignIn.RequireConfirmedAccount =
                         config.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
-                    options.Password.RequireDigit = config.GetValue<bool>("Identity:Password:RequireDigit");
+                    options.Password.RequireDigit = 
+                        config.GetValue<bool>("Identity:Password:RequireDigit");
                     options.Password.RequireNonAlphanumeric =
                         config.GetValue<bool>("Identity:Password:RequireNonAlphanumeric");
-                    options.Password.RequireUppercase = config.GetValue<bool>("Identity:Password:RequireUppercase");
+                    options.Password.RequireUppercase =
+                        config.GetValue<bool>("Identity:Password:RequireUppercase");
                 })
                 .AddRoles<IdentityRole>()
                 .AddDefaultTokenProviders()
