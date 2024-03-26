@@ -1,14 +1,12 @@
-﻿using PizzaHub.Infrastructure.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaHub.Core.Contracts;
+using PizzaHub.Core.ViewModels.Order;
+using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Constants;
-using PizzaHub.Infrastructure.Enums;
+using PizzaHub.Infrastructure.Data.Models;
 
-namespace PizzaHub.Core.Interfaces
+namespace PizzaHub.Core.Services
 {
-    using Microsoft.EntityFrameworkCore;
-    using PizzaHub.Core.Contracts;
-    using PizzaHub.Core.ViewModels.Order;
-    using PizzaHub.Infrastructure.Data.Models;
-
     public class CustomerService : ICustomerService
     {
         private readonly IRepository repository;
@@ -37,20 +35,19 @@ namespace PizzaHub.Core.Interfaces
 
         public async Task<IEnumerable<OrderViewModel>> ShowOrdersAsync(int userId)
         {
-            // Retrieve all orders for the given userId
             var orders = await this.repository.All<Order>()
                 .Where(o => o.CustomerId == userId).ToListAsync();
 
-
-            // Map Order entities to OrderViewModels
+            //TODO change the models so it shows the correct quantity of every item in the order
             var orderViewModels = orders.Select(order => new OrderViewModel
             {
                 Id = order.Id,
                 Restaurant = order.Restaurant.Name,
-                Status = order.OrderStatusId.ToString(),
+                Status = order.OrderStatus.Name,
                 Amount = order.TotalAmount,
                 CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
-                OrderItems = order.Items.Select(oi => oi.MenuItem.Name)
+                OrderItems = order.Items.Select(oi => oi.MenuItem.Name),
+                
             }).OrderByDescending(o => o.CreatedOn);
 
             return orderViewModels;

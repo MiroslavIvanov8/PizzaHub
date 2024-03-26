@@ -1,12 +1,11 @@
-﻿using PizzaHub.Infrastructure.Common;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaHub.Core.Contracts;
+using PizzaHub.Core.ViewModels.MenuItem;
+using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Data.Models;
 
-namespace PizzaHub.Core.Interfaces
+namespace PizzaHub.Core.Services
 {
-    using Microsoft.EntityFrameworkCore;
-    using PizzaHub.Core.Contracts;
-    using ViewModels.MenuItem;
-
     public class RestaurantService : IRestaurantService
     {
         private readonly IRepository repository;

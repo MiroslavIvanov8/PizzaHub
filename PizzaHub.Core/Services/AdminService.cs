@@ -1,18 +1,14 @@
-﻿using PizzaHub.Core.ViewModels.Courier;
-
-namespace PizzaHub.Core.Interfaces
+﻿namespace PizzaHub.Core.Services
 {
     using Microsoft.EntityFrameworkCore;
-    using System;
-
     using Contracts;
-    using Infrastructure.Common;
-    using Infrastructure.Data.Models;
-    using Infrastructure.Constants;
-    using Infrastructure.Enums;
+    using ViewModels.Courier;
     using ViewModels.MenuItem;
     using ViewModels.Order;
-
+    using Infrastructure.Common;
+    using Infrastructure.Constants;
+    using Infrastructure.Data.Models;
+    using Infrastructure.Enums;
 
     public class AdminService : IAdminService
     {

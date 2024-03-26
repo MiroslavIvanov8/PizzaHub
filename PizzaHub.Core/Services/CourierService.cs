@@ -3,7 +3,7 @@ using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Data.Models;
 
-namespace PizzaHub.Core.Interfaces
+namespace PizzaHub.Core.Services
 {
     public class CourierService : ICourierService
     {

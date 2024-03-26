@@ -1,11 +1,10 @@
-﻿using Castle.Core.Resource;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Cart;
 using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Data.Models;
 
-namespace PizzaHub.Core.Interfaces
+namespace PizzaHub.Core.Services
 {
     public class CartService : ICartService
     {

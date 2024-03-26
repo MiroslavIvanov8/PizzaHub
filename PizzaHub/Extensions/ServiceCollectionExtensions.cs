@@ -1,4 +1,5 @@
-﻿using PizzaHub.Infrastructure.Common;
+﻿using PizzaHub.Core.Services;
+using PizzaHub.Infrastructure.Common;
 namespace PizzaHub.Extensions
 {
     using Microsoft.AspNetCore.Authorization;
@@ -8,7 +9,6 @@ namespace PizzaHub.Extensions
     using Infrastructure;
     using Authorization;
     using Core.Contracts;
-    using Core.Interfaces;
     using Infrastructure.Data.Models;
     using Microsoft.AspNetCore.Mvc;
 
