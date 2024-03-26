@@ -1,14 +1,13 @@
-﻿using HouseRentingSystem.Infrastructure.Data.Common;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PizzaHub.Areas.Admin.Models.Order;
-using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels.Order;
-using PizzaHub.Infrastructure.Data.Models;
+﻿using PizzaHub.Core.ViewModels.Courier;
 
 namespace PizzaHub.Areas.Admin.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using Core.Contracts;
+    using Core.ViewModels.Order;
+
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class AdminController : Controller
@@ -62,7 +61,22 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowCourierApplicants()
         {
-            return View();
+            IEnumerable<CourierApplicantModel> models = await this.adminService.GetAllCourierApplicantsAsync();
+
+            return View(models);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CourierApplicantDetails(int id)
+        {
+            CourierApplicantModel model = await this.adminService.GetCourierApplicant(id);
+
+            if (model != null)
+            {
+                return View(model);
+            }
+
+            return BadRequest();
         }
     }
 }

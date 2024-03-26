@@ -1,9 +1,9 @@
-﻿using PizzaHub.Infrastructure.Constants;
+﻿using PizzaHub.Infrastructure.Common;
+using PizzaHub.Infrastructure.Constants;
 using PizzaHub.Infrastructure.Enums;
 
 namespace PizzaHub.Core.Interfaces
 {
-    using HouseRentingSystem.Infrastructure.Data.Common;
     using Microsoft.EntityFrameworkCore;
     using PizzaHub.Core.Contracts;
     using PizzaHub.Core.ViewModels.Order;

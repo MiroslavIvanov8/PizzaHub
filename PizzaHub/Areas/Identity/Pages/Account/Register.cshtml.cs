@@ -2,7 +2,6 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using HouseRentingSystem.Infrastructure.Data.Common;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -14,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using PizzaHub.Core.Contracts;
+using PizzaHub.Infrastructure.Common;
 using static PizzaHub.Infrastructure.Constants.DataConstants.ApplicationUser;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
 

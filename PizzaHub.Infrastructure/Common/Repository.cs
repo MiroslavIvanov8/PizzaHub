@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PizzaHub.Infrastructure;
 
-namespace HouseRentingSystem.Infrastructure.Data.Common
+namespace PizzaHub.Infrastructure.Common
 {
     public class Repository : IRepository
     {

@@ -1,9 +1,11 @@
-﻿using PizzaHub.Areas.Admin.Models.Order;
-using PizzaHub.Core.ViewModels.Order;
-using PizzaHub.Infrastructure.Enums;
+﻿using PizzaHub.Core.ViewModels.Courier;
 
 namespace PizzaHub.Core.Contracts
 {
+    
+    using ViewModels.Order;
+    using Infrastructure.Enums;
+
     public interface IAdminService
     {
         Task MarkOrderAcceptedAsync(int orderId);
@@ -11,6 +13,8 @@ namespace PizzaHub.Core.Contracts
 
         Task<OrderQueryServiceModel> GetPendingOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
 
-        
+        Task<IEnumerable<CourierApplicantModel>> GetAllCourierApplicantsAsync();
+        Task<CourierApplicantModel> GetCourierApplicant(int id);
+
     }
 }

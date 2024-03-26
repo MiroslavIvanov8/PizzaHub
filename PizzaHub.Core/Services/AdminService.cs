@@ -1,17 +1,17 @@
-﻿
-using PizzaHub.Areas.Admin.Models.Order;
-using PizzaHub.Core.ViewModels.MenuItem;
-using PizzaHub.Core.ViewModels.Order;
+﻿using PizzaHub.Core.ViewModels.Courier;
 
 namespace PizzaHub.Core.Interfaces
 {
     using Microsoft.EntityFrameworkCore;
-    using Contracts;
-    using Infrastructure.Data.Models;
-    using PizzaHub.Infrastructure.Constants;
-    using HouseRentingSystem.Infrastructure.Data.Common;
-    using PizzaHub.Infrastructure.Enums;
     using System;
+
+    using Contracts;
+    using Infrastructure.Common;
+    using Infrastructure.Data.Models;
+    using Infrastructure.Constants;
+    using Infrastructure.Enums;
+    using ViewModels.MenuItem;
+    using ViewModels.Order;
 
 
     public class AdminService : IAdminService
@@ -145,6 +145,32 @@ namespace PizzaHub.Core.Interfaces
             };
         }
 
+        public async Task<IEnumerable<CourierApplicantModel>> GetAllCourierApplicantsAsync()
+        {
+            return await this.repository.All<CourierApplicationRequest>().Select(r => new CourierApplicantModel()
+            {
+                Id = r.Id,
+                FullName = r.User.FirstName + " " + r.User.LastName,
+                Age = DateTime.Now.Year - r.User.BirthDate.Year,
+                Email = r.User.Email,
+                PhoneNumber = r.PhoneNumber,
+            }).ToListAsync();
+        }
+
+        public async Task<CourierApplicantModel> GetCourierApplicant(int id)
+        {
+            CourierApplicantModel? model =  await this.repository.All<CourierApplicationRequest>().Where(r => r.Id == id).Select(r => new CourierApplicantModel()
+            {
+                Id = r.Id,
+                FullName = r.User.FirstName + " " + r.User.LastName,
+                Age = DateTime.Now.Year - r.User.BirthDate.Year,
+                Email = r.User.Email,
+                PhoneNumber = r.PhoneNumber,
+                Description = r.Description
+            }).FirstOrDefaultAsync();
+
+            return model;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-﻿namespace HouseRentingSystem.Infrastructure.Data.Common
+﻿namespace PizzaHub.Infrastructure.Common
 {
     public interface IRepository
     {

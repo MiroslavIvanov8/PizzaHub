@@ -1,4 +1,4 @@
-﻿using HouseRentingSystem.Infrastructure.Data.Common;
+﻿using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Extensions
