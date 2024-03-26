@@ -42,14 +42,10 @@ namespace PizzaHub.Controllers
             string message;
             if (result)
             {
-                // Request to become a courier was successful
-                TempData["Success"] = SuccessCourierRequestSubmission;
                 message = SuccessCourierRequestSubmission;
             }
             else
             {
-                // Request to become a courier failed
-                TempData["Error"] = ErrorInCourierRequestMessage;
                 message = ErrorInCourierRequestMessage;
             }
 
