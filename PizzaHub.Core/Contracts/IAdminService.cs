@@ -11,6 +11,6 @@ namespace PizzaHub.Core.Contracts
 
         Task<OrderQueryServiceModel> GetPendingOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
 
-        Task
+        
     }
 }
