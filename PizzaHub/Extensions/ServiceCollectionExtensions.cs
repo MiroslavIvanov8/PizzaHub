@@ -15,11 +15,12 @@ namespace PizzaHub.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
+            services.AddScoped<IAdminService, AdminService>();
             services.AddScoped<IRestaurantService, RestaurantService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<ICourierService, CourierService>();
             services.AddScoped<IRepository, Repository>();
             services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
 

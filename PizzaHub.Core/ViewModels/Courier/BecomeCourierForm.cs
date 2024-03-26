@@ -5,7 +5,7 @@ namespace PizzaHub.Core.ViewModels.Courier
     using System.ComponentModel.DataAnnotations;
 
     using static DataConstants.BecomeCourierForm;
-    using static ErrorMessages;
+    using static MessageConstants.ErrorMessages;
     public class BecomeCourierForm
     {
         public string UserId { get; set; } = string.Empty;

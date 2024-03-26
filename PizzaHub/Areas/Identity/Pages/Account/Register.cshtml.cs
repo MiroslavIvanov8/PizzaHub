@@ -15,7 +15,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using PizzaHub.Core.Contracts;
 using static PizzaHub.Infrastructure.Constants.DataConstants.ApplicationUser;
-using static PizzaHub.Infrastructure.Constants.ErrorMessages;
+using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {

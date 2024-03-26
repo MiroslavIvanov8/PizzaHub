@@ -1,4 +1,5 @@
 ﻿using HouseRentingSystem.Infrastructure.Data.Common;
+using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure.Data.Models;
 
@@ -16,6 +17,11 @@ namespace PizzaHub.Core.Interfaces
         {
             try
             {
+                if (await this.repository.AllReadOnly<CourierApplicationRequest>().AnyAsync(r => r.UserId == userId))
+                {
+                    return false;
+                }
+
                 CourierApplicationRequest request = new CourierApplicationRequest()
                 {
                     UserId = userId,

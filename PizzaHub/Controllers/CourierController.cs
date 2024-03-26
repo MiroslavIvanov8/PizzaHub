@@ -1,54 +1,69 @@
-﻿    using PizzaHub.Core.Contracts;
-    using PizzaHub.Extensions;
+﻿using PizzaHub.Core.Contracts;
+using PizzaHub.Extensions;
+using PizzaHub.Infrastructure.Constants;
 
-    namespace PizzaHub.Controllers
+namespace PizzaHub.Controllers
+{
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using static MessageConstants.ErrorMessages;
+    using static MessageConstants.SuccessMessages;
+    using Core.ViewModels.Courier;
+
+    [Authorize(Policy = "CustomerOnlyPolicy")]
+    public class CourierController : Controller
     {
-        using Microsoft.AspNetCore.Authorization;
-        using Microsoft.AspNetCore.Mvc;
+        private readonly ICourierService courierService;
 
-        using Core.ViewModels.Courier;
-
-        [Authorize(Policy = "CustomerOnlyPolicy")]
-        public class CourierController : Controller
+        public CourierController(ICourierService courierService)
         {
-            private readonly ICourierService courierService;
+            this.courierService = courierService;
+        }
 
-            public CourierController(ICourierService courierService)
+        [HttpGet]
+        public async Task<IActionResult> BecomeCourier()
+        {
+            BecomeCourierForm form = new BecomeCourierForm();
+            return View(form);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BecomeCourier(BecomeCourierForm form)
+        {
+            form.UserId = User.GetUserId();
+
+            if (!ModelState.IsValid)
             {
-                this.courierService = courierService;
-            }
-            
-            [HttpGet]
-            public async Task<IActionResult> BecomeCourier()
-            {
-                BecomeCourierForm form = new BecomeCourierForm();
                 return View(form);
             }
-            
-            [HttpPost]
-            public async Task<IActionResult> BecomeCourier(BecomeCourierForm form)
+
+            bool result = await this.courierService.CreateApplicationRequestAsync(form.UserId, form.PhoneNumber, form.Description);
+            string message;
+            if (result)
             {
-                form.UserId = User.GetUserId();
-
-                if (!ModelState.IsValid)
-                {
-                    return View(form);
-                }
-
-                bool result =
-                    await this.courierService.CreateApplicationRequestAsync(form.UserId, form.PhoneNumber,
-                        form.Description);
-
-                if (result == true)
-                {
-                    // Successfully submitted request to become a courier
-                }
-                else
-                {
-                    //Something went wrong with submitting your request
-                }
-
-                return null;
+                // Request to become a courier was successful
+                TempData["Success"] = SuccessCourierRequestSubmission;
+                message = SuccessCourierRequestSubmission;
             }
+            else
+            {
+                // Request to become a courier failed
+                TempData["Error"] = ErrorInCourierRequestMessage;
+                message = ErrorInCourierRequestMessage;
+            }
+
+            return RedirectToAction("ShowRequestSubmission", "Courier", new { message });
         }
+
+        public IActionResult ShowRequestSubmission(string message)
+        {
+            ViewBag.Message = message;
+            ViewBag.MessageType = message.Contains("successfully") ? "Success" :  "Error";
+
+            return View();
+        }
+
     }
+
+}

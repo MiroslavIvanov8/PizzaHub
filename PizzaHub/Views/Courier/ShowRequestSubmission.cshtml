@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Request Submission";
+}
+
+<h1>Request Submission</h1>
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert @((ViewBag.MessageType == "Success") ? "alert-success" : "alert-danger")" role="alert">
+        @ViewBag.Message
+    </div>
+}
+
+<a href="@Url.Action("Menu", "Restaurant")" class="btn btn-primary">Back to Menu</a>
