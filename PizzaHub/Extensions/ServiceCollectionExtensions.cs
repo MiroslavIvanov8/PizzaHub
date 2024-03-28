@@ -27,11 +27,6 @@ namespace PizzaHub.Extensions
 
             services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
             
-            services.AddControllersWithViews(options =>
-            {
-                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
-            });
-
             return services;
         }
 

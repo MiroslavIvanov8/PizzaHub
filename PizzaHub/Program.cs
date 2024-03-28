@@ -12,6 +12,11 @@ namespace PizzaHub
             builder.Services.AddApplicationDbContext(builder.Configuration);
             builder.Services.AddApplicationIdentity(builder.Configuration);
             builder.Services.AddApplicationServices();
+            
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+            });
 
             var app = builder.Build();
             

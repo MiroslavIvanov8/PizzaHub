@@ -76,7 +76,7 @@ namespace PizzaHub.Areas.Admin.Controllers
                 return View(model);
             }
 
-            return BadRequest();
+            return RedirectToAction(nameof(ShowCourierApplicants));
         }
     }
 }
