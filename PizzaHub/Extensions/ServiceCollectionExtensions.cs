@@ -1,16 +1,16 @@
-﻿using PizzaHub.Core.Services;
-using PizzaHub.Infrastructure.Common;
-namespace PizzaHub.Extensions
+﻿namespace PizzaHub.Extensions
 {
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
-    using Infrastructure;
+    using Core.Services;
     using Authorization;
+    using Infrastructure;
     using Core.Contracts;
+    using Infrastructure.Common;
     using Infrastructure.Data.Models;
-    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
 
     public static class ServiceCollectionExtensions
     {
@@ -22,8 +22,14 @@ namespace PizzaHub.Extensions
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<ICourierService, CourierService>();
-            
-            services.AddScoped<ISenderEmail, SenderEmail>();
+
+            services.AddScoped<ISendGridEmailSender, SendGridEmailSender>(provider =>
+            {
+                var apiKey =
+                    Environment.GetEnvironmentVariable(
+                        "SENDGRID_API_KEY"); // Make sure you have the correct configuration key
+                return new SendGridEmailSender(apiKey);
+            });
 
             services.AddScoped<IAuthorizationHandler, CustomerOnlyAuthorizationHandler>();
             

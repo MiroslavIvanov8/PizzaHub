@@ -1,3 +1,5 @@
+using PizzaHub.Core.Services;
+
 namespace PizzaHub
 {
     using Extensions;
@@ -17,7 +19,7 @@ namespace PizzaHub
             {
                 options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
             });
-
+            
             var app = builder.Build();
             
             if (app.Environment.IsDevelopment())
@@ -46,7 +48,7 @@ namespace PizzaHub
                     name: "Admin",
                     areaName: "Admin",
                     pattern: "Admin/{controller=Admin}/{action=Index}/{id?}");
-
+                 
                 endpoint.MapAreaControllerRoute(
                     name: "Courier",
                     areaName: "Courier",

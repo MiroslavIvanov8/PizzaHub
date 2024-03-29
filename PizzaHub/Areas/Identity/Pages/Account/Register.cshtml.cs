@@ -27,17 +27,15 @@ namespace PizzaHub.Areas.Identity.Pages.Account
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
         private readonly IRepository _repository;
-        private readonly ISenderEmail _senderEmail;
+        private readonly ISendGridEmailSender _emailSender;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender,
-            ISenderEmail senderEmail,
+            ISendGridEmailSender emailSender,
             RoleManager<IdentityRole> roleManager,
             IRepository repository)
         {
@@ -46,8 +44,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
-            _senderEmail = senderEmail;
+            _emailSender  = emailSender;
             _roleManager = roleManager;
             _repository = repository;
         }
@@ -158,10 +155,11 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    string fromEmail = "pizzamailtoyou@gmail.com";
+                    string fromName = "Pizza Hub Team";
+                    string subject = "Email Confirmation";
 
-                    await _emailSender.SendEmailAsync(user.Email, "Confirm your Email please", code);
+                    await _emailSender.SendEmailAsync(fromEmail, fromName, Input.Email, subject, htmlContent: $"Please confirm your email by clicking <a href=\"{callbackUrl}\">here</a>.");
                     
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

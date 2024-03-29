@@ -20,6 +20,7 @@
             this.repository = repository;
             this.orderService = orderService;
         }
+
         public async Task MarkOrderAcceptedAsync(int orderId)
         {
             Order? order = await this.repository.All<Order>().FirstOrDefaultAsync(o => o.Id == orderId);
