@@ -100,6 +100,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 UserName = "admin@mail.com",
                 NormalizedUserName = "admin@mail.com",
                 Email = "admin@mail.com",
+                EmailConfirmed = true,
                 NormalizedEmail = "admin@mail.com"
             };
 
@@ -115,6 +116,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 UserName = "courier@mail.com",
                 NormalizedUserName = "courier@mail.com",
                 Email = "courier@mail.com",
+                EmailConfirmed = true,
                 NormalizedEmail = "courier@mail.com"
             };
 
@@ -130,6 +132,7 @@ namespace PizzaHub.Infrastructure.Data.SeedDb
                 UserName = "customer@mail.com",
                 NormalizedUserName = "customer@mail.com",
                 Email = "customer@mail.com",
+                EmailConfirmed = true,
                 NormalizedEmail = "customer@mail.com"
             };
 
