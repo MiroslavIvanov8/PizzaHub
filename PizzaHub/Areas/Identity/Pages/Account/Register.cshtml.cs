@@ -16,6 +16,7 @@ using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure.Common;
 using static PizzaHub.Infrastructure.Constants.DataConstants.ApplicationUser;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
+using static PizzaHub.Infrastructure.Constants.DataConstants.AppGlobalConstants;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {
@@ -155,11 +156,10 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    string fromEmail = "pizzamailtoyou@gmail.com";
-                    string fromName = "Pizza Hub Team";
+                    
                     string subject = "Email Confirmation";
 
-                    await _emailSender.SendEmailAsync(fromEmail, fromName, Input.Email, subject, htmlContent: $"Please confirm your email by clicking <a href=\"{callbackUrl}\">here</a>.");
+                    await _emailSender.SendEmailAsync(FromAppEmail, FromAppTeam, Input.Email, subject, htmlContent: $"Please confirm your email by clicking <a href=\"{callbackUrl}\">here</a>.");
                     
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

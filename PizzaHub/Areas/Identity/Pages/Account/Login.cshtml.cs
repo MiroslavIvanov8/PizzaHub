@@ -105,8 +105,22 @@ namespace PizzaHub.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
+                var loggingUser = await _userManager.FindByEmailAsync(Input.Email);
+
+                if (loggingUser != null)
+                {
+                    if (!loggingUser.EmailConfirmed)
+                    {
+                        ModelState.AddModelError(string.Empty, "Please confirm your email before logging in.");
+                        return Page();
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
+                }
+
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {

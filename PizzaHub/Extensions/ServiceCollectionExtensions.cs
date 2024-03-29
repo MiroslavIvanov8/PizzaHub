@@ -27,7 +27,7 @@
             {
                 var apiKey =
                     Environment.GetEnvironmentVariable(
-                        "SENDGRID_API_KEY"); // Make sure you have the correct configuration key
+                        "SENDGRID_API_KEY"); 
                 return new SendGridEmailSender(apiKey);
             });
 
@@ -56,8 +56,8 @@
         {
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
-                    options.SignIn.RequireConfirmedAccount =
-                        config.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
+                    options.SignIn.RequireConfirmedAccount = true;
+                        //config.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
                     options.Password.RequireDigit = 
                         config.GetValue<bool>("Identity:Password:RequireDigit");
                     options.Password.RequireNonAlphanumeric =
