@@ -14,7 +14,10 @@ namespace PizzaHub.Core.Contracts
         Task<OrderQueryServiceModel> GetPendingOrdersAsync(int currentPage = 1 , int ordersPerPage = 10);
 
         Task<IEnumerable<CourierApplicantModel>> GetAllCourierApplicantsAsync();
-        Task<CourierApplicantModel> GetCourierApplicant(int id);
+        Task<CourierApplicantModel> GetCourierApplicantsAsync(int id);
 
+        Task<bool> ApproveCourierApplicationAsync(int id);
+
+        Task<bool> DeclineCourierApplicationAsync(int id);
     }
 }

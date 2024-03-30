@@ -69,7 +69,7 @@ namespace PizzaHub.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> CourierApplicantDetails(int id)
         {
-            CourierApplicantModel model = await this.adminService.GetCourierApplicant(id);
+            CourierApplicantModel model = await this.adminService.GetCourierApplicantsAsync(id);
 
             if (model != null)
             {
@@ -77,6 +77,22 @@ namespace PizzaHub.Areas.Admin.Controllers
             }
 
             return RedirectToAction(nameof(ShowCourierApplicants));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApproveCourierApplicant(int id)
+        {
+            await this.adminService.ApproveCourierApplicationAsync(id);
+
+            return RedirectToAction("ShowCourierApplicants", "Admin");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeclineCourierApplicant(int id)
+        {
+            await this.adminService.DeclineCourierApplicationAsync(id);
+
+            return RedirectToAction("ShowCourierApplicants", "Admin");
         }
     }
 }

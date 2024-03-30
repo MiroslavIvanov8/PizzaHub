@@ -1,4 +1,5 @@
-﻿using DataConstants = PizzaHub.Infrastructure.Constants.DataConstants;
+﻿using Microsoft.AspNetCore.Identity;
+using DataConstants = PizzaHub.Infrastructure.Constants.DataConstants;
 
 namespace PizzaHub.Core.Services
 {
@@ -164,8 +165,70 @@ namespace PizzaHub.Core.Services
                 PhoneNumber = r.PhoneNumber,
             }).ToListAsync();
         }
+        
+        public async Task<bool> ApproveCourierApplicationAsync(int id)
+        {
+            CourierApplicationRequest? request = await this.repository
+                .All<CourierApplicationRequest>().Where(r => r.Id == id)
+                .FirstOrDefaultAsync();
 
-        public async Task<CourierApplicantModel> GetCourierApplicant(int id)
+            if (request != null)
+            {
+                Courier courier = new Courier()
+                {
+                    UserId = request.UserId,
+                };
+
+
+                IdentityUserRole<string> userRole = new IdentityUserRole<string>()
+                {
+                    RoleId = "22222222-2222-2222-2222-b893d8395082",
+                    UserId = request.User.Id,
+                };
+
+                await this.repository.AddAsync(courier);
+                await this.repository.AddAsync(userRole);
+                await this.repository.Remove(request);
+                await this.repository.SaveChangesAsync();
+
+                string subject = "Your request has been approved!";
+                await emailSender.SendEmailAsync(FromAppEmail,
+                    FromAppTeam,
+                    request.User.Email,
+                    subject,
+                    CourierApprovalEmailMessage);
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<bool> DeclineCourierApplicationAsync(int id)
+        {
+            CourierApplicationRequest? request = await this.repository
+                .All<CourierApplicationRequest>().Where(r => r.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (request != null)
+            {
+                await this.repository.Remove(request);
+                await this.repository.SaveChangesAsync();
+
+                string subject = "Courier Application Request Declined";
+                await this.emailSender.SendEmailAsync(
+                    FromAppEmail,
+                    FromAppTeam,
+                    request.User.Email,
+                    subject,
+                    CourierDeclinedEmailMessage);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<CourierApplicantModel> GetCourierApplicantsAsync(int id)
         {
             CourierApplicantModel? model =  await this.repository.All<CourierApplicationRequest>().Where(r => r.Id == id).Select(r => new CourierApplicantModel()
             {

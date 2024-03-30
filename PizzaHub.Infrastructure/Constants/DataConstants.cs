@@ -14,6 +14,12 @@ namespace PizzaHub.Infrastructure.Constants
 
             public const string OrderAcceptedBody =
                 "Great news! Your order is now being prepared. Thanks for choosing us for your pizza delivery!";
+
+            public const string CourierApprovalEmailMessage =
+                "Congratulations! You've been approved to join our Courier ranks! Welcome to Pizza Hub Courier Service!";
+
+            public const string CourierDeclinedEmailMessage =
+                "We regret to inform you that your request to become a courier has been declined. We appreciate your interest and thank you for considering our platform.";
         }
 
         public static class ApplicationUser

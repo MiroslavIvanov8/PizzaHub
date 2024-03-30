@@ -26,6 +26,11 @@
 </div>
 
 <div>
-    <a asp-action="Approve" asp-route-id="@Model.Id" class="btn btn-success">Approve</a>
-    <a asp-action="Decline" asp-route-id="@Model.Id" class="btn btn-danger">Decline</a>
+    <form asp-action="ApproveCourierApplicant" asp-route-id="@Model.Id" method="post" style="display: inline-block; margin-right: 10px;">
+        <button type="submit" class="btn btn-success">Approve</button>
+    </form>
+
+    <form asp-action="DeclineCourierApplicant" asp-route-id="@Model.Id" method="post" style="display: inline-block;">
+        <button type="submit" class="btn btn-danger">Decline</button>
+    </form>
 </div>
