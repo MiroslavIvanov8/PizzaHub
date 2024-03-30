@@ -9,6 +9,11 @@ namespace PizzaHub.Infrastructure.Constants
         {
             public const string FromAppEmail = "pizzamailtoyou@gmail.com";
             public const string FromAppTeam = "Pizza Hub Team";
+
+            public const string OrderAcceptedSuccessfully = "Your order has been accepted successfully!";
+
+            public const string OrderAcceptedBody =
+                "Great news! Your order is now being prepared. Thanks for choosing us for your pizza delivery!";
         }
 
         public static class ApplicationUser

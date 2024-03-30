@@ -1,4 +1,6 @@
-﻿namespace PizzaHub.Core.Services
+﻿using DataConstants = PizzaHub.Infrastructure.Constants.DataConstants;
+
+namespace PizzaHub.Core.Services
 {
     using Microsoft.EntityFrameworkCore;
     using Contracts;
@@ -9,16 +11,19 @@
     using Infrastructure.Constants;
     using Infrastructure.Data.Models;
     using Infrastructure.Enums;
+    using static DataConstants.AppEmailConstants;
 
     public class AdminService : IAdminService
     {
-        private IRepository repository;
+        private readonly IRepository repository;
         private readonly IOrderService orderService;
+        private readonly ISendGridEmailSender emailSender;
 
-        public AdminService(IRepository repository, IOrderService orderService)
+        public AdminService(IRepository repository, IOrderService orderService, ISendGridEmailSender emailSender)
         {
             this.repository = repository;
             this.orderService = orderService;
+            this.emailSender = emailSender;
         }
 
         public async Task MarkOrderAcceptedAsync(int orderId)
@@ -28,6 +33,12 @@
             if (order != null)
             {
                 order.OrderStatusId = (int)OrderStatusEnum.InProgress;
+
+                await emailSender.SendEmailAsync(FromAppEmail,
+                    FromAppTeam,
+                    order.Customer.User.Email,
+                    OrderAcceptedSuccessfully,
+                    OrderAcceptedBody);
             }
 
             await this.repository.SaveChangesAsync();
@@ -39,7 +50,7 @@
 
             if ((int)filterDays > 0)
             {
-                var fromDate = DateTime.UtcNow.Date.AddDays(-(int)filterDays);
+                var fromDate = DateTime.Now.Date.AddDays(-(int)filterDays + 1);
                 allOrders = allOrders.Where(o => o.CreatedOn >= fromDate);
             }
 
