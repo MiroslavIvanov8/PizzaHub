@@ -13,7 +13,7 @@ using System.Text;
 using PizzaHub.Core.Contracts;
 using System.Text.Encodings.Web;
 using PizzaHub.Infrastructure.Data.Models;
-using static PizzaHub.Infrastructure.Constants.DataConstants.AppGlobalConstants;
+using static PizzaHub.Infrastructure.Constants.DataConstants.AppEmailConstants;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {

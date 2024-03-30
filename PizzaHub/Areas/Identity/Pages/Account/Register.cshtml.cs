@@ -16,7 +16,7 @@ using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure.Common;
 using static PizzaHub.Infrastructure.Constants.DataConstants.ApplicationUser;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
-using static PizzaHub.Infrastructure.Constants.DataConstants.AppGlobalConstants;
+using static PizzaHub.Infrastructure.Constants.DataConstants.AppEmailConstants;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {
@@ -142,6 +142,8 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
                     await _userManager.AddToRoleAsync(user, "Customer");
+
+                    //TODO Create a ICustomerService to add newly registered user to customer table
                     await _repository.AddAsync(new Customer()
                     {
                         UserId = user.Id,
@@ -163,7 +165,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
+                        return RedirectToPage("Login", new { message = "Verification email sent. Please check your email." });
                     }
                     else
                     {

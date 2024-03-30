@@ -4,9 +4,9 @@ namespace PizzaHub.Infrastructure.Constants
 {
     public static class DataConstants
     {
-        public static class AppGlobalConstants
+        public const string DateFormat = "dd/MM/yyyy HH:mm:ss";
+        public static class AppEmailConstants
         {
-            public const string DateFormat = "dd/MM/yyyy HH:mm:ss";
             public const string FromAppEmail = "pizzamailtoyou@gmail.com";
             public const string FromAppTeam = "Pizza Hub Team";
         }

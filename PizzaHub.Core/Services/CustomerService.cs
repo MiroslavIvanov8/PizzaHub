@@ -45,7 +45,7 @@ namespace PizzaHub.Core.Services
                 Restaurant = order.Restaurant.Name,
                 Status = order.OrderStatus.Name,
                 Amount = order.TotalAmount,
-                CreatedOn = order.CreatedOn.ToString(DataConstants.AppGlobalConstants.DateFormat),
+                CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
                 OrderItems = order.Items.Select(oi => oi.MenuItem.Name),
                 
             }).OrderByDescending(o => o.CreatedOn);
