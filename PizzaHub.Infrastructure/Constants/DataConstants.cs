@@ -7,6 +7,7 @@ namespace PizzaHub.Infrastructure.Constants
         public const string DateFormat = "dd/MM/yyyy HH:mm:ss";
         public static class AppEmailConstants
         {
+            //TODO fix these messages here and the ones in message constants
             public const string FromAppEmail = "pizzamailtoyou@gmail.com";
             public const string FromAppTeam = "Pizza Hub Team";
 

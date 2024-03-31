@@ -1,4 +1,6 @@
 ﻿using PizzaHub.Core.ViewModels.Courier;
+using PizzaHub.Core.ViewModels.MenuItem;
+using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Areas.Admin.Controllers
 {
@@ -14,15 +16,24 @@ namespace PizzaHub.Areas.Admin.Controllers
     {
         private readonly IAdminService adminService;
         private readonly IOrderService orderService;
+        private readonly IRestaurantService restaurantService;
 
-        public AdminController(IAdminService adminService, IOrderService orderService)
+        public AdminController(IAdminService adminService, IOrderService orderService, IRestaurantService restaurantService)
         {
             this.adminService = adminService;
             this.orderService = orderService;
+            this.restaurantService = restaurantService;
         }
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> Menu()
+        {
+            var models = await this.restaurantService.GetMenuAsync();
+
+            return View(models);
         }
 
         [HttpGet]
@@ -94,5 +105,52 @@ namespace PizzaHub.Areas.Admin.Controllers
 
             return RedirectToAction("ShowCourierApplicants", "Admin");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> AddMenuItem()
+        {
+            MenuItemFormModel model = new MenuItemFormModel();
+            
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMenuItem(MenuItemFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await this.adminService.AddMenuItemAsync(model);
+
+            return RedirectToAction("Menu", "Admin");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditMenuItem(int id)
+        {
+            MenuItemFormModel? item = await this.adminService.GetMenuItemFormAsync(id);
+            if (item == null)
+            {
+                return BadRequest();
+            }
+
+            return View(item);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditMenuItem(MenuItemFormModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            await this.adminService.EditMenuItemAsync(model);
+
+            return RedirectToAction("Menu", "Admin");
+        }
+
     }
 }

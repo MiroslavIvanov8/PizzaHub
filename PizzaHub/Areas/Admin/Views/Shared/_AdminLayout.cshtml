@@ -58,11 +58,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="Admin" asp-controller="Admin" asp-action="ShowCourierApplicants">Courier Applicants</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AddMenuItem">Add new Menu Item</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="EditMenuitem">Edit a Menu Item</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="False">
+                                Menu Item Menu
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Admin" asp-action="Menu">View of the Menu</a>
+                                <a class="dropdown-item" asp-area="Admin" asp-controller="Admin" asp-action="AddMenuItem">Add a Menu Item</a>
+                            </div>
                         </li>
                     </ul>
                     <span>Hello, @User.Identity.Name</span>

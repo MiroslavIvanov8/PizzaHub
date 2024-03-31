@@ -27,6 +27,23 @@ namespace PizzaHub.Core.Services
             this.emailSender = emailSender;
         }
 
+        public async Task<MenuItemFormModel?> GetMenuItemFormAsync(int id)
+        {
+            MenuItemFormModel? item = await this.repository
+                .All<MenuItem>()
+                .Where(i => i.Id == id)
+                .Select(i => new MenuItemFormModel()
+                {
+                    Id = i.Id,
+                    Name = i.Name,
+                    Ingredients = i.Ingredients,
+                    ImageUrl = i.ImageUrl,
+                    Price = i.Price
+                }).FirstOrDefaultAsync();
+
+            return item;
+        }
+
         public async Task MarkOrderAcceptedAsync(int orderId)
         {
             Order? order = await this.repository.All<Order>().FirstOrDefaultAsync(o => o.Id == orderId);
@@ -226,6 +243,43 @@ namespace PizzaHub.Core.Services
             }
 
             return false;
+        }
+
+        public async Task<int> AddMenuItemAsync(MenuItemFormModel model)
+        {
+            MenuItem menuItem = new MenuItem()
+            {
+                Name = model.Name,
+                ImageUrl = model.ImageUrl,
+                Ingredients = model.Ingredients,
+                Price = model.Price,
+                RestaurantId = 1
+            };
+
+            await this.repository.AddAsync(menuItem);
+            await this.repository.SaveChangesAsync();
+
+            return menuItem.Id;
+        }
+
+        public async Task<int> EditMenuItemAsync(MenuItemFormModel model)
+        {
+            MenuItem? item = await this.repository
+                .All<MenuItem>()
+                .Where(i => i.Id == model.Id)
+                .FirstOrDefaultAsync();
+
+            if (item != null)
+            {
+                item.Name = model.Name;
+                item.ImageUrl = model.ImageUrl;
+                item.Price = model.Price;
+                item.Price = model.Price;
+
+                return await this.repository.SaveChangesAsync();
+            }
+
+            return item.Id;
         }
 
         public async Task<CourierApplicantModel> GetCourierApplicantsAsync(int id)
