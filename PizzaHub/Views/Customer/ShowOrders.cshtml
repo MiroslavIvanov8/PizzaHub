@@ -25,11 +25,11 @@
                     <ul>
                         @foreach (var item in order.OrderItems)
                         {
-                            <li>@item</li>
+                                <li>@item.Name - @item.Quantity x</li>
                         }
                     </ul>
                 </td>
-                    <td>$@order.Amount</td>
+                <td>$@order.Amount</td>
             </tr>
         }
         </tbody>

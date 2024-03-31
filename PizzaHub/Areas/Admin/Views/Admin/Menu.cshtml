@@ -22,6 +22,11 @@
                 
                 <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">Edit</button>
             </form>
+            <form asp-area="Admin" asp-controller="Admin" asp-action="DeleteMenuItem" method="get" class="mb-2">
+                <input type="hidden" name="id" value="@i.Id" />
+
+                <button type="submit" class="btn btn-danger mt-2 w-100 p-3 fw-bold">Delete</button>
+            </form>
         </div>
     }
 </div>

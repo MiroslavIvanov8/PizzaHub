@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
+using PizzaHub.Core.ViewModels.MenuItem;
 using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Constants;
@@ -39,14 +40,18 @@ namespace PizzaHub.Core.Services
                 .Where(o => o.CustomerId == userId).ToListAsync();
 
             //TODO change the models so it shows the correct quantity of every item in the order
-            var orderViewModels = orders.Select(order => new OrderViewModel
+            var orderViewModels = orders.Select(order => new OrderViewModel()
             {
                 Id = order.Id,
                 Restaurant = order.Restaurant.Name,
                 Status = order.OrderStatus.Name,
                 Amount = order.TotalAmount,
                 CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
-                OrderItems = order.Items.Select(oi => oi.MenuItem.Name),
+                OrderItems = order.Items.Select(oi => new OrderMenuItemWithQuantityViewModel
+                {
+                    Name = oi.MenuItem.Name,
+                    Quantity = oi.Quantity,
+                }),
                 
             }).OrderByDescending(o => o.CreatedOn);
 

@@ -1,11 +1,13 @@
 ﻿
+using PizzaHub.Core.ViewModels.MenuItem;
+
 namespace PizzaHub.Core.ViewModels.Order
 {
     public class OrderViewModel
     {
         public OrderViewModel()
         {
-            this.OrderItems = new List<string>();
+            this.OrderItems = new List<OrderMenuItemWithQuantityViewModel>();
         }
 
         public int Id { get; set; }
@@ -15,7 +17,7 @@ namespace PizzaHub.Core.ViewModels.Order
         public string CreatedOn { get; set; } = null!;
         public int Quantity { get; set; }
 
-        public IEnumerable<string> OrderItems { get; set; }
+        public IEnumerable<OrderMenuItemWithQuantityViewModel> OrderItems { get; set; }
 
     }
 }

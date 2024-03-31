@@ -30,6 +30,9 @@ namespace PizzaHub.Infrastructure.Data.Models
         [StringLength(IngredientsMaxLength)]
         public string Ingredients { get; set; } = null!;
 
+        [Required]
+        public bool IsDeleted { get; set; } = false;
+
         [ForeignKey(nameof(RestaurantId))]
         public int RestaurantId { get; set; }
 

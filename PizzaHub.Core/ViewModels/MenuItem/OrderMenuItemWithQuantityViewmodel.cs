@@ -1,4 +1,6 @@
-﻿namespace PizzaHub.Core.ViewModels.MenuItem
+﻿using PizzaHub.Core.ViewModels.Order;
+
+namespace PizzaHub.Core.ViewModels.MenuItem
 {
     public class OrderMenuItemWithQuantityViewModel
     {

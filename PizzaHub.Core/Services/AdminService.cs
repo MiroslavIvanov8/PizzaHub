@@ -282,6 +282,23 @@ namespace PizzaHub.Core.Services
             return item.Id;
         }
 
+        public async Task<bool> DeleteMenuItemAsync(int id)
+        {
+            MenuItem? item = await this.repository
+                .All<MenuItem>()
+                .Where(i => i.Id == id)
+                .FirstOrDefaultAsync();
+
+            if (item != null)
+            {
+                item.IsDeleted = !item.IsDeleted;
+                await this.repository.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<CourierApplicantModel> GetCourierApplicantsAsync(int id)
         {
             CourierApplicantModel? model =  await this.repository.All<CourierApplicationRequest>().Where(r => r.Id == id).Select(r => new CourierApplicantModel()

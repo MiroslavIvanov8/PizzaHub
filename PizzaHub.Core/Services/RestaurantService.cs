@@ -17,7 +17,9 @@ namespace PizzaHub.Core.Services
 
         public async Task<IEnumerable<MenuItemViewModel>> GetMenuAsync()
         {
-            return await this.repository.AllReadOnly<MenuItem>().Select(i => new MenuItemViewModel()
+            return await this.repository.AllReadOnly<MenuItem>()
+                .Where(i => i.IsDeleted == false)
+                .Select(i => new MenuItemViewModel()
             {
                 Id = i.Id,
                 Name = i.Name,

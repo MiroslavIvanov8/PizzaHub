@@ -152,5 +152,30 @@ namespace PizzaHub.Areas.Admin.Controllers
             return RedirectToAction("Menu", "Admin");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeleteMenuitem(int id)
+        {
+            MenuItemFormModel? model = await this.adminService.GetMenuItemFormAsync(id);
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ConfirmRemoveMenuItem(int id)
+        {
+            bool result = await this.adminService.DeleteMenuItemAsync(id);
+
+            if (result == false)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("Menu", "Admin");
+        }
     }
 }

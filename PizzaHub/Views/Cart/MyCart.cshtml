@@ -10,6 +10,14 @@
 <div class="container mt-5">
     <h2>Your Cart</h2>
 
+    <div class="row justify-content-end">
+        <div class="col-md-6 text-end">
+            <form asp-controller="Customer" asp-action="ShowOrders" method="get">
+                <button type="submit" class="btn btn-info">View Past Orders</button>
+            </form>
+        </div>
+    </div>
+
     @if (Model.Any())
     {
         <table class="table">
@@ -66,4 +74,5 @@
     {
         <p>Your cart is empty.</p>
     }
+
 </div>
