@@ -38,7 +38,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PizzaHub Admin Panel</a>
+                <a class="navbar-brand" asp-area="Courier" asp-controller="Courier" asp-action="Index">PizzaHub Couriers</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -46,30 +46,25 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="False">
-                                Order Menu
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" aria-haspopup="true" aria-expanded="false" style="color: black;">
+                                Menu
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Admin" asp-action="ShowTodayPendingOrders">Pending Orders</a>
-                                <a class="dropdown-item" asp-area="Admin" asp-controller="Admin" asp-action="ShowAllOrders">All Orders</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
+                                <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Show Today Income</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Stop for Today</a>
                             </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="Admin" asp-controller="Admin" asp-action="ShowCourierApplicants">Courier Applicants</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="AddMenuItem">Add new Menu Item</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="EditMenuitem">Edit a Menu Item</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOrders" role="button" aria-haspopup="true" aria-expanded="false" style="color: black;">
+                                Orders
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownOrders">
+                                <a class="dropdown-item" asp-area="Courier" asp-controller="Order" asp-action="PickOrders">Pick Order</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Your Picked Orders</a>
+                            </div>
                         </li>
                     </ul>
-                    <span>Hello, @User.Identity.Name</span>
-                    <ul class="nav-item ml-auto">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Admin" })">
-                            <button type="submit" class="btn btn-outline-primary">Logout</button>
-                        </form>
-                    </ul>
+                    <partial name="_CourierLogoutPartial" />
                 </div>
 
             </div>
