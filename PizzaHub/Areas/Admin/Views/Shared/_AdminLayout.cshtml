@@ -7,33 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PizzaHub.styles.css" asp-append-version="true" />
-    <style>
-        /* Dropdown Button */
-        .nav-item.dropdown:hover .dropdown-menu {
-            color: black;
-            display: block;
-        }
-
-        /* Dropdown Content */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-            /* Links inside the dropdown */
-            .dropdown-menu a {
-                color: black; /* Changed from light gray to black */
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-            }
-            
-    </style>
+    <link rel="stylesheet" href="~/admin.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -68,12 +42,7 @@
                             </div>
                         </li>
                     </ul>
-                    <span>Hello, @User.Identity.Name</span>
-                    <ul class="nav-item ml-auto">
-                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Admin" })">
-                            <button type="submit" class="btn btn-outline-primary">Logout</button>
-                        </form>
-                    </ul>
+                    <partial name="_AdminLoginPartial" />
                 </div>
                 
             </div>

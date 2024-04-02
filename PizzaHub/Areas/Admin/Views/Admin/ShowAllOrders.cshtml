@@ -81,14 +81,11 @@
                 <td>
                     @foreach (var item in order.OrderItems)
                     {
-                        <span>@item.Name x @item.Quantity</span>
-                        if (!ReferenceEquals(item, order.OrderItems.Last()))
-                        {
-                            <span>, </span>
-                        }
+                        <li>@item.Name x @item.Quantity</li>
+                        
                     }
                 </td>
-                <td>$@order.Amount</td>
+                <td><strong>$@order.Amount</strong></td>
             </tr>
         }
     </tbody>
