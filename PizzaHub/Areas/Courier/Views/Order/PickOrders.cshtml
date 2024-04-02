@@ -1,0 +1,85 @@
+﻿@model PizzaHub.Core.ViewModels.Order.AllOrdersViewModel
+
+@{
+    var maxPage = Math.Ceiling((double)Model.TotalOrders / Model.OrdersPerPage);
+    var shouldButtonBeDisabled = Model.CurrentPage == maxPage || !Model.Orders.Any() || Model.TotalOrders == 10;
+}
+
+<h1>In Progress Orders</h1>
+
+@if (Model.Orders.Any())
+{
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Restaurant</th>
+            <th>Customer</th>
+            <th>Address</th>
+            <th>Amount</th>
+            <th>Created On</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.Restaurant</td>
+                <td>@order.Customer</td>
+                <td>@order.Address</td>
+                <td>$@order.Amount</td>
+                <td>@order.CreatedOn</td>
+                <td style="background-color: #14D1D1">
+                    <strong>@order.Status</strong>
+                </td>
+                <td>
+                    <form  asp-area="Courier" asp-controller="Order" asp-action="PickOrder" method="post">
+                        <input type="hidden" name="id" value="@order.Id" />
+                        <button type="submit" style="background-color: #FAFC43; color: black;" class="btn btn-success">
+                            <strong>Pick Order</strong>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div class="row mb-5">
+        <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-start">
+            @{
+                var previousPage = Model.CurrentPage - 1;
+                if (previousPage < 1)
+                {
+                    previousPage = 1;
+                }
+            }
+            <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
+               asp-area="Courier"
+               asp-controller="Order"
+               asp-action="PickOrders"
+               asp-route-currentPage="@previousPage">Previous</a>
+        </div>
+
+        <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-center align-items-center">
+        </div>
+
+        <div class="col-md-4 d-grid gap-2 d-md-flex justify-content-md-end">
+            @{
+                var nextPage = Model.CurrentPage + 1;
+            }
+            <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
+               asp-area="Courier"
+               asp-controller="Order"
+               asp-action="PickOrders"
+               asp-route-currentPage="@nextPage">Next</a>
+        </div>
+    </div>
+}
+else
+{
+    <p>No in progress orders found.</p>
+}

@@ -2,9 +2,9 @@
 
 namespace PizzaHub.Core.ViewModels.Order
 {
-    public class AdminOrderViewmodel
+    public class DetailedOrderViewModel
     {
-        public AdminOrderViewmodel()
+        public DetailedOrderViewModel()
         {
             OrderItems = new List<OrderMenuItemWithQuantityViewModel>();
         }

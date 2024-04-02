@@ -33,7 +33,10 @@ namespace PizzaHub.Areas.Identity.Pages.Account
             {
                 return RedirectToAction("Index", "Home");
             }
-
+            if (User.IsInRole("Courier"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             if (returnUrl != null)
             {
                 return LocalRedirect(returnUrl);

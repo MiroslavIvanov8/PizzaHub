@@ -4,9 +4,9 @@
     {
         public OrderQueryServiceModel()
         {
-            this.Orders = new HashSet<AdminOrderViewmodel>();
+            this.Orders = new HashSet<DetailedOrderViewModel>();
         }
         public int OrdersCount { get; set; }
-        public IEnumerable<AdminOrderViewmodel> Orders { get; set; }
+        public IEnumerable<DetailedOrderViewModel> Orders { get; set; }
     }
 }

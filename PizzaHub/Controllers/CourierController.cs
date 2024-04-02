@@ -11,7 +11,6 @@ namespace PizzaHub.Controllers
     using static MessageConstants.SuccessMessages;
     using Core.ViewModels.Courier;
 
-    [Authorize(Policy = "CustomerOnlyPolicy")]
     public class CourierController : Controller
     {
         private readonly ICourierService courierService;
@@ -21,6 +20,8 @@ namespace PizzaHub.Controllers
             this.courierService = courierService;
         }
 
+        [Authorize(Policy = "CustomerOnlyPolicy")]
+
         [HttpGet]
         public async Task<IActionResult> BecomeCourier()
         {
@@ -28,6 +29,7 @@ namespace PizzaHub.Controllers
             return View(form);
         }
 
+        [Authorize(Policy = "CustomerOnlyPolicy")]
         [HttpPost]
         public async Task<IActionResult> BecomeCourier(BecomeCourierForm form)
         {
@@ -52,11 +54,18 @@ namespace PizzaHub.Controllers
             return RedirectToAction("ShowRequestSubmission", "Courier", new { message });
         }
 
+        [Authorize(Policy = "CustomerOnlyPolicy")]
         public IActionResult ShowRequestSubmission(string message)
         {
             ViewBag.Message = message;
             ViewBag.MessageType = message.Contains("successfully") ? "Success" :  "Error";
 
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> OrderOrDeliver()
+        {
             return View();
         }
 

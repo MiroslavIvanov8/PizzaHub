@@ -9,7 +9,7 @@ namespace PizzaHub.Core.ViewModels.Order
     {
         public AllOrdersViewModel()
         {
-            this.Orders = new HashSet<AdminOrderViewmodel>();
+            this.Orders = new HashSet<DetailedOrderViewModel>();
         }
 
         public string Status { get; set; } = "All";
@@ -22,6 +22,6 @@ namespace PizzaHub.Core.ViewModels.Order
 
         public IEnumerable<string> Statuses { get; set; }
         public IEnumerable<int> DaysRange { get; set; }
-        public IEnumerable<AdminOrderViewmodel> Orders { get; set; }
+        public IEnumerable<DetailedOrderViewModel> Orders { get; set; }
     }
 }

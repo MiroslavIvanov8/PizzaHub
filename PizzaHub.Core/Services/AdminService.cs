@@ -98,12 +98,12 @@ namespace PizzaHub.Core.Services
                 .Take(ordersPerPage)
                 .ToList();
 
-            var orderViewModels = new List<AdminOrderViewmodel>();
+            var orderViewModels = new List<DetailedOrderViewModel>();
 
             foreach (var order in orders)
             {
                 
-                var orderViewModel = new AdminOrderViewmodel
+                var orderViewModel = new DetailedOrderViewModel
                 {
                     Id = order.Id,
                     Address = order.Address,
@@ -142,14 +142,14 @@ namespace PizzaHub.Core.Services
                 .Take(ordersPerPage)
                 .ToList();
             
-            var orderViewModels = new List<AdminOrderViewmodel>();
+            var orderViewModels = new List<DetailedOrderViewModel>();
 
             foreach (var order in orders)
             {
                 var orderItemsWithQuantity =
                     await this.orderService.GetOrderMenuItemWithQuantityViewmodelAsync(order.Id);
 
-                var orderViewModel = new AdminOrderViewmodel
+                var orderViewModel = new DetailedOrderViewModel
                 {
                     Id = order.Id,
                     Address = order.Address,

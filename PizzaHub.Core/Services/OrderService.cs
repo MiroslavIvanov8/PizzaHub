@@ -121,6 +121,11 @@ namespace PizzaHub.Core.Services
                 .Select(s => s.Name)
                 .ToListAsync();
         }
+
+        public async Task<Order?> GetOrderAsync(int id)
+        {
+           return await this.repository.All<Order>().FirstOrDefaultAsync(o => o.Id == id);
+        }
     }
 }
   

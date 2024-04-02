@@ -1,14 +1,12 @@
-﻿using PizzaHub.Core.ViewModels.Courier;
-using PizzaHub.Core.ViewModels.MenuItem;
-using PizzaHub.Infrastructure.Data.Models;
-
-namespace PizzaHub.Areas.Admin.Controllers
+﻿namespace PizzaHub.Areas.Admin.Controllers
 {
+    using Core.Contracts;
+    using Core.ViewModels.Order;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
-    using Core.Contracts;
-    using Core.ViewModels.Order;
+    using PizzaHub.Core.ViewModels.Courier;
+    using Core.ViewModels.MenuItem;
 
     [Area("Admin")]
     [Authorize(Roles = "Admin")]

@@ -138,7 +138,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     else if (await _userManager.IsInRoleAsync(user, "Courier"))
                     {
                         // Redirect to the courier area index
-                        return LocalRedirect(returnUrl);
+                        return RedirectToAction("OrderOrDeliver", "Courier", "");
                     }
                     else
                     {

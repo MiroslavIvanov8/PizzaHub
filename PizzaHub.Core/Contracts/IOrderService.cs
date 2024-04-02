@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using PizzaHub.Areas.Admin.Models.Order;
 using PizzaHub.Core.ViewModels.MenuItem;
 using PizzaHub.Core.ViewModels.Order;
+using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Core.Contracts
 {
@@ -16,5 +17,6 @@ namespace PizzaHub.Core.Contracts
         Task<IEnumerable<OrderMenuItemWithQuantityViewModel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId);
 
         Task<IEnumerable<string>> GetStatusNamesAsync();
+        Task<Order> GetOrderAsync(int id);
     }
 }
