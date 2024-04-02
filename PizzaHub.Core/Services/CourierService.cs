@@ -1,23 +1,31 @@
-﻿using Microsoft.EntityFrameworkCore;
-using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels.MenuItem;
-using PizzaHub.Core.ViewModels.Order;
-using PizzaHub.Infrastructure.Common;
-using PizzaHub.Infrastructure.Constants;
-using PizzaHub.Infrastructure.Data.Models;
-using PizzaHub.Infrastructure.Enums;
+﻿using MessageConstants = PizzaHub.Infrastructure.Constants.MessageConstants;
 
 namespace PizzaHub.Core.Services
 {
+    using Microsoft.EntityFrameworkCore;
+
+    using Contracts;
+    using ViewModels.MenuItem;
+    using ViewModels.Order;
+    using Infrastructure.Common;
+    using Infrastructure.Constants;
+    using Infrastructure.Data.Models;
+    using Infrastructure.Enums;
+
+    using static MessageConstants.AppEmailConstants;
+
+
     public class CourierService : ICourierService
     {
         private readonly IRepository repository;
         private readonly IOrderService orderService;
+        private readonly ISendGridEmailSender emailSender;
 
-        public CourierService(IRepository repository, IOrderService orderService)
+        public CourierService(IRepository repository, IOrderService orderService, ISendGridEmailSender emailSender)
         {
             this.repository = repository;
             this.orderService = orderService;
+            this.emailSender = emailSender;
         }
         public async Task<bool> CreateApplicationRequestAsync(string userId, string phoneNumber, string description)
         {
@@ -113,6 +121,14 @@ namespace PizzaHub.Core.Services
             {
                 order.OrderStatusId = (int)OrderStatusEnum.OutForDelivery;
                 order.CourierId = courierId;
+
+                string subject = "Out for Delivery!";
+                await this.emailSender.SendEmailAsync(
+                    FromAppEmail,
+                    FromAppTeam,
+                    order.Customer.User.Email,
+                    subject,
+                    OrderOutForDelivery);
 
                 await this.repository.SaveChangesAsync();
 

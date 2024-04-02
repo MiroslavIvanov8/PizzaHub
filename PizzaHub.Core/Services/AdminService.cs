@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using DataConstants = PizzaHub.Infrastructure.Constants.DataConstants;
+using MessageConstants = PizzaHub.Infrastructure.Constants.MessageConstants;
 
 namespace PizzaHub.Core.Services
 {
@@ -12,7 +13,7 @@ namespace PizzaHub.Core.Services
     using Infrastructure.Constants;
     using Infrastructure.Data.Models;
     using Infrastructure.Enums;
-    using static DataConstants.AppEmailConstants;
+    using static MessageConstants.AppEmailConstants;
 
     public class AdminService : IAdminService
     {

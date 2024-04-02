@@ -16,7 +16,7 @@ using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure.Common;
 using static PizzaHub.Infrastructure.Constants.DataConstants.ApplicationUser;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
-using static PizzaHub.Infrastructure.Constants.DataConstants.AppEmailConstants;
+using static PizzaHub.Infrastructure.Constants.MessageConstants.AppEmailConstants;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {

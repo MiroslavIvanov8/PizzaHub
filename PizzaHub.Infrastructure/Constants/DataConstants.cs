@@ -5,24 +5,7 @@ namespace PizzaHub.Infrastructure.Constants
     public static class DataConstants
     {
         public const string DateFormat = "dd/MM/yyyy HH:mm:ss";
-        public static class AppEmailConstants
-        {
-            //TODO fix these messages here and the ones in message constants
-            public const string FromAppEmail = "pizzamailtoyou@gmail.com";
-            public const string FromAppTeam = "Pizza Hub Team";
-
-            public const string OrderAcceptedSuccessfully = "Your order has been accepted successfully!";
-
-            public const string OrderAcceptedBody =
-                "Great news! Your order is now being prepared. Thanks for choosing us for your pizza delivery!";
-
-            public const string CourierApprovalEmailMessage =
-                "Congratulations! You've been approved to join our Courier ranks! Welcome to Pizza Hub Courier Service!";
-
-            public const string CourierDeclinedEmailMessage =
-                "We regret to inform you that your request to become a courier has been declined. We appreciate your interest and thank you for considering our platform.";
-        }
-
+        
         public static class ApplicationUser
         {
             public const int NameMaxLength = 50;
