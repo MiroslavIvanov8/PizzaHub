@@ -22,6 +22,11 @@ namespace PizzaHub.Controllers
                 return RedirectToAction("Index", "Admin", new { area = "Admin" });
             }
 
+            if (User.IsInRole("Courier"))
+            {
+                return RedirectToAction("OrderOrDeliver", "Courier");
+            }
+
             return View();
         }
 
