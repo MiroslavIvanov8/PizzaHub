@@ -4,7 +4,7 @@ using PizzaHub.Core.ViewModels.Courier;
 
 namespace PizzaHub.Areas.Admin.Controllers
 {
-    public class CourierController : Controller
+    public class CourierController : AdminBaseController
     {
         private readonly IAdminService adminService;
 

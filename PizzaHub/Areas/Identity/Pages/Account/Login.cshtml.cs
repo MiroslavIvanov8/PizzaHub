@@ -133,17 +133,16 @@ namespace PizzaHub.Areas.Identity.Pages.Account
 
                     if (await _userManager.IsInRoleAsync(user, "Admin"))
                     {
-                        return RedirectToAction("Index", "Admin"); // Redirect to the admin index page
+                        return RedirectToAction("Index", "Admin", new {area = "Admin"}); // Redirect to the admin index page
                     }
                     else if (await _userManager.IsInRoleAsync(user, "Courier"))
                     {
                         // Redirect to the courier area index
-                        return RedirectToAction("OrderOrDeliver", "Courier", "");
+                        return RedirectToAction("OrderOrDeliver", "Courier",new { area = ""});
                     }
                     else
                     {
                         // Redirect to the default returnUrl for customers
-                        //TODO Fix issue when return url gets 405 when asked to log and then proceed
                         return LocalRedirect(returnUrl);
                     }
                 }

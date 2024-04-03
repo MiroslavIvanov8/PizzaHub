@@ -1,0 +1,38 @@
+﻿@model IEnumerable<PizzaHub.Core.ViewModels.Order.DetailedOrderViewModel>
+
+<h2>Picked Orders</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Status</th>
+            <th>Restaurant</th>
+            <th>Address</th>
+            <th>Order Items</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td style="background-color: #FAFC43; font-weight: bold;">@order.Status</td>
+                <td>@order.Restaurant</td>
+                <td><strong>@order.Address</strong></td>
+                <td>
+                    @foreach (var item in order.OrderItems)
+                    {
+                        <li>@item.Name x @item.Quantity</li>
+                    }
+                </td>
+                <td>
+                    <form asp-action="ViewOrderDetails" asp-route-orderId="@order.Id">
+                        <button type="submit" class="btn btn-primary">View Details</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

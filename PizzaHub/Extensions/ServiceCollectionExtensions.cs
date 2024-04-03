@@ -56,6 +56,7 @@
         {
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
                 {
+                    options.User.RequireUniqueEmail = true;
                     options.SignIn.RequireConfirmedAccount = true;
                         //config.GetValue<bool>("Identity:SignIn:RequireConfirmedAccount");
                     options.Password.RequireDigit = 

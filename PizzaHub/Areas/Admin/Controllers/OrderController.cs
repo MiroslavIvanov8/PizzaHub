@@ -4,7 +4,7 @@ using PizzaHub.Core.ViewModels.Order;
 
 namespace PizzaHub.Areas.Admin.Controllers
 {
-    public class OrderController : Controller
+    public class OrderController : AdminBaseController
     {
         private readonly IOrderService orderService;
         private readonly IAdminService adminService;

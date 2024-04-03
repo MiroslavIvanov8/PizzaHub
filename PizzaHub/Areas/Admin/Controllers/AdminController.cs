@@ -3,18 +3,15 @@
     using Core.Contracts;
     using Microsoft.AspNetCore.Mvc;
 
-    public class HomeController : AdminBaseController
+    public class AdminController : AdminBaseController
     {
         private readonly IRestaurantService restaurantService;
-
-        public HomeController()
-        {
-            
-        }
-        public HomeController(IRestaurantService restaurantService)
+        
+        public AdminController(IRestaurantService restaurantService)
         {
             this.restaurantService = restaurantService;
         }
+        
         public IActionResult Index()
         {
             return View();

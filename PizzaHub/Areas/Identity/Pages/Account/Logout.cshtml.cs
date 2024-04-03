@@ -31,11 +31,11 @@ namespace PizzaHub.Areas.Identity.Pages.Account
 
             if (User.IsInRole("Admin"))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home" , new {area = ""});
             }
             if (User.IsInRole("Courier"))
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home",new { area = "" });
             }
             if (returnUrl != null)
             {

@@ -18,7 +18,8 @@ namespace PizzaHub.Core.Contracts
 
         Task<IEnumerable<string>> GetStatusNamesAsync();
         Task<Order?> GetOrderAsync(int id);
-        Task<IEnumerable<DetailedOrderViewModel>> GetAllDetailedOrdersViewModelAsync();
-        Task<IEnumerable<DetailedOrderViewModel>> GetAllReadOnlyDetailedOrdersViewModelAsync();
+        Task<DetailedOrderViewModel?> GetDetailedOrderViewModelAsync(int id);
+        Task<IEnumerable<DetailedOrderViewModel>> GetAllDetailedOrdersViewModelAsync(IEnumerable<Order> orders);
+        Task<IEnumerable<DetailedOrderViewModel>> GetAllReadOnlyDetailedOrdersViewModelAsync(IEnumerable<Order> orders);
     }
 }

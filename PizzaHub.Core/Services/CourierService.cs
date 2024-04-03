@@ -153,5 +153,17 @@ namespace PizzaHub.Core.Services
 
             return 0;
         }
+
+        public async Task<IEnumerable<DetailedOrderViewModel>> ShowPickedOrdersAsync(int courierId)
+        {
+            var orders = this.repository
+                .All<Order>()
+                .Where(o => o.CourierId == courierId)
+                .AsQueryable();
+
+           var model = await this.orderService.GetAllDetailedOrdersViewModelAsync(orders);
+
+            return model;
+        }
     }
 }

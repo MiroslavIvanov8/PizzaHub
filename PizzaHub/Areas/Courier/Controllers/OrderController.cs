@@ -8,9 +8,11 @@ namespace PizzaHub.Areas.Courier.Controllers
     public class OrderController : CourierBaseController
     {
         private readonly ICourierService courierService;
-        public OrderController(ICourierService courierService)
+        private readonly IOrderService orderService;
+        public OrderController(ICourierService courierService, IOrderService orderService)
         {
             this.courierService = courierService;
+            this.orderService = orderService;
         }
 
         [HttpGet]
@@ -41,7 +43,22 @@ namespace PizzaHub.Areas.Courier.Controllers
         [HttpGet]
         public async Task<IActionResult> ShowPickedOrders()
         {
+            var pickedOrders = await this.courierService.ShowPickedOrdersAsync(await this.courierService.GetCourierId(User.GetUserId()));
+            
+            return View(pickedOrders);
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> ViewOrderDetails(int orderId)
+        {
+            DetailedOrderViewModel? detailedOrder = await this.orderService.GetDetailedOrderViewModelAsync(orderId);
+
+            if (detailedOrder == null)
+            {
+                return BadRequest();
+            }
+
+            return View(detailedOrder);
         }
     }
 }

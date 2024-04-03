@@ -4,7 +4,7 @@ using PizzaHub.Core.ViewModels.MenuItem;
 
 namespace PizzaHub.Areas.Admin.Controllers
 {
-    public class MenuItemController : HomeController
+    public class MenuItemController : AdminBaseController
     {
         private readonly IAdminService adminService;
 
@@ -12,6 +12,7 @@ namespace PizzaHub.Areas.Admin.Controllers
         {
             this.adminService = adminService;
         }
+
         [HttpGet]
         public async Task<IActionResult> AddMenuItem()
         {

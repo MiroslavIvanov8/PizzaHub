@@ -12,5 +12,6 @@ namespace PizzaHub.Core.Contracts
         Task<OrderQueryServiceModel> ShowInProgressOrdersAsync(int currentPage, int ordersPerPage);
         Task<bool> PickOrderAsync(int orderId, int courierId);
         Task<int> GetCourierId(string userId);
+        Task<IEnumerable<DetailedOrderViewModel>> ShowPickedOrdersAsync(int courierId);
     }
 }

@@ -47,11 +47,10 @@ namespace PizzaHub
             
             app.UseEndpoints(endpoint =>
             {
-                endpoint.MapAreaControllerRoute(
-                    name: "Admin",
-                    areaName: "Admin",
-                    pattern: "Admin/{controller=Admin}/{action=Index}/{id?}");
-                 
+                endpoint.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoint.MapAreaControllerRoute(
                     name: "Courier",
                     areaName: "Courier",
