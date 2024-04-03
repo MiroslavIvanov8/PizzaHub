@@ -5,7 +5,7 @@ using PizzaHub.Extensions;
 
 namespace PizzaHub.Areas.Courier.Controllers
 {
-    public class OrderController : BaseController
+    public class OrderController : CourierBaseController
     {
         private readonly ICourierService courierService;
         public OrderController(ICourierService courierService)

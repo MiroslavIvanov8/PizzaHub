@@ -2,7 +2,7 @@
 
 namespace PizzaHub.Areas.Courier.Controllers
 {
-    public class CourierController : BaseController
+    public class CourierController : CourierBaseController
     {
         public IActionResult Index()
         {
