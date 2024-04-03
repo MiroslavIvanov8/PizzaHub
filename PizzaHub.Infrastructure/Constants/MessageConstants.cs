@@ -17,9 +17,12 @@
 
             public const string CourierApprovalEmailMessage =
                 "Congratulations! You've been approved to join our Courier ranks! Welcome to Pizza Hub Courier Service!";
-
+            
             public const string CourierDeclinedEmailMessage =
                 "We regret to inform you that your request to become a courier has been declined. We appreciate your interest and thank you for considering our platform.";
+
+            public const string CourierOnAddress =
+                "Our Courier has arrived at the given address. Please come and pick your food!";
         }
 
         public static class ErrorMessages
@@ -36,6 +39,8 @@
         {
             public const string SuccessCourierRequestSubmission =
                 "Your request to become a courier has been successfully submitted. You will receive an email with the result of your request.";
+
+            public const string CustomerNotifiedCourierAtLocation = "Customer has been notified that you are at the given location.";
         }
 
     }

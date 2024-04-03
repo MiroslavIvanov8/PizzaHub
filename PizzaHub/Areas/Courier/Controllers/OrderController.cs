@@ -3,16 +3,21 @@ using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Extensions;
 
+using static PizzaHub.Infrastructure.Constants.MessageConstants.AppEmailConstants;
+using static PizzaHub.Infrastructure.Constants.MessageConstants.SuccessMessages;
 namespace PizzaHub.Areas.Courier.Controllers
 {
     public class OrderController : CourierBaseController
     {
         private readonly ICourierService courierService;
         private readonly IOrderService orderService;
-        public OrderController(ICourierService courierService, IOrderService orderService)
+        private readonly ISendGridEmailSender emailSender;
+
+        public OrderController(ICourierService courierService, IOrderService orderService, ISendGridEmailSender emailSender)
         {
             this.courierService = courierService;
             this.orderService = orderService;
+            this.emailSender = emailSender;
         }
 
         [HttpGet]
@@ -47,8 +52,7 @@ namespace PizzaHub.Areas.Courier.Controllers
             
             return View(pickedOrders);
         }
-
-        [HttpPost]
+        
         public async Task<IActionResult> ViewOrderDetails(int orderId)
         {
             DetailedOrderViewModel? detailedOrder = await this.orderService.GetDetailedOrderViewModelAsync(orderId);
@@ -59,6 +63,29 @@ namespace PizzaHub.Areas.Courier.Controllers
             }
 
             return View(detailedOrder);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkOnAddress(int orderId)
+        {
+            string subject = "Delivery on Address!";
+            var order = await this.orderService.GetOrderAsync(orderId);
+
+            if (order == null)
+            {
+                return BadRequest();
+            }
+
+            await this.emailSender.SendEmailAsync(
+                FromAppEmail,
+                FromAppTeam,
+                order.Customer.User.Email,
+                subject,
+                CourierOnAddress);
+
+            TempData["Message"] = CustomerNotifiedCourierAtLocation;
+
+            return RedirectToAction("ViewOrderDetails", "Order", new { orderId = order.Id });
         }
     }
 }

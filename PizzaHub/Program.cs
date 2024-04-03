@@ -50,12 +50,7 @@ namespace PizzaHub
                 endpoint.MapControllerRoute(
                     name: "areas",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-                endpoint.MapAreaControllerRoute(
-                    name: "Courier",
-                    areaName: "Courier",
-                    pattern: "Courier/{controller=Courier}/{action=Index}/{id?}");
-
+                
                 endpoint.MapDefaultControllerRoute();
                 endpoint.MapRazorPages();
             });

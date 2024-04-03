@@ -2,6 +2,12 @@
 
 <h2>Order Details</h2>
 
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Message"]
+    </div>
+}
 <table class="table">
     <tbody>
         <tr>
@@ -28,37 +34,33 @@
             <th>Status:</th>
             <td style="background-color: #FAFC43; font-weight: bold;">@Model.Status</td>
         </tr>
-        
-    <tr>
-        <th>Order Items:</th>
-        <td>
-            <ul>
-                @foreach (var item in Model.OrderItems)
-                {
-                    <li>@item.Name x @item.Quantity</li>
-                }
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <th>Amount:</th>
+
+        <tr>
+            <th>Order Items:</th>
+            <td>
+                <ul>
+                    @foreach (var item in Model.OrderItems)
+                    {
+                        <li>@item.Name x @item.Quantity</li>
+                    }
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Amount:</th>
             <td><strong>$@Model.Amount</strong></td>
-    </tr>
+        </tr>
     </tbody>
 </table>
 
 <div style="display: inline-block;">
     <form asp-action="MarkOnAddress" asp-route-orderId="@Model.Id">
-        <button type="submit" class="btn btn-primary btn-lg">
-            <i class="fas fa-map-marker-alt"></i> Mark On Address
-        </button>
+        <button type="submit" style="background-color: orange; color: black;" class="btn btn-primary">Mark On Address</button>
     </form>
 </div>
 
 <div style="display: inline-block; margin-left: 10px;">
     <form asp-action="MarkOrderDelivered" asp-route-orderId="@Model.Id">
-        <button type="submit" class="btn btn-success btn-lg">
-            <i class="fas fa-check-circle"></i> Order Delivered
-        </button>
+        <button type="submit" style="background-color: #7CFC00; color: black;" class="btn btn-primary">Order Delivered</button>
     </form>
 </div>

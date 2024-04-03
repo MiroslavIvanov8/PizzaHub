@@ -28,7 +28,8 @@
                     }
                 </td>
                 <td>
-                    <form asp-action="ViewOrderDetails" asp-route-orderId="@order.Id">
+                    <form asp-action="ViewOrderDetails" method="get" name="orderId">
+                        <input type="hidden" name="orderId" value="@order.Id" />
                         <button type="submit" class="btn btn-primary">View Details</button>
                     </form>
                 </td>
