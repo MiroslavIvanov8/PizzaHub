@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.MenuItem;
+using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Infrastructure.Common;
+using PizzaHub.Infrastructure.Constants;
 using PizzaHub.Infrastructure.Data.Models;
 using PizzaHub.Infrastructure.Enums;
 
@@ -125,6 +127,46 @@ namespace PizzaHub.Core.Services
         public async Task<Order?> GetOrderAsync(int id)
         {
            return await this.repository.All<Order>().FirstOrDefaultAsync(o => o.Id == id);
+        }
+        
+        public async Task<IEnumerable<DetailedOrderViewModel>> GetAllReadOnlyDetailedOrdersViewModelAsync()
+        {
+            return await this.repository.AllReadOnly<Order>().Select(o => new DetailedOrderViewModel()
+            {
+                Id = o.Id,
+                Restaurant = o.Restaurant.Name,
+                Address = o.Address,
+                Amount = o.TotalAmount,
+                CreatedOn = o.CreatedOn.ToString(DataConstants.DateFormat),
+                Customer = $"{o.Customer.User.FirstName} {o.Customer.User.LastName}",
+                OrderItems = o.Items.Select(oi => new OrderMenuItemWithQuantityViewModel()
+                {
+                    Id = oi.Id,
+                    Name = oi.MenuItem.Name,
+                    Quantity = oi.Quantity,
+                }).ToList(),
+                Status = o.OrderStatus.Name
+            }).ToListAsync();
+        }
+
+        public async Task<IEnumerable<DetailedOrderViewModel>> GetAllDetailedOrdersViewModelAsync()
+        {
+            return await this.repository.All<Order>().Select(o => new DetailedOrderViewModel()
+            {
+                Id = o.Id,
+                Restaurant = o.Restaurant.Name,
+                Address = o.Address,
+                Amount = o.TotalAmount,
+                CreatedOn = o.CreatedOn.ToString(DataConstants.DateFormat),
+                Customer = $"{o.Customer.User.FirstName} {o.Customer.User.LastName}",
+                OrderItems = o.Items.Select(oi => new OrderMenuItemWithQuantityViewModel()
+                {
+                    Id = oi.Id,
+                    Name = oi.MenuItem.Name,
+                    Quantity = oi.Quantity,
+                }).ToList(),
+                Status = o.OrderStatus.Name
+            }).ToListAsync();
         }
     }
 }
