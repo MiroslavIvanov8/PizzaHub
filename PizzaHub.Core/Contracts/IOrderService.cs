@@ -17,6 +17,6 @@ namespace PizzaHub.Core.Contracts
         Task<IEnumerable<OrderMenuItemWithQuantityViewModel>> GetOrderMenuItemWithQuantityViewmodelAsync(int orderId);
 
         Task<IEnumerable<string>> GetStatusNamesAsync();
-        Task<Order> GetOrderAsync(int id);
+        Task<Order?> GetOrderAsync(int id);
     }
 }

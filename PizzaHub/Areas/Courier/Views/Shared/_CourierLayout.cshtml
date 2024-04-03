@@ -7,32 +7,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PizzaHub.styles.css" asp-append-version="true" />
-    <style>
-        /* Dropdown Button */
-        .nav-item.dropdown:hover .dropdown-menu {
-            color: black;
-            display: block;
-        }
-
-        /* Dropdown Content */
-        .dropdown-menu {
-            display: none;
-            position: absolute;
-            background-color: #f1f1f1;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-            /* Links inside the dropdown */
-            .dropdown-menu a {
-                color: black; /* Changed from light gray to black */
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-            }
-    </style>
+    <link rel="stylesheet" href="~/courier.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -46,7 +21,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" aria-haspopup="true" aria-expanded="false" style="color: black;">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenu" role="button" aria-haspopup="true" aria-expanded="false">
                                 Menu
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenu">
@@ -55,16 +30,16 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOrders" role="button" aria-haspopup="true" aria-expanded="false" style="color: black;">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOrders" role="button" aria-haspopup="true" aria-expanded="false">
                                 Orders
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownOrders">
                                 <a class="dropdown-item" asp-area="Courier" asp-controller="Order" asp-action="PickOrders">Pick Order</a>
-                                <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Your Picked Orders</a>
+                                <a class="dropdown-item" asp-area="c" asp-controller="" asp-action="">Your Picked Orders</a>
                             </div>
                         </li>
                     </ul>
-                    <partial name="_CourierLogoutPartial" />
+                    <partial name="_CourierPartial" />
                 </div>
 
             </div>

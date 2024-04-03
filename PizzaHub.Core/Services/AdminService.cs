@@ -94,10 +94,10 @@ namespace PizzaHub.Core.Services
                     break;
             }
 
-            var orders = allOrders
+            var orders =  await allOrders
                 .Skip((currentPage - 1) * ordersPerPage)
                 .Take(ordersPerPage)
-                .ToList();
+                .ToListAsync();
 
             var orderViewModels = new List<DetailedOrderViewModel>();
 

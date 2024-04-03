@@ -63,7 +63,7 @@
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-start">
         <a class="btn btn-primary @(Model.CurrentPage == 1 ? "disabled" : string.Empty)"
            asp-area="Admin"
-           asp-controller="Admin"
+           asp-controller="Order"
            asp-action="ShowTodayPendingOrders">Previous</a>
     </div>
 
@@ -75,7 +75,7 @@
     <div class="col-md-6 d-grid gap-2 d-md-flex justify-content-md-end">
         <a class="btn btn-primary @(shouldButtonBeDisabled ? "disabled" : string.Empty)"
            asp-area="Admin"
-           asp-controller="Admin"
+           asp-controller="Order"
            asp-action="ShowTodayPendingOrders"
            asp-route-currentPage="@(Model.CurrentPage + 1)"
         >Next</a>

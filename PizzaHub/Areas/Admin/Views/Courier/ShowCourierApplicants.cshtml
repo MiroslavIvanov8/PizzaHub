@@ -25,7 +25,7 @@
             <td>@applicant.Email</td>
             <td>@applicant.PhoneNumber</td>
             <td>
-                    <form asp-controller="Admin" asp-action="CourierApplicantDetails" asp-route-id="@applicant.Id" method="post">
+                    <form asp-controller="Courier" asp-action="CourierApplicantDetails" asp-route-id="@applicant.Id" method="post">
                     <button type="submit" class="btn btn-info">Details</button>
                 </form>
                 

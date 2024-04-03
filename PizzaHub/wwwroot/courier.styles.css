@@ -1,0 +1,31 @@
+﻿/* Dropdown Button */
+.navbar-nav .nav-item.dropdown:hover .dropdown-menu {
+    color: black;
+    display: block;
+}
+
+/* Dropdown Content */
+.navbar-nav .dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Links inside the dropdown */
+.navbar-nav .dropdown-menu a {
+    color: black; /* Changed from light gray to black */
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.navbar-nav .nav-link.dropdown-toggle {
+    color: black; /* Change the text color to black */
+}
+
+.navbar-nav .nav-link.dropdown-toggle:hover {
+    color: black; /* Change the hover color to black */
+}

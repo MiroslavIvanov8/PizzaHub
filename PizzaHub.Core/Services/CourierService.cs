@@ -21,7 +21,10 @@ namespace PizzaHub.Core.Services
         private readonly IOrderService orderService;
         private readonly ISendGridEmailSender emailSender;
 
-        public CourierService(IRepository repository, IOrderService orderService, ISendGridEmailSender emailSender)
+        public CourierService(
+            IRepository repository,
+            IOrderService orderService,
+            ISendGridEmailSender emailSender)
         {
             this.repository = repository;
             this.orderService = orderService;
@@ -79,7 +82,7 @@ namespace PizzaHub.Core.Services
 
         public async Task<OrderQueryServiceModel> ShowInProgressOrdersAsync(int currentPage, int ordersPerPage)
         {
-            var inProgressOrders = await this.repository
+            var inProgressOrders = this.repository
                 .AllReadOnly<Order>()
                 .Where(o => o.OrderStatus.Name == "In Progress")
                 .Select(o => new DetailedOrderViewModel()
@@ -89,7 +92,7 @@ namespace PizzaHub.Core.Services
                     Address = o.Address,
                     Amount = o.TotalAmount,
                     CreatedOn = o.CreatedOn.ToString(DataConstants.DateFormat),
-                    Customer = o.Customer.User.FirstName + " " + o.Customer.User.LastName,
+                    Customer = $"{o.Customer.User.FirstName} {o.Customer.User.LastName}",
                     OrderItems = o.Items.Select(oi => new OrderMenuItemWithQuantityViewModel()
                     {
                         Id = oi.Id,
@@ -97,16 +100,16 @@ namespace PizzaHub.Core.Services
                         Quantity = oi.Quantity,
                     }).ToList(),
                     Status = o.OrderStatus.Name
-                }).ToListAsync();
+                });
 
-            var orders = inProgressOrders
+            var orders = await inProgressOrders
                 .Skip((currentPage - 1) * ordersPerPage)
                 .Take(ordersPerPage)
-                .ToList();
+                .ToListAsync();
 
             var model = new OrderQueryServiceModel
             {
-                OrdersCount = inProgressOrders.Count,
+                OrdersCount = inProgressOrders.Count(),
                 Orders = orders
             };
 
@@ -115,14 +118,14 @@ namespace PizzaHub.Core.Services
 
         public async Task<bool> PickOrderAsync(int orderId, int courierId)
         {
-            Order order = await this.orderService.GetOrderAsync(orderId);
+            Order? order = await this.orderService.GetOrderAsync(orderId);
 
             if (order != null)
             {
                 order.OrderStatusId = (int)OrderStatusEnum.OutForDelivery;
                 order.CourierId = courierId;
 
-                string subject = "Out for Delivery!";
+                string subject = "Delivery on the way!";
                 await this.emailSender.SendEmailAsync(
                     FromAppEmail,
                     FromAppTeam,

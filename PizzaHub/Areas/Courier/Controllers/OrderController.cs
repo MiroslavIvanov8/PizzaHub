@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Extensions;
 
 namespace PizzaHub.Areas.Courier.Controllers
 {
-    [Area("Courier")]
-    [Authorize(Roles = "Courier")]
-    public class OrderController : Controller
+    public class OrderController : BaseController
     {
         private readonly ICourierService courierService;
         public OrderController(ICourierService courierService)
@@ -39,6 +36,12 @@ namespace PizzaHub.Areas.Courier.Controllers
             }
 
             return RedirectToAction("PickOrders");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ShowPickedOrders()
+        {
+
         }
     }
 }
