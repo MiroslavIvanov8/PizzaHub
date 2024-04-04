@@ -12,7 +12,6 @@ namespace PizzaHub.Areas.Admin.Models.Order
         public string Restaurant { get; set; } = null!;
         public string Status { get; set; } = null!;
         public decimal Amount { get; set; }
-
-        public string CreatedOn { get; set; } = null!;
+        public string Address { get; set; } = null!;
     }
 }

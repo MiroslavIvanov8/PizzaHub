@@ -1,4 +1,5 @@
-﻿using MessageConstants = PizzaHub.Infrastructure.Constants.MessageConstants;
+﻿using PizzaHub.Areas.Admin.Models.Order;
+using MessageConstants = PizzaHub.Infrastructure.Constants.MessageConstants;
 
 namespace PizzaHub.Core.Services
 {
@@ -164,7 +165,7 @@ namespace PizzaHub.Core.Services
                 .Include(o => o.Customer)
                 .ThenInclude(c => c.User)
                 .Include(o => o.OrderStatus)
-                .Where(o => o.CourierId == courierId)
+                .Where(o => o.CourierId == courierId && o.OrderStatusId == (int)OrderStatusEnum.OutForDelivery)
                 .AsQueryable();
 
            var model = await this.orderService.GetAllDetailedOrdersViewModelAsync(orders);
@@ -172,9 +173,39 @@ namespace PizzaHub.Core.Services
             return model;
         }
 
-        public Task<bool> MarkOrderDelivered(int orderId)
+        public async Task<bool> MarkOrderDelivered(int orderId)
         {
-            throw new NotImplementedException();
+            Order? order = await this.orderService.GetOrderAsync(orderId);
+
+            if (order != null)
+            {
+                order.OrderStatusId = (int)OrderStatusEnum.Delivered;
+                order.DeliveredOn = DateTime.UtcNow;
+                await this.repository.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
+
+        public async Task<IEnumerable<ShowOrderViewModel>> ShowTodayDelivered(int courierId)
+        {
+            IEnumerable<ShowOrderViewModel> todayOrders = await this.repository.AllReadOnly<Order>()
+                .Include(o => o.Restaurant)
+                .Include(o => o.Courier)
+                .Include(o => o.OrderStatus)
+                .Where(o => o.Courier.Id == courierId && o.DeliveredOn.Value.Date == DateTime.Today)
+                .Select(o =>
+                new ShowOrderViewModel()
+                {
+                    Id = o.Id,
+                    Restaurant = o.Restaurant.Name,
+                    Status = o.OrderStatus.Name,
+                    Address = o.Address,
+                    Amount = o.TotalAmount
+                }).ToListAsync();
+
+            return todayOrders;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzaHub.Areas.Admin.Models.Order;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Extensions;
@@ -63,6 +64,15 @@ namespace PizzaHub.Areas.Courier.Controllers
 
             return View(detailedOrder);
         }
-        
+
+        [HttpGet]
+        public async Task<IActionResult> ShowTodayDelivered()
+        {
+            int courierId = await this.courierService.GetCourierId(User.GetUserId());
+
+            IEnumerable<ShowOrderViewModel> ordersToday = await this.courierService.ShowTodayDelivered(courierId);
+
+            return View(ordersToday);
+        }
     }
 }

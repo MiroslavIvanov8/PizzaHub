@@ -1,0 +1,27 @@
+﻿@model IEnumerable<PizzaHub.Areas.Admin.Models.Order.ShowOrderViewModel>
+
+<h2>Orders Delivered Today</h2>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Restaurant</th>
+        <th>Status</th>
+        <th>Address</th>
+        <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.Id</td>
+            <td>@order.Restaurant</td>
+                <td style="background-color: #7CFC00">@order.Status</td>
+            <td>@order.Address</td>
+                <td><strong>$@order.Amount</strong></td>
+        </tr>
+    }
+    </tbody>
+</table>

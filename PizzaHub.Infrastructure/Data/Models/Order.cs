@@ -46,6 +46,8 @@ namespace PizzaHub.Infrastructure.Data.Models
         [Required]
         public DateTime CreatedOn { get; set; }
 
+        public DateTime? DeliveredOn { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal TotalAmount { get; set; }

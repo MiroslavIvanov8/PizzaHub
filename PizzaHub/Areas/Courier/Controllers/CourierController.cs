@@ -6,11 +6,13 @@ namespace PizzaHub.Areas.Courier.Controllers
 {
     public class CourierController : CourierBaseController
     {
+        private readonly ICourierService courierService;
         private readonly IOrderService orderService;
         private readonly ISendGridEmailSender emailSender;
 
-        public CourierController(IOrderService orderService, ISendGridEmailSender emailSender)
+        public CourierController(ICourierService courierService, IOrderService orderService, ISendGridEmailSender emailSender)
         {
+            this.courierService = courierService;
             this.orderService = orderService;
             this.emailSender = emailSender;
         }
@@ -45,7 +47,14 @@ namespace PizzaHub.Areas.Courier.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkOrderDelivered(int orderId)
         {
-            return null;
+            bool result = await this.courierService.MarkOrderDelivered(orderId);
+
+            if (result == false)
+            {
+                return BadRequest();
+            }
+
+            return RedirectToAction("ShowPickedOrders", "Order");
         }
 
     }

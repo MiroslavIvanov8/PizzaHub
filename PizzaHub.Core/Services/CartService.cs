@@ -36,7 +36,6 @@ namespace PizzaHub.Core.Services
 
             int customerId = await this.customerService.GetCustomerIdAsync(userId);
 
-            // check if there is an existing item in the cart if so just add the new quantity to the existing record
             if (await this.repository.AllReadOnly<CustomerCart>()
                     .AnyAsync(cc => cc.CustomerId == customerId && cc.MenuItemId == itemId))
             {

@@ -1,4 +1,5 @@
-﻿using PizzaHub.Core.ViewModels.Order;
+﻿using PizzaHub.Areas.Admin.Models.Order;
+using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Infrastructure.Data.Models;
 
 namespace PizzaHub.Core.Contracts
@@ -13,6 +14,8 @@ namespace PizzaHub.Core.Contracts
         Task<bool> PickOrderAsync(int orderId, int courierId);
         Task<int> GetCourierId(string userId);
         Task<IEnumerable<DetailedOrderViewModel>> ShowPickedOrdersAsync(int courierId);
+
+        Task<IEnumerable<ShowOrderViewModel>> ShowTodayDelivered(int courierId);
 
         Task<bool> MarkOrderDelivered(int orderId);
     }
