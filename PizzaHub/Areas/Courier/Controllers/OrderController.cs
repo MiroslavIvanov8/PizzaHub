@@ -11,13 +11,11 @@ namespace PizzaHub.Areas.Courier.Controllers
     {
         private readonly ICourierService courierService;
         private readonly IOrderService orderService;
-        private readonly ISendGridEmailSender emailSender;
 
-        public OrderController(ICourierService courierService, IOrderService orderService, ISendGridEmailSender emailSender)
+        public OrderController(ICourierService courierService, IOrderService orderService)
         {
             this.courierService = courierService;
             this.orderService = orderService;
-            this.emailSender = emailSender;
         }
 
         [HttpGet]
@@ -52,7 +50,8 @@ namespace PizzaHub.Areas.Courier.Controllers
             
             return View(pickedOrders);
         }
-        
+
+        [HttpGet]
         public async Task<IActionResult> ViewOrderDetails(int orderId)
         {
             DetailedOrderViewModel? detailedOrder = await this.orderService.GetDetailedOrderViewModelAsync(orderId);
@@ -64,28 +63,6 @@ namespace PizzaHub.Areas.Courier.Controllers
 
             return View(detailedOrder);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> MarkOnAddress(int orderId)
-        {
-            string subject = "Delivery on Address!";
-            var order = await this.orderService.GetOrderAsync(orderId);
-
-            if (order == null)
-            {
-                return BadRequest();
-            }
-
-            await this.emailSender.SendEmailAsync(
-                FromAppEmail,
-                FromAppTeam,
-                order.Customer.User.Email,
-                subject,
-                CourierOnAddress);
-
-            TempData["Message"] = CustomerNotifiedCourierAtLocation;
-
-            return RedirectToAction("ViewOrderDetails", "Order", new { orderId = order.Id });
-        }
+        
     }
 }

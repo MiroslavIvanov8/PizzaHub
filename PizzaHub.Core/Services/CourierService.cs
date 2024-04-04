@@ -157,13 +157,24 @@ namespace PizzaHub.Core.Services
         public async Task<IEnumerable<DetailedOrderViewModel>> ShowPickedOrdersAsync(int courierId)
         {
             var orders = this.repository
-                .All<Order>()
+                .AllReadOnly<Order>()
+                .Include(o => o.Restaurant)
+                .Include(o => o.Items)
+                .ThenInclude(i => i.MenuItem)
+                .Include(o => o.Customer)
+                .ThenInclude(c => c.User)
+                .Include(o => o.OrderStatus)
                 .Where(o => o.CourierId == courierId)
                 .AsQueryable();
 
            var model = await this.orderService.GetAllDetailedOrdersViewModelAsync(orders);
 
             return model;
+        }
+
+        public Task<bool> MarkOrderDelivered(int orderId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

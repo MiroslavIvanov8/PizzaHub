@@ -29,3 +29,6 @@
 .navbar-nav .nav-link.dropdown-toggle:hover {
     color: black; /* Change the hover color to black */
 }
+.bg-yellow {
+    background-color: #FAFC43; /* Yellow color */
+}

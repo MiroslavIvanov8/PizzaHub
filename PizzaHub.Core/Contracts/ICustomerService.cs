@@ -12,7 +12,6 @@ namespace PizzaHub.Core.Contracts
     {
         Task<int> GetCustomerIdAsync(string userId);
         Task<bool> CustomerExistsAsync(string userId);
-
         Task<IEnumerable<OrderViewModel>> ShowOrdersAsync(int userId);
     }
 }

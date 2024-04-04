@@ -54,13 +54,13 @@
 </table>
 
 <div style="display: inline-block;">
-    <form asp-action="MarkOnAddress" asp-route-orderId="@Model.Id">
+    <form asp-controller="Courier" asp-action="MarkOnAddress" asp-route-orderId="@Model.Id">
         <button type="submit" style="background-color: orange; color: black;" class="btn btn-primary">Mark On Address</button>
     </form>
 </div>
 
 <div style="display: inline-block; margin-left: 10px;">
-    <form asp-action="MarkOrderDelivered" asp-route-orderId="@Model.Id">
+    <form asp-controller="Courier" asp-action="MarkOrderDelivered" asp-route-orderId="@Model.Id">
         <button type="submit" style="background-color: #7CFC00; color: black;" class="btn btn-primary">Order Delivered</button>
     </form>
 </div>

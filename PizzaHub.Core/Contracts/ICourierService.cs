@@ -13,5 +13,7 @@ namespace PizzaHub.Core.Contracts
         Task<bool> PickOrderAsync(int orderId, int courierId);
         Task<int> GetCourierId(string userId);
         Task<IEnumerable<DetailedOrderViewModel>> ShowPickedOrdersAsync(int courierId);
+
+        Task<bool> MarkOrderDelivered(int orderId);
     }
 }
