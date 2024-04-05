@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
+using PizzaHub.Core.ViewModels.Order;
+using PizzaHub.Extensions;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.AppEmailConstants;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.SuccessMessages;
 namespace PizzaHub.Areas.Courier.Controllers
@@ -55,6 +57,16 @@ namespace PizzaHub.Areas.Courier.Controllers
             }
 
             return RedirectToAction("ShowPickedOrders", "Order");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StopForToday()
+        {
+            int courierId = await this.courierService.GetCourierId(User.GetUserId());
+
+            IEnumerable<DetailedOrderViewModel> orders = await this.courierService.ShowPickedOrdersAsync(courierId);
+
+            return View(orders);
         }
 
     }

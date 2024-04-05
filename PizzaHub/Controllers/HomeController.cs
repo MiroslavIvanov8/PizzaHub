@@ -22,12 +22,9 @@ namespace PizzaHub.Controllers
                 return RedirectToAction("Index", "Admin", new { area = "Admin" });
             }
 
-            if (User.IsInRole("Courier"))
-            {
-                return RedirectToAction("OrderOrDeliver", "Courier");
-            }
+            bool isCourier = User.IsInRole("Courier");
 
-            return View();
+            return View("Index", isCourier);
         }
 
         public IActionResult SureNotHungry()

@@ -1,0 +1,14 @@
+﻿@model IEnumerable<PizzaHub.Core.ViewModels.Order.DetailedOrderViewModel>
+
+@if (Model.Any())
+{
+    <h3>Hold up! You still have unfinished deliveries.</h3>
+    <p>Please proceed with the following picked orders:</p>
+    <a class="btn btn-primary" asp-controller="Order" asp-action="ShowPickedOrders">Show Picked Orders</a>
+}
+else
+{
+    <h3>Good job! You have finished all your picked deliveries.</h3>
+    <p>You will be redirected to Pizza Hub Home Page</p>
+    <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">Return to Home</a>
+}
