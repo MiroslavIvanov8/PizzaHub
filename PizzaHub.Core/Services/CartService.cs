@@ -22,16 +22,16 @@ namespace PizzaHub.Core.Services
             this.customerService = customerService;
         }
 
-        public async Task<CustomerCart> AddToCartAsync(int itemId, string userId , int quantity)
+        public async Task<bool> AddToCartAsync(int itemId, string userId , int quantity)
         {
             if (!await this.customerService.CustomerExistsAsync(userId))
             {
-                return null;
+                return false;
             }
 
             if (!await this.restaurantService.MenuItemExistsAsync(itemId))
             {
-                return null;
+                return false;
             }
 
             int customerId = await this.customerService.GetCustomerIdAsync(userId);
@@ -49,7 +49,7 @@ namespace PizzaHub.Core.Services
 
                     await this.repository.SaveChangesAsync();
 
-                    return existingItem;
+                    return true;
                 }
             }
 
@@ -66,10 +66,10 @@ namespace PizzaHub.Core.Services
 
                 await repository.SaveChangesAsync();
 
-                return cc;
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         public async Task<ICollection<CartItemViewModel>> MyCartAsync(int customerId)
