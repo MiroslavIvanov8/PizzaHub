@@ -6,11 +6,15 @@ namespace PizzaHub.Core.Contracts
 {
     public interface ICartService
     {
+        //TODO fix pizzaId name to itemId
         Task<CustomerCart> AddToCartAsync(int pizzaId, string userId, int quantity);
-
         Task<ICollection<CartItemViewModel>> MyCartAsync(int customerId);
         Task<bool> DeleteFromCartAsync(int itemId, int customerId);
 
         Task<decimal> UpdateQuantityAsync(int itemId, int newQuantity, int customerId);
+
+        
+        Task<bool> IncreaseCartQuantityAsync(int customerId, int itemId);
+        Task<bool> DecreaseCartQuantityAsync(int customerId, int itemId);
     }
 }

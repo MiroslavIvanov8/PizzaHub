@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.ViewModels.Cart;
+using PizzaHub.Core.ViewModels.MenuItem;
 using PizzaHub.Extensions;
 
+using static PizzaHub.Infrastructure.Constants.MessageConstants.SuccessMessages;
 namespace PizzaHub.Controllers
 {
     [Authorize(Roles = "Customer")]
@@ -11,11 +13,13 @@ namespace PizzaHub.Controllers
     {
         private readonly ICartService cartService;
         private readonly ICustomerService customerService;
-
-        public CartController(ICartService cartService, ICustomerService customerService)
+        private readonly IRestaurantService restaurantService;
+        public CartController(ICartService cartService, ICustomerService customerService, IRestaurantService restaurantService)
         {
             this.cartService = cartService;
             this.customerService = customerService;
+            this.restaurantService = restaurantService;
+           
         }
         
 
@@ -28,7 +32,12 @@ namespace PizzaHub.Controllers
 
             //if we return null something went wrong
             await this.cartService.AddToCartAsync(itemId, User.GetUserId(), quantity);
-            
+
+            //TODO possible nuff reference when coming here from login page
+            MenuItemViewModel model = await this.restaurantService.GetItemAsync(itemId);
+
+            TempData["AddedToCart"] = AddedToCartMessage + quantity + "x  " + model.Name;
+
             return RedirectToAction("Menu", "Restaurant");
         }
 

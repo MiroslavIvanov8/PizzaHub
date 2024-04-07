@@ -20,14 +20,14 @@
 
     @if (Model.Any())
     {
-        <table class="table">
+        <table class="table table-striped">
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                </tr>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
             </thead>
             <tbody>
             @foreach (var item in Model)
@@ -37,32 +37,32 @@
                     <td>$@item.Price</td>
                     <td>
                         <span id="quantity_@item.ItemId">@item.Quantity</span>
-                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
+                        
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
                             <button type="submit" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
-                        </form>
-                        <form asp-controller="Cart" asp-action="UpdateQuantity" method="post" class="d-inline">
+                        
+                        
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <input type="hidden" name="newQuantity" value="@(item.Quantity + 1)" />
-                            <button type="submit" class="btn btn-sm btn-primary">+</button>
-                        </form>
-                        <form asp-controller="Cart" asp-action="DeleteFromCart" method="post" class="d-inline">
+                            <button onclick="increaseQuantity(@item.ItemId)" type="submit" class="btn btn-sm btn-primary">+</button>
+                        
+                        
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <button type="submit" class="btn btn-sm btn-danger delete-button" style="margin-left: 10px;">
                                 <i class="fas fa-times"></i>
                             </button>
-                        </form>
+                        
                     </td>
-                    <td>$@(item.Price * item.Quantity)</td>
+                    <td id="itemPrice">$@(item.Price * item.Quantity)</td>
                 </tr>
             }
             </tbody>
             <tfoot>
-                <tr>
-                    <td colspan="3"><strong>Total:</strong></td>
-                    <td><strong >$@totalSum</strong></td>
-                </tr>
+            <tr>
+                <td colspan="3"><strong>Total:</strong></td>
+                <td><strong id="totalSum">$@totalSum</strong></td>
+            </tr>
             </tfoot>
         </table>
 
@@ -76,3 +76,19 @@
     }
 
 </div>
+
+<script>
+    function increaseQuantity(itemId) { 
+        $.ajax({
+            url: "https://localhost:7221/api/cart/increase",
+            type:"GET",
+            data: {itemId},
+            success: function (response) { 
+                $("#totalSum").text(response.totalSum);
+                $("#itemPrice").text(response.itemPrice);
+            },
+            error: function (response) {
+            }
+        })
+    }
+</script>

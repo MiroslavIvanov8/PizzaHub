@@ -41,6 +41,8 @@
                 "Your request to become a courier has been successfully submitted. You will receive an email with the result of your request.";
 
             public const string CustomerNotifiedCourierAtLocation = "Customer has been notified that you are at the given location.";
+
+            public const string AddedToCartMessage = "Successfully Added to Cart ";
         }
 
     }
