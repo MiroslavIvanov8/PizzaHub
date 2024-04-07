@@ -210,7 +210,8 @@ namespace PizzaHub.Core.Services
                 await this.repository.SaveChangesAsync();
 
                 string subject = "Your request has been approved!";
-                await emailSender.SendEmailAsync(FromAppEmail,
+                await emailSender.SendEmailAsync(
+                    FromAppEmail,
                     FromAppTeam,
                     request.User.Email,
                     subject,
@@ -239,7 +240,7 @@ namespace PizzaHub.Core.Services
                     request.User.Email,
                     subject,
                     CourierDeclinedEmailMessage);
-
+                
                 return true;
             }
 
