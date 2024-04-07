@@ -37,15 +37,20 @@
                     <td>$@item.Price</td>
                     <td>
                         <span id="quantity_@item.ItemId">@item.Quantity</span>
+            
+                        <button onclick="decreaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary @(item.Quantity == 1 ? "disabled" : "")" @(item.Quantity == 1 ? "disabled" : "")>
+                            -
+                        </button>
+                        <button onclick="increaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary">
+                            +
+                        </button>
 
-                        <button id="decreaseButton_@item.ItemId" onclick="decreaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
-                        <button onclick="increaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary">+</button>
-
+                            <form id="deleteForm_@item.ItemId" asp-controller="Cart" asp-action="DeleteFromCart" method="post" style="display: inline; margin-left: 10px;">
                             <input type="hidden" name="itemId" value="@item.ItemId" />
-                            <button type="submit" class="btn btn-sm btn-danger delete-button" style="margin-left: 10px;">
+                            <button type="submit" class="btn btn-sm btn-danger delete-button">
                                 <i class="fas fa-times"></i>
                             </button>
-                            
+                        </form>
                     </td>
                     <td id="itemSum_@item.ItemId">$@(item.Price * item.Quantity)</td>
                 </tr>
@@ -92,8 +97,8 @@
             type:"GET",
             data: {itemId},
             success: function (response) { 
-                $("#totalSum").text(response.totalSum);
-                $("#itemSum_" + itemId).text(response.itemSum);
+                $("#totalSum").text("$" + response.totalSum);
+                $("#itemSum_" + itemId).text("$" + response.itemSum);
             },
             error: function (response) {
             }
@@ -126,8 +131,8 @@
             type:"GET",
             data: {itemId},
             success: function (response) { 
-                $("#totalSum").text(response.totalSum);
-                $("#itemSum_" + itemId).text(response.itemSum);
+                $("#totalSum").text("$" + response.totalSum);
+                $("#itemSum_" + itemId).text("$" + response.itemSum);
             },
             error: function (response) {
             }
