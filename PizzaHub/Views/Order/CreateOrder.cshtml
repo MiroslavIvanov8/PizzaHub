@@ -1,1 +1,15 @@
-﻿Your order has been send!
+﻿@{
+    ViewData["Title"] = "Order Accepted";
+}
+
+<div class="container mt-5">
+    <div class="alert alert-success" role="alert">
+        @ViewData["OrderAccepted"]
+    </div>
+
+    <p>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-primary">
+            <i class="fas fa-home me-2"></i> Return to Home
+        </a>
+    </p>
+</div>

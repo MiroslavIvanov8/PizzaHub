@@ -35,6 +35,18 @@ namespace PizzaHub.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int statusCode)
         {
+            //TODO Not all who wander are lost
+            //TODO error pages for 404 and 500/400
+            if (statusCode == 500)
+            {
+                return RedirectToAction();
+            }
+
+            if (statusCode == 404)
+            {
+
+            }
+
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
