@@ -17,36 +17,46 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var order in Model.Orders)
-    {
-        <tr>
-            <td>@order.Id</td>
-            <td style="background-color: orange; font-weight: bold;">@order.Status</td> 
-            <td>@order.CreatedOn</td>
-            <td>@order.Restaurant</td>
-            <td>@order.Customer</td>
-            <td>@order.Address</td>
-            <td>
-                @foreach (var item in order.OrderItems)
-                {
-                    <li>@item.Name x @item.Quantity</li>
-                }
-            </td>
-            <td>$@order.Amount</td>
-            <td>
-                @if (order.Status == "Pending")
-                {
-                    <form asp-action="MarkOrderAccepted" asp-route-orderId="@order.Id">
-                        <button type="submit" class="btn btn-primary">Accept Order</button>
-                    </form>
-                }
-                else
-                {
-                    <span class="text-success">In Progress</span>
-                }
-            </td>
-        </tr>
+    @if (Model.Orders.Any())
+        {
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td style="background-color: orange; font-weight: bold;">@order.Status</td>
+                    <td>@order.CreatedOn</td>
+                    <td>@order.Restaurant</td>
+                    <td>@order.Customer</td>
+                    <td>@order.Address</td>
+                    <td>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Name x @item.Quantity</li>
+                        }
+                    </td>
+                    <td>$@order.Amount</td>
+                    <td>
+                        @if (order.Status == "Pending")
+                        {
+                            <form asp-action="MarkOrderAccepted" asp-route-orderId="@order.Id">
+                                <button type="submit" class="btn btn-primary">Accept Order</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-success">In Progress</span>
+                        }
+                    </td>
+                </tr>
+            }
+
     }
+        else
+        {
+            <tr>
+                <td colspan="9" class="text-center"><strong>No orders yet.</strong></td>
+            </tr>
+        }
     </tbody>
 </table>
 @{

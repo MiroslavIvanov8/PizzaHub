@@ -4,16 +4,18 @@
 
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th>Order ID</th>
-            <th>Status</th>
-            <th>Restaurant</th>
-            <th>Address</th>
-            <th>Order Items</th>
-            <th>Action</th>
-        </tr>
+    <tr>
+        <th>Order ID</th>
+        <th>Status</th>
+        <th>Restaurant</th>
+        <th>Address</th>
+        <th>Order Items</th>
+        <th>Action</th>
+    </tr>
     </thead>
     <tbody>
+    @if (Model.Any())
+    {
         @foreach (var order in Model)
         {
             <tr>
@@ -29,10 +31,17 @@
                 </td>
                 <td>
                     <form asp-action="ViewOrderDetails" method="get" name="orderId">
-                        <input type="hidden" name="orderId" value="@order.Id" />
+                        <input type="hidden" name="orderId" value="@order.Id"/>
                         <button type="submit" class="btn btn-primary">View Details</button>
                     </form>
                 </td>
+            </tr>
+        }
+    }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center"><strong>No orders yet.</strong></td>
             </tr>
         }
     </tbody>

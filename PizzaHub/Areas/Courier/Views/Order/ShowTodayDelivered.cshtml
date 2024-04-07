@@ -13,14 +13,23 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var order in Model)
+    @if (Model.Any())
+    {
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.Id</td>
+                <td>@order.Restaurant</td>
+                <td style="background-color: #7CFC00">@order.Status</td>
+                <td>@order.Address</td>
+                <td><strong>$@order.Amount</strong></td>
+            </tr>
+        }
+    }
+    else
     {
         <tr>
-            <td>@order.Id</td>
-            <td>@order.Restaurant</td>
-                <td style="background-color: #7CFC00">@order.Status</td>
-            <td>@order.Address</td>
-                <td><strong>$@order.Amount</strong></td>
+            <td colspan="6" class="text-center"><strong>No orders yet.</strong></td>
         </tr>
     }
     </tbody>

@@ -67,27 +67,36 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var order in Model.Orders)
+    @if (Model.Orders.Any())
         {
-            <tr>
-                <td>@order.Id</td>
-                <td style="background-color: @GetStatusColor(order.Status) ">
-                    <strong>@order.Status</strong>
-                </td>
-                <td>@order.CreatedOn</td>
-                <td>@order.Restaurant</td>
-                <td>@order.Customer</td>
-                <td>@order.Address</td>
-                <td>
-                    @foreach (var item in order.OrderItems)
-                    {
-                        <li>@item.Name x @item.Quantity</li>
-                        
-                    }
-                </td>
-                <td><strong>$@order.Amount</strong></td>
-            </tr>
+            @foreach (var order in Model.Orders)
+            { //TODO If collection is empty show no orders today
+                <tr>
+                    <td>@order.Id</td>
+                    <td style="background-color: @GetStatusColor(order.Status)">
+                        <strong>@order.Status</strong>
+                    </td>
+                    <td>@order.CreatedOn</td>
+                    <td>@order.Restaurant</td>
+                    <td>@order.Customer</td>
+                    <td>@order.Address</td>
+                    <td>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Name x @item.Quantity</li>
+
+                        }
+                    </td>
+                    <td><strong>$@order.Amount</strong></td>
+                </tr>
+            }
         }
+    else
+    {
+        <tr>
+            <td colspan="9" class="text-center"><strong>No orders yet.</strong></td>
+        </tr>
+    }
     </tbody>
 </table>
 
