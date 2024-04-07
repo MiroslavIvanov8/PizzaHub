@@ -6,17 +6,19 @@
         totalSum += item.Price * item.Quantity;
     }
 }
-
+@*think how it would look if cart is empty and justy show 0 at total*@
 <div class="container mt-5">
-    <h2>Your Cart</h2>
-
-    <div class="row justify-content-end">
-        <div class="col-md-6 text-end">
+    <div class="row justify-content-between align-items-center mb-3">
+        <div class="col-md-6">
+            <h2>Your Cart</h2>
+        </div>
+        <div class="col-md-6 text-md-end">
             <form asp-controller="Customer" asp-action="ShowOrders" method="get">
                 <button type="submit" class="btn btn-info">View Past Orders</button>
             </form>
         </div>
     </div>
+
 
     @if (Model.Any())
     {
@@ -125,8 +127,8 @@
             type:"GET",
             data: {itemId},
             success: function (response) { 
-                $("#totalSum").text("$" + response.totalSum);
-                $("#itemSum_" + itemId).text("$" + response.itemSum);
+                $("#totalSum").text("$" + response.totalSum.toFixed(2));
+                $("#itemSum_" + itemId).text("$" + response.itemSum.toFixed(2));
             },
             error: function (response) {
             }
@@ -160,8 +162,8 @@
             type:"GET",
             data: {itemId},
             success: function (response) { 
-                $("#totalSum").text("$" + response.totalSum);
-                $("#itemSum_" + itemId).text("$" + response.itemSum);
+                $("#totalSum").text("$" + response.totalSum.toFixed(2));
+                $("#itemSum_" + itemId).text("$" + response.itemSum.toFixed(2));
             },
             error: function (response) {
             }
