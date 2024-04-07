@@ -140,6 +140,26 @@ namespace PizzaHub.Core.Services
             return false;
         }
 
+        public async Task<decimal> CalculateTotalCartSum(int customerId)
+        {
+            decimal totalCartSum = await this.repository
+                                             .AllReadOnly<CustomerCart>()
+                                             .Where(cc => cc.CustomerId == customerId)
+                                             .SumAsync(i => i.MenuItem.Price * i.Quantity);
+
+            return totalCartSum;
+        }
+
+        public async Task<decimal> CalculateItemCartSum(int customerId, int itemId)
+        {
+            decimal itemCartSum = await this.repository
+                .AllReadOnly<CustomerCart>()
+                .Where(cc => cc.CustomerId == customerId && cc.MenuItemId == itemId)
+                .SumAsync(i => i.MenuItem.Price * i.Quantity);
+
+            return itemCartSum;
+        }
+
         public async Task<bool> DeleteFromCartAsync(int itemId, int customerId)
         {
             var itemToRemove = await this.repository

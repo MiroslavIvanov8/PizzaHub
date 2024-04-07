@@ -40,21 +40,23 @@
                         
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
-                            <button type="submit" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
-                        
+                            <button onclick="decreaseQuantity(@item.ItemId)"
+                            type="submit" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
                         
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <input type="hidden" name="newQuantity" value="@(item.Quantity + 1)" />
-                            <button onclick="increaseQuantity(@item.ItemId)" type="submit" class="btn btn-sm btn-primary">+</button>
+                            <button onclick="increaseQuantity(@item.ItemId)"
+                            type="submit" class="btn btn-sm btn-primary">+</button>
                         
                         
                             <input type="hidden" name="itemId" value="@item.ItemId" />
+                            <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
                             <button type="submit" class="btn btn-sm btn-danger delete-button" style="margin-left: 10px;">
                                 <i class="fas fa-times"></i>
                             </button>
                         
                     </td>
-                    <td id="itemPrice">$@(item.Price * item.Quantity)</td>
+                    <td id="itemSum_@item.ItemId">$@(item.Price * item.Quantity)</td>
                 </tr>
             }
             </tbody>
@@ -85,7 +87,23 @@
             data: {itemId},
             success: function (response) { 
                 $("#totalSum").text(response.totalSum);
-                $("#itemPrice").text(response.itemPrice);
+                $("#itemSum_" + itemId).text(response.itemSum);
+            },
+            error: function (response) {
+            }
+        })
+    }
+</script>
+
+<script>
+    function decreaseQuantity(itemId) {
+        $.ajax({
+            url: "https://localhost:7221/api/cart/decrease",
+            type:"GET",
+            data: {itemId},
+            success: function (response) { 
+                $("#totalSum").text(response.totalSum);
+                $("#itemSum_" + itemId).text(response.itemSum);
             },
             error: function (response) {
             }

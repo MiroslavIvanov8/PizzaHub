@@ -22,19 +22,33 @@ namespace PizzaHub.Controllers.Api
         {
             int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
             bool result = await this.cartService.IncreaseCartQuantityAsync(customerId, itemId);
+
             if (result == false)
             {
                 return BadRequest();
             }
 
-            
-            return Ok(new {totalSum = 22 ,itemPrice = 6});
+            decimal totalSum = await this.cartService.CalculateTotalCartSum(customerId);
+            decimal itemSum = await this.cartService.CalculateItemCartSum(customerId, itemId);
+
+            return Ok(new { totalSum, itemSum});
         }
 
-        //[HttpPost]
-        //public Task<IActionResult> DecreaseAsync(int customerId, int itemId)
-        //{
-        //    return Ok();
-        //}
+        [HttpGet("decrease")]
+        public async Task<IActionResult> DecreaseAsync(int itemId)
+        {
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
+            bool result = await this.cartService.DecreaseCartQuantityAsync(customerId, itemId);
+
+            if (result == false)
+            {
+                return BadRequest();
+            }
+            
+            decimal totalSum = await this.cartService.CalculateTotalCartSum(customerId);
+            decimal itemSum = await this.cartService.CalculateItemCartSum(customerId, itemId);
+
+            return Ok(new { totalSum, itemSum });
+        }
     }
 }
