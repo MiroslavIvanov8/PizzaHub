@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white text-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">PizzaHub</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -22,16 +22,16 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Restaurant" asp-action="Menu">Our Menu</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Restaurant" asp-action="Menu">Our Menu</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">About Us</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">About Us</a>
                         </li>
                         @{
                             if (!User.IsInRole("Courier"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Courier" asp-action="BecomeCourier">Join our Ranks</a>
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Courier" asp-action="BecomeCourier">Join our Ranks</a>
                                 </li>
                             }
                         }
