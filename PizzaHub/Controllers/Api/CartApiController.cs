@@ -50,5 +50,21 @@ namespace PizzaHub.Controllers.Api
 
             return Ok(new { totalSum, itemSum });
         }
+
+        [HttpGet("delete")]
+        public async Task<IActionResult> DeleteAsync(int itemId)
+        {
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
+            bool result = await this.cartService.DeleteFromCartAsync(itemId,customerId);
+
+            if (result == false)
+            {
+                return BadRequest(); 
+            }
+
+            decimal totalSum = await this.cartService.CalculateTotalCartSum(customerId);
+
+            return Ok(new { success = true, totalSum });
+        }
     }
 }

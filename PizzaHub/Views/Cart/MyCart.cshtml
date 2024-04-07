@@ -37,15 +37,14 @@
                     <td>$@item.Price</td>
                     <td>
                         <span id="quantity_@item.ItemId">@item.Quantity</span>
-            
-                        <button onclick="decreaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary @(item.Quantity == 1 ? "disabled" : "")" @(item.Quantity == 1 ? "disabled" : "")>
+                        <button id="decreaseButton_@item.ItemId" onclick="decreaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary @(item.Quantity == 1 ? "disabled" : "")">
                             -
                         </button>
                         <button onclick="increaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary">
                             +
                         </button>
 
-                            <form id="deleteForm_@item.ItemId" asp-controller="Cart" asp-action="DeleteFromCart" method="post" style="display: inline; margin-left: 10px;">
+                        <form id="deleteForm_@item.ItemId" onsubmit="deleteItem(event, '@item.ItemId')" style="display: inline; margin-left: 10px;">
                             <input type="hidden" name="itemId" value="@item.ItemId" />
                             <button type="submit" class="btn btn-sm btn-danger delete-button">
                                 <i class="fas fa-times"></i>
@@ -75,6 +74,35 @@
 
 </div>
 
+<script>
+    function deleteItem(event, itemId) {
+        event.preventDefault(); // Prevent form submission
+        if (confirm('Are you sure you want to delete this item?')) {
+            $.ajax({
+                url: "https://localhost:7221/api/cart/delete", // Update the API endpoint
+                type: "GET", // Use POST method for deleting items
+                data: { itemId: itemId },
+                success: function (response) {
+                    if (response.success) {
+                        // Remove the deleted item from the UI
+                        $('#deleteForm_' + itemId).closest('tr').remove();
+
+                        // Update total sum after deletion
+                        $("#totalSum").text("$" + response.totalSum);
+                    } else {
+                        alert('Failed to delete item.');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert('An error occurred while deleting the item.');
+                }
+            });
+        }
+    }
+</script>
+
+@*increase scripts*@
 <script>
     function increaseQuantity(itemId) {
         var quantityElement = document.getElementById('quantity_' + itemId);
@@ -106,6 +134,7 @@
     }
 </script>
 
+@*decrease scripts*@
 <script>
     function decreaseQuantity(itemId) {
         var quantityElement = document.getElementById('quantity_' + itemId);
