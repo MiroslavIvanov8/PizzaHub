@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels;
-using PizzaHub.Core.ViewModels.Cart;
-using PizzaHub.Extensions;
-
+﻿using PizzaHub.Infrastructure.Constants;
 
 namespace PizzaHub.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
+    using Core.Contracts;
+    using Core.ViewModels.Cart;
+    using Extensions;
+
+    using static MessageConstants.SuccessMessages;
+
     [Authorize(Roles = "Customer")]
     public class OrderController : Controller
     {
@@ -36,6 +39,7 @@ namespace PizzaHub.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder(string address, string paymentMethod)
         {
+            //TODO Custom error pages
             if (!ModelState.IsValid)
             {
                 return RedirectToPage("404");
@@ -45,7 +49,13 @@ namespace PizzaHub.Controllers
 
             bool result = await this.orderService.CreateOrderFromCartAsync(customerId, address, paymentMethod);
 
-            return View(result);
+            if (result == false)
+            {
+                return BadRequest();
+            }
+
+            ViewData["OrderAccepted"] = OrderSendSuccessfully;
+            return View();
         }
     }
 }

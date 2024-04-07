@@ -31,12 +31,19 @@ namespace PizzaHub.Controllers
             }
 
             //if we return null something went wrong
-            await this.cartService.AddToCartAsync(itemId, User.GetUserId(), quantity);
+            bool result = await this.cartService.AddToCartAsync(itemId, User.GetUserId(), quantity);
 
-            //TODO possible nuff reference when coming here from login page
+            if (result == false)
+            {
+                return BadRequest();
+            }
+
             MenuItemViewModel model = await this.restaurantService.GetItemAsync(itemId);
 
-            TempData["AddedToCart"] = AddedToCartMessage + quantity + "x  " + model.Name;
+            if (model != null)
+            {
+                TempData["AddedToCart"] = AddedToCartMessage + quantity + "x  " + model.Name;
+            }
 
             return RedirectToAction("Menu", "Restaurant");
         }
