@@ -37,24 +37,15 @@
                     <td>$@item.Price</td>
                     <td>
                         <span id="quantity_@item.ItemId">@item.Quantity</span>
-                        
+
+                        <button id="decreaseButton_@item.ItemId" onclick="decreaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
+                        <button onclick="increaseQuantity('@item.ItemId')" class="btn btn-sm btn-primary">+</button>
+
                             <input type="hidden" name="itemId" value="@item.ItemId" />
-                            <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
-                            <button onclick="decreaseQuantity(@item.ItemId)"
-                            type="submit" class="btn btn-sm btn-primary" @(item.Quantity == 1 ? "disabled" : "")>-</button>
-                        
-                            <input type="hidden" name="itemId" value="@item.ItemId" />
-                            <input type="hidden" name="newQuantity" value="@(item.Quantity + 1)" />
-                            <button onclick="increaseQuantity(@item.ItemId)"
-                            type="submit" class="btn btn-sm btn-primary">+</button>
-                        
-                        
-                            <input type="hidden" name="itemId" value="@item.ItemId" />
-                            <input type="hidden" name="newQuantity" value="@(item.Quantity - 1)" />
                             <button type="submit" class="btn btn-sm btn-danger delete-button" style="margin-left: 10px;">
                                 <i class="fas fa-times"></i>
                             </button>
-                        
+                            
                     </td>
                     <td id="itemSum_@item.ItemId">$@(item.Price * item.Quantity)</td>
                 </tr>
@@ -80,7 +71,22 @@
 </div>
 
 <script>
-    function increaseQuantity(itemId) { 
+    function increaseQuantity(itemId) {
+        var quantityElement = document.getElementById('quantity_' + itemId);
+        var quantity = parseInt(quantityElement.textContent);
+        quantity++;
+        quantityElement.textContent = quantity;
+
+        increaseItemSum(itemId, quantity);
+
+        // Enable the "-" button
+        var decreaseButton = document.getElementById('decreaseButton_' + itemId);
+        decreaseButton.removeAttribute('disabled');
+        decreaseButton.classList.remove('disabled');
+    }
+</script>
+<script>
+    function increaseItemSum(itemId) { 
         $.ajax({
             url: "https://localhost:7221/api/cart/increase",
             type:"GET",
@@ -97,6 +103,24 @@
 
 <script>
     function decreaseQuantity(itemId) {
+        var quantityElement = document.getElementById('quantity_' + itemId);
+        var quantity = parseInt(quantityElement.textContent);
+        if (quantity > 1) {
+            quantity--;
+            quantityElement.textContent = quantity;
+            decreaseItemSum(itemId, quantity);
+        }
+
+        // Disable the "-" button if quantity is 1
+        var decreaseButton = document.getElementById('decreaseButton_' + itemId);
+        if (quantity === 1) {
+            decreaseButton.setAttribute('disabled', 'disabled');
+            decreaseButton.classList.add('disabled');
+        }
+    }
+</script>
+<script>
+    function decreaseItemSum(itemId) {
         $.ajax({
             url: "https://localhost:7221/api/cart/decrease",
             type:"GET",

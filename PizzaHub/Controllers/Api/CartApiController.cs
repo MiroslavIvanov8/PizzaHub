@@ -31,7 +31,7 @@ namespace PizzaHub.Controllers.Api
             decimal totalSum = await this.cartService.CalculateTotalCartSum(customerId);
             decimal itemSum = await this.cartService.CalculateItemCartSum(customerId, itemId);
 
-            return Ok(new { totalSum, itemSum});
+            return Ok(new { totalSum, itemSum });
         }
 
         [HttpGet("decrease")]
