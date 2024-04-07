@@ -26,7 +26,9 @@ namespace PizzaHub
             
             if (app.Environment.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Home/Error");
+                app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
                 app.UseMigrationsEndPoint();
             }
             else
