@@ -1,5 +1,13 @@
 ﻿@model PizzaHub.Core.ViewModels.Order.AllOrdersViewModel
 
+@if (TempData["SuccessMessage"] != null && TempData["SuccessMessage"] != string.Empty)
+{
+    string message = TempData["SuccessMessage"].ToString();
+    <div class="alert alert-success" role="alert">
+        @message
+    </div>
+}
+
 <table class="table table-striped">
     <thead>
     <tr>
@@ -15,34 +23,43 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var order in Model.Orders)
+    @if (Model.Orders.Any())
+        {
+            @foreach (var order in Model.Orders)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Restaurant</td>
+                    <td>@order.Customer</td>
+                    <td>@order.Address</td>
+                    <td>$@order.Amount</td>
+                    <td>@order.CreatedOn</td>
+                    <td>
+                        <ul>
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <li>@item.Name - @item.Quantity x </li>
+                            }
+                        </ul>
+                        <td style="background-color: #14D1D1">
+                            <strong>@order.Status</strong>
+                        </td>
+                    </td>
+                    <td>
+                        <form asp-area="Courier" asp-controller="Order" asp-action="PickOrder" method="post">
+                            <input type="hidden" name="id" value="@order.Id"/>
+                            <button type="submit" style="background-color: #FAFC43; color: black;" class="btn btn-success">
+                                <strong>Pick Order</strong>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+    }
+    else
     {
         <tr>
-            <td>@order.Id</td>
-            <td>@order.Restaurant</td>
-            <td>@order.Customer</td>
-            <td>@order.Address</td>
-            <td>$@order.Amount</td>
-            <td>@order.CreatedOn</td>
-            <td>
-                <ul>
-                    @foreach (var item in order.OrderItems)
-                    {
-                        <li>@item.Name - @item.Quantity x </li>
-                    }
-                </ul>
-                <td style="background-color: #14D1D1">
-                    <strong>@order.Status</strong>
-                </td>
-            </td>
-            <td>
-                <form  asp-area="Courier" asp-controller="Order" asp-action="PickOrder" method="post">
-                    <input type="hidden" name="id" value="@order.Id" />
-                    <button type="submit" style="background-color: #FAFC43; color: black;" class="btn btn-success">
-                        <strong>Pick Order</strong>
-                    </button>
-                </form>
-            </td>
+            <td colspan="6" class="text-center"><strong>No orders yet.</strong></td>
         </tr>
     }
     </tbody>

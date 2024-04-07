@@ -4,19 +4,17 @@
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using PizzaHub.Core.Contracts;
+using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Data.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
-using System.Text.Encodings.Web;
-using PizzaHub.Core.Contracts;
-using PizzaHub.Infrastructure.Common;
 using static PizzaHub.Infrastructure.Constants.DataConstants.ApplicationUser;
-using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
 using static PizzaHub.Infrastructure.Constants.MessageConstants.AppEmailConstants;
+using static PizzaHub.Infrastructure.Constants.MessageConstants.ErrorMessages;
 
 namespace PizzaHub.Areas.Identity.Pages.Account
 {
