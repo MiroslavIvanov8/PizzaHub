@@ -1,16 +1,23 @@
 ﻿@model IEnumerable<PizzaHub.Core.ViewModels.MenuItem.MenuItemViewModel>
 @{
     ViewBag.Title = "Our Menu";
+    var addedToCartMessage = TempData["AddedToCart"] as string ?? null;
 }
-
 
 <h2 class="text-center">@ViewBag.Title</h2>
 <hr />
 
-<div class="text-center row">
+@if (!string.IsNullOrEmpty(addedToCartMessage))
+{
+    <div class="alert alert-success" role="alert">
+        @addedToCartMessage
+    </div>
+}
+
+<div class="text-center row d-flex justify-content-center">
     @foreach (var i in Model)
     {
-        <div class="card col-4" style="width: 20rem; ">
+        <div class="card col-4 m-3" style="width: 20rem; ">
             <div class="card-body">
                 <img class="card-img-top" style="width: 18rem;" src="@i.ImageUrl" alt="Pizza Image">
                 <h5 class="card-title mt-1">@i.Name</h5>
