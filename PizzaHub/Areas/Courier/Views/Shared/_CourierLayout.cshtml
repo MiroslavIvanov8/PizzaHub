@@ -1,11 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using static PizzaHub.Infrastructure.Constants.MessageConstants
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/lib/toastr/toastr.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/courier.styles.css" asp-append-version="true" />
 </head>
@@ -59,8 +61,21 @@
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    @if (TempData[SuccessMessages.UserMessageSuccess] != null)
+    {
+        <script defer>
+            message.showSuccess('@TempData[SuccessMessages.UserMessageSuccess]');
+            </script>
+    }
+    @if (TempData[ErrorMessages.UserMessageError] != null)
+    {
+        <script defer>
+            message.showError('@TempData[ErrorMessages.UserMessageError]');
+            </script>
+    }
 </body>
 </html>

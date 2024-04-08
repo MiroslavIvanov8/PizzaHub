@@ -40,7 +40,9 @@ namespace PizzaHub.Areas.Courier.Controllers
             {
                 return BadRequest();
             }
-            TempData["SuccessMessage"] = CourierSuccessfullyPickOrder + $" {id}!";
+
+            TempData[UserMessageSuccess] = CourierSuccessfullyPickOrder + $" {id}!";
+
             return RedirectToAction("PickOrders");
         }
 

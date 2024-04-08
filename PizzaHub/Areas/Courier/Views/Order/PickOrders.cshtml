@@ -1,13 +1,5 @@
 ﻿@model PizzaHub.Core.ViewModels.Order.AllOrdersViewModel
 
-@if (TempData["SuccessMessage"] != null && TempData["SuccessMessage"] != string.Empty)
-{
-    string message = TempData["SuccessMessage"].ToString();
-    <div class="alert alert-success" role="alert">
-        @message
-    </div>
-}
-
 <table class="table table-striped">
     <thead>
     <tr>

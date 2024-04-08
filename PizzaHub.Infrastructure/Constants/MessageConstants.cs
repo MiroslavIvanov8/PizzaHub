@@ -33,6 +33,8 @@
 
             public const string ErrorInCourierRequestMessage = 
                "Failed to submit your request to become a courier. You either have an ongoing request or and error occurred. Please try again later.";
+
+            public const string UserMessageError = "UserMessageError";
         }
 
         public static class SuccessMessages
@@ -40,9 +42,16 @@
             public const string SuccessCourierRequestSubmission =
                 "Your request to become a courier has been successfully submitted. You will receive an email with the result of your request.";
 
+            public const string CourierSuccessfullyPickOrder = "Successfully Picked Order";
+
             public const string CustomerNotifiedCourierAtLocation = "Customer has been notified that you are at the given location.";
 
             public const string AddedToCartMessage = "Successfully Added to Cart ";
+
+            public const string OrderSendSuccessfully = "We received your order.";
+
+            public const string UserMessageSuccess = "UserMessageSuccess";
+
         }
 
     }
