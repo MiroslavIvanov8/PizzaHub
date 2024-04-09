@@ -60,7 +60,7 @@ namespace PizzaHub.Controllers
             {
                 return View("Error404");
             }
-            if(statusCode == 500)
+            if(statusCode == 0)
             {
                 return View("Error500");
             }
