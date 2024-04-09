@@ -1,32 +1,70 @@
-﻿@model bool
+﻿@model PizzaHub.Core.ViewModels.Home.HomeViewModel
 
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; height: 100vh; margin-top: 50px;">
-    <h1 style="margin-bottom: 20px;">Welcome to PizzaHub!</h1>
-    <h3 style="margin-bottom: 10px;">We offer tasty pizza for hungry gamers.</h3>
-    <h3 style="margin-bottom: 20px;">So, are you hungry?</h3>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Left side content -->
+            <h1>Welcome to PizzaHub!</h1>
+            <h3>We offer tasty pizza for hungry gamers.</h3>
+            <h3>So, are you hungry?</h3>
 
-    @if (Model)
+            <div id="myCarousel" class="carousel slide mt-3" data-bs-ride="carousel" style="width: 100%; overflow: hidden;">
+                <div class="carousel-inner">
+                    @foreach (var item in Model.BestSellers)
+                    {
+                        <div class="carousel-item @(item == Model.BestSellers.First() ? "active" : "")">
+                            <img src="@item.ImageUrl" class="d-block w-100" alt="@item.Name" style="height: 300px; object-fit: cover;">
+                            <div class="carousel-caption d-block">
+                                <h5>@item.Name</h5>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#myCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#myCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+
+            <h5 class="mt-3">Check out our best sellers:</h5>
+        </div>
+        <div class="col-lg-4">
+            <div class="mt-12">
+                <partial name="_PizzaHistory" />
+            </div>
+        </div>
+    </div>
+
+    @if (Model.IsCourier)
     {
-        <div class="card" style="align-self: center; width: 300px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-            <p style="margin-bottom: 10px;">Choose an option below:</p>
-            <form asp-controller="Restaurant" asp-action="Menu" method="get" style="margin-bottom: 10px;">
-                <button type="submit" class="btn btn-primary">Yes, Show Me the Menu!</button>
-            </form>
+        <div class="card mt-3" style="width: 100%; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="card mt-3" style="align-self: center; width: 300px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <p style="margin-bottom: 10px;">Choose an option below:</p>
+                <form asp-controller="Restaurant" asp-action="Menu" method="get" style="margin-bottom: 10px;">
+                    <button type="submit" class="btn btn-primary">Yes, Show Me the Menu!</button>
+                </form>
 
-            <form asp-controller="Courier" asp-action="OrderOrDeliver" method="get">
-                <button type="submit" class="btn btn-secondary">No, Thanks, I am Fine.</button>
-            </form>
+                <form asp-controller="Courier" asp-action="OrderOrDeliver" method="get">
+                    <button type="submit" class="btn btn-secondary">No, Thanks, I am Fine.</button>
+                </form>
+            </div>
         </div>
     }
     else
     {
-        <div class="card" style="align-self: center; width: 300px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
-            <p style="margin-bottom: 10px;">Are you here to order a pizza? Check out our menu!</p>
-            <form asp-controller="Restaurant" asp-action="Menu" method="get" style="margin-bottom: 10px;">
-                <button type="submit" class="btn btn-primary">Yes, please!</button>
-            </form>
+        <div class="card mt-3" style="width: 100%; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="card" style="align-self: center; width: 300px; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+                <p style="margin-bottom: 10px;">Are you here to order a pizza? Check out our menu!</p>
+                <form asp-controller="Restaurant" asp-action="Menu" method="get" style="margin-bottom: 10px;">
+                    <button type="submit" class="btn btn-primary">Yes, please!</button>
+                </form>
+            </div>
         </div>
     }
 
-    <p style="margin-top: 20px; font-style: italic;">If you're not sure, you can always explore our menu or return later.</p>
+    <p class="mt-3" style="font-style: italic;">If you're not sure, you can always explore our menu or return later.</p>
 </div>

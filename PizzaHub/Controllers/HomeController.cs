@@ -1,5 +1,8 @@
 ﻿
 
+using PizzaHub.Core.Contracts;
+using PizzaHub.Core.ViewModels.Home;
+
 namespace PizzaHub.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
@@ -8,14 +11,17 @@ namespace PizzaHub.Controllers
 
     public class HomeController : Controller
     {
+        private readonly IRestaurantService restaurantService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IRestaurantService restaurantService,
+            ILogger<HomeController> logger)
         {
+            this.restaurantService = restaurantService;
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if(User.IsInRole("Admin")) 
             {
@@ -24,7 +30,13 @@ namespace PizzaHub.Controllers
 
             bool isCourier = User.IsInRole("Courier");
 
-            return View("Index", isCourier);
+            var models = await this.restaurantService.ShowBestSellersAsync();
+            HomeViewModel homeModel = new HomeViewModel()
+            {
+                IsCourier = isCourier,
+                BestSellers = models
+            };
+            return View("Index", homeModel);
         }
 
         public IActionResult SureNotHungry()
