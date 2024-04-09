@@ -14,32 +14,47 @@
     </div>
 }
 
-<div class="text-center row d-flex justify-content-center">
-    @foreach (var i in Model)
-    {
-        <div class="card col-4 m-3" style="width: 20rem; ">
-            <div class="card-body">
-                <img class="card-img-top" style="width: 18rem;" src="@i.ImageUrl" alt="Pizza Image">
-                <h5 class="card-title mt-1">@i.Name</h5>
-                <h7 class="card-title mt-1">@i.Ingredients</h7>
-                <h5 class="card-title mt-1">$@i.Price</h5>
-            </div>
-            <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
-                <input type="hidden" name="itemId" value="@i.Id" />
-
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-lg-6 offset-lg-3">
+            <form asp-controller="Restaurant" asp-action="Menu" method="get" class="mb-3 custom-form">
                 <div class="input-group">
-                    <input type="number" name="quantity" class="form-control" value="1" min="1" required />
+                    <input type="text" name="searchTerm" class="form-control custom-input" placeholder="Search by ingredients" />
                     <div class="input-group-append">
-                        <span class="input-group-text">Quantity</span>
+                        <button type="submit" class="btn btn-primary custom-btn">Search</button>
                     </div>
                 </div>
-
-                <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">
-                    <i class="fas fa-shopping-cart"></i> Add to Cart
-                </button>
-                </form>
+            </form>
         </div>
-    }
+    </div>
+
+    <div class="text-center row d-flex justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="card col-4 m-3" style="width: 20rem;">
+                <div class="card-body">
+                    <img class="card-img-top" style="width: 18rem;" src="@item.ImageUrl" alt="Pizza Image">
+                    <h5 class="card-title mt-1">@item.Name</h5>
+                    <h7 class="card-title mt-1">@item.Ingredients</h7>
+                    <h5 class="card-title mt-1">$@item.Price</h5>
+                </div>
+                <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
+                    <input type="hidden" name="itemId" value="@item.Id" />
+
+                    <div class="input-group">
+                        <input type="number" name="quantity" class="form-control" value="1" min="1" required />
+                        <div class="input-group-append">
+                            <span class="input-group-text">Quantity</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                </form>
+            </div>
+        }
+    </div>
 </div>
 
 @section Scripts {

@@ -40,3 +40,32 @@
     text-decoration: none;
     display: block;
 }
+
+.custom-form {
+    margin-top: 20px;
+}
+
+.custom-input {
+    border: 2px solid orange;
+    box-shadow: 0 0 10px orange;
+}
+
+.custom-input::selection {
+    background-color: orange;
+    color: white;
+}
+
+.custom-btn {
+    background-color: orange;
+    border-color: orange;
+    box-shadow: 0 0 10px orange;
+    color: white;
+}
+
+.custom-btn:hover {
+    background-color: darkorange;
+    border-color: darkorange;
+}
+.custom-btn {
+    margin-left: 15px;
+}
