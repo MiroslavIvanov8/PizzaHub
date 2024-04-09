@@ -39,12 +39,6 @@ namespace PizzaHub.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateOrder(string address, string paymentMethod)
         {
-            //TODO Custom error pages
-            if (!ModelState.IsValid)
-            {
-                return RedirectToPage("404");
-            }
-
             int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
 
             bool result = await this.orderService.CreateOrderFromCartAsync(customerId, address, paymentMethod);

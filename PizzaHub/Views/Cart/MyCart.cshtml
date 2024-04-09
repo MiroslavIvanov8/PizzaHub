@@ -13,8 +13,11 @@
             <h2>Your Cart</h2>
         </div>
         <div class="col-md-6 text-md-end">
-            <form asp-controller="Customer" asp-action="ShowOrders" method="get">
+            <form asp-controller="Customer" asp-action="ShowOrders" method="get" class="d-inline">
                 <button type="submit" class="btn btn-info">View Past Orders</button>
+            </form>
+            <form asp-controller="Customer" asp-action="TrackOrders" method="get" class="d-inline">
+                <button type="submit" class="btn btn-success">Track Orders</button>
             </form>
         </div>
     </div>
