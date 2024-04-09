@@ -10,5 +10,7 @@ namespace PizzaHub.Core.Contracts
 
         public Task<bool> MenuItemExistsAsync(int id);
 
+        public Task<IEnumerable<MenuItemWithImageAndQuantity>> ShowBestSellersAsync();
+
     }
 }

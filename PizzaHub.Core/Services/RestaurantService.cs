@@ -48,5 +48,35 @@ namespace PizzaHub.Core.Services
         {
             return await this.repository.AllReadOnly<MenuItem>().AnyAsync(m => m.Id == id);
         }
+
+        public async Task<IEnumerable<MenuItemWithImageAndQuantity>> ShowBestSellersAsync()
+        {
+            var bestSellers = await this.repository
+                .AllReadOnly<OrderItem>()
+                .GroupBy(oi => oi.MenuItemId)
+                .Select(g => new
+                {
+                    MenuItemId = g.Key,
+                    Quantity = g.Sum(oi => oi.Quantity)
+
+                })
+                .OrderByDescending(x => x.Quantity)
+                .Take(3)
+                .ToListAsync();
+
+            var bestSellingItems =this.repository
+                .AllReadOnly<MenuItem>()
+                .ToList()
+                .Where(mi => bestSellers.Any(bs => bs.MenuItemId == mi.Id))
+                .Select(mi => new MenuItemWithImageAndQuantity()
+                {
+                    Id = mi.Id,
+                    Name = mi.Name,
+                    ImageUrl = mi.ImageUrl
+                })
+                .ToList();
+            
+            return bestSellingItems;
+        }
     }
 }
