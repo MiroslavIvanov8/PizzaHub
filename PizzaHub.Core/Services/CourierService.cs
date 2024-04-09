@@ -85,7 +85,7 @@ namespace PizzaHub.Core.Services
         {
             var inProgressOrders = this.repository
                 .AllReadOnly<Order>()
-                .Where(o => o.OrderStatus.Name == "In Progress")
+                .Where(o => o.OrderStatusId == (int)OrderStatusEnum.InProgress)
                 .Select(o => new DetailedOrderViewModel()
                 {
                     Id = o.Id,

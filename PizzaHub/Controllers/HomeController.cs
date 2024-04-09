@@ -29,22 +29,28 @@ namespace PizzaHub.Controllers
 
         public IActionResult SureNotHungry()
         {
+            Exception exeException = new Exception();
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error(int statusCode)
         {
-            //TODO Not all who wander are lost
-            //TODO error pages for 404 and 500/400
-            if (statusCode == 500)
+            if (statusCode == 400)
             {
-                return RedirectToAction();
+                return View("Error400");
             }
-
-            if (statusCode == 404)
+            if(statusCode == 401)
             {
-
+                return View("Error401");
+            }
+            if(statusCode == 404)
+            {
+                return View("Error404");
+            }
+            if(statusCode == 500)
+            {
+                return View("Error500");
             }
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
