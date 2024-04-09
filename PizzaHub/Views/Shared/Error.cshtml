@@ -3,13 +3,34 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <br />
+        <div class="row">
+            <div class="col-10">
+                <img src="https://thumbs.dreamstime.com/b/broken-robot-fix-technology-hand-drawn-vector-cartoon-illustration-trying-to-itself-81326299.jpg" alt="Image not found" class="img-thumbnail" />
+                <div class="text-left h4">
+                    <h1 class="text-danger">Sugar. Honey. Ice. Tea.</h1>
+                    <p>Looks like something went wrong. Our system admins will check it out for you.</p>
+                </div>
+                <div class="text-left h4">
+                    Go back to 
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Home Page
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-3"></div>
+</div>
 @if (Model.ShowRequestId)
 {
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
+    <div style="position: fixed; bottom: 24px; right: 10px; ">
+        <p class="mb-0">
+            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        </p>
+    </div>
 }
 
