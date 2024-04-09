@@ -15,9 +15,9 @@ namespace PizzaHub.Core.Services
             this.repository = repository;
         }
 
-        public async Task<IEnumerable<MenuItemViewModel>> GetMenuAsync()
+        public async Task<IEnumerable<MenuItemViewModel>> GetMenuAsync(string searchTerm)
         {
-            return await this.repository.AllReadOnly<MenuItem>()
+            var models = await this.repository.AllReadOnly<MenuItem>()
                 .Where(i => i.IsDeleted == false)
                 .Select(i => new MenuItemViewModel()
             {
@@ -28,6 +28,18 @@ namespace PizzaHub.Core.Services
                 Price = i.Price
             })
                 .ToListAsync();
+
+            if (searchTerm != null)
+            {
+                searchTerm = searchTerm.ToLower();
+
+                models = models.Where(m => m.Name.ToLower().Contains(searchTerm) ||
+                                           m.Ingredients.ToLower().Contains(searchTerm))
+                    .ToList();
+            }
+
+
+            return models;
         }
 
         public async Task<MenuItemViewModel> GetItemAsync(int id)

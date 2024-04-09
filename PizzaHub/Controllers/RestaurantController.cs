@@ -12,9 +12,9 @@
         {
             this.restaurantService = restaurantService;
         }
-        public async Task<IActionResult> Menu()
+        public async Task<IActionResult> Menu(string? searchTerm)
         {
-            IEnumerable<MenuItemViewModel> menu = await this.restaurantService.GetMenuAsync();
+            IEnumerable<MenuItemViewModel> menu = await this.restaurantService.GetMenuAsync(searchTerm);
 
             return View(menu);
         } 

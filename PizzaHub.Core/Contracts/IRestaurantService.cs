@@ -4,7 +4,7 @@ namespace PizzaHub.Core.Contracts
 {
     public interface IRestaurantService
     {
-        public Task<IEnumerable<MenuItemViewModel>> GetMenuAsync();
+        public Task<IEnumerable<MenuItemViewModel>> GetMenuAsync(string? searchTerm);
 
         public Task<MenuItemViewModel> GetItemAsync(int id);
 

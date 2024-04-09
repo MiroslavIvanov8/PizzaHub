@@ -27,34 +27,45 @@
             </form>
         </div>
     </div>
-
-    <div class="text-center row d-flex justify-content-center">
-        @foreach (var item in Model)
-        {
-            <div class="card col-4 m-3" style="width: 20rem;">
-                <div class="card-body">
-                    <img class="card-img-top" style="width: 18rem;" src="@item.ImageUrl" alt="Pizza Image">
-                    <h5 class="card-title mt-1">@item.Name</h5>
-                    <h7 class="card-title mt-1">@item.Ingredients</h7>
-                    <h5 class="card-title mt-1">$@item.Price</h5>
-                </div>
-                <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
-                    <input type="hidden" name="itemId" value="@item.Id" />
-
-                    <div class="input-group">
-                        <input type="number" name="quantity" class="form-control" value="1" min="1" required />
-                        <div class="input-group-append">
-                            <span class="input-group-text">Quantity</span>
-                        </div>
+    
+    @if (Model.Any())
+    {
+        <div class="text-center row d-flex justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="card col-4 m-3" style="width: 20rem;">
+                    <div class="card-body">
+                        <img class="card-img-top" style="width: 18rem;" src="@item.ImageUrl" alt="Pizza Image">
+                        <h5 class="card-title mt-1">@item.Name</h5>
+                        <h7 class="card-title mt-1">@item.Ingredients</h7>
+                        <h5 class="card-title mt-1">$@item.Price</h5>
                     </div>
+                    <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
+                        <input type="hidden" name="itemId" value="@item.Id" />
 
-                    <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">
-                        <i class="fas fa-shopping-cart"></i> Add to Cart
-                    </button>
-                </form>
-            </div>
-        }
-    </div>
+                        <div class="input-group">
+                            <input type="number" name="quantity" class="form-control" value="1" min="1" required />
+                            <div class="input-group-append">
+                                <span class="input-group-text">Quantity</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            <h3>Oops! We couldn't find any pizzas matching your selected ingredients.</h3>
+            <p>Please try different ingredients or explore our menu for delicious options.</p>
+        </div>
+    }
+
 </div>
 
 @section Scripts {

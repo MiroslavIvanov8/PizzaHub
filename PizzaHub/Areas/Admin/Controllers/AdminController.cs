@@ -19,7 +19,7 @@
 
         public async Task<IActionResult> Menu()
         {
-            var models = await this.restaurantService.GetMenuAsync();
+            var models = await this.restaurantService.GetMenuAsync(null);
 
             return View(models);
         }
