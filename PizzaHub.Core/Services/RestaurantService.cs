@@ -32,10 +32,22 @@ namespace PizzaHub.Core.Services
             if (searchTerm != null)
             {
                 searchTerm = searchTerm.ToLower();
+                string[] separators = { " ", ",", ".", ";", ": ", "- ", "_ ", "?", "!" };
+                string[] searchTerms = searchTerm.Split(separators, StringSplitOptions.RemoveEmptyEntries);
 
-                models = models.Where(m => m.Name.ToLower().Contains(searchTerm) ||
-                                           m.Ingredients.ToLower().Contains(searchTerm))
-                    .ToList();
+                models = models.Where(m =>
+                    searchTerms.All(term =>
+                        m.Name.ToLower().Contains(term) ||
+                        m.Ingredients.ToLower().Contains(term))
+                ).ToList();
+
+                foreach (var term in searchTerms)
+                {
+                    models = models.Where(m =>
+                            m.Name.ToLower().Contains(term) ||
+                            m.Ingredients.ToLower().Contains(term))
+                             .ToList();
+                }
             }
 
 
