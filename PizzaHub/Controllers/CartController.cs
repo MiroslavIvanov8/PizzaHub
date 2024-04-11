@@ -30,7 +30,6 @@ namespace PizzaHub.Controllers
                 return RedirectToPage("/Login");
             }
 
-            //if we return null something went wrong
             bool result = await this.cartService.AddToCartAsync(itemId, User.GetUserId(), quantity);
 
             if (result == false)

@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaHub.Infrastructure", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaHub.Core", "..\PizzaHub.Core\PizzaHub.Core.csproj", "{25082432-DEC2-41C1-8590-D928BEDBC155}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaHub.UnitTests", "..\PizzaHub.UnitTests\PizzaHub.UnitTests.csproj", "{5F624516-E0D5-4A7B-9C63-A7CFB8D193FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{25082432-DEC2-41C1-8590-D928BEDBC155}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25082432-DEC2-41C1-8590-D928BEDBC155}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25082432-DEC2-41C1-8590-D928BEDBC155}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F624516-E0D5-4A7B-9C63-A7CFB8D193FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F624516-E0D5-4A7B-9C63-A7CFB8D193FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F624516-E0D5-4A7B-9C63-A7CFB8D193FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F624516-E0D5-4A7B-9C63-A7CFB8D193FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
