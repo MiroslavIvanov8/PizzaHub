@@ -1,10 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Services;
+using PizzaHub.Core.ViewModels.MenuItem;
 using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Data.Models;
 using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Infrastructure.Constants;
+using static PizzaHub.Infrastructure.Constants.DataConstants;
+using MenuItem = PizzaHub.Infrastructure.Data.Models.MenuItem;
+using Order = PizzaHub.Infrastructure.Data.Models.Order;
+using OrderStatus = PizzaHub.Infrastructure.Data.Models.OrderStatus;
+using Restaurant = PizzaHub.Infrastructure.Data.Models.Restaurant;
 
 namespace PizzaHub.UnitTests;
 
@@ -18,14 +24,15 @@ public class OrderServiceUnitTests
     private OrderService orderService;
             
     private ICollection<MenuItem> MenuItems;
-            
+    private ICollection<OrderItem> OrderItems;
+
     private Restaurant Restaurant;
     private MenuItem Margheritta;
     private MenuItem Pepperoni;
     private MenuItem Toscana;
     private MenuItem Hawaii;
             
-    private Order order;
+    private Order Order;
 
     [SetUp]
     public async Task Setup()
@@ -80,12 +87,31 @@ public class OrderServiceUnitTests
             Price = 13.50M,
             RestaurantId = 1,
         };
-
         MenuItems = new List<MenuItem>()
             {
                 Margheritta, Pepperoni, Toscana, Hawaii
             };
 
+        Order = new Order()
+        {
+            Id = 1,
+            CustomerId = 1,
+            CourierId = 1,
+            RestaurantId = 1,
+            Address = "123 Main St",
+            PaymentMethodId = 1,
+            OrderStatusId = 1,
+            CreatedOn = DateTime.UtcNow,
+            DeliveredOn = DateTime.UtcNow.AddHours(1),
+            TotalAmount = 25.00M
+        };
+        OrderItems = new List<OrderItem>()
+        {
+            new OrderItem() { Id = 1, OrderId = Order.Id, MenuItem = Margheritta, Quantity = 3, Order = this.Order },
+            new OrderItem() { Id = 2, OrderId = Order.Id, MenuItem = Pepperoni, Quantity = 2, Order = this.Order},
+            new OrderItem() { Id = 3, OrderId = Order.Id, MenuItem = Toscana, Quantity = 1, Order = this.Order }
+        };
+        
         var options = new DbContextOptionsBuilder<PizzaHubDbContext>()
             .UseInMemoryDatabase(databaseName: "PizzaHub" + Guid.NewGuid().ToString())
             .Options;
@@ -93,6 +119,8 @@ public class OrderServiceUnitTests
         dbContext = new PizzaHubDbContext(options);
 
         await dbContext.AddAsync(Restaurant);
+        await dbContext.AddAsync(Order);
+        await dbContext.AddRangeAsync(OrderItems);
         await dbContext.AddRangeAsync(MenuItems);
         await dbContext.SaveChangesAsync();
 
@@ -110,44 +138,28 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetOrderAsync_Should_Return_Correct_Order()
     {
-        Order order = new Order()
-        {
-            Id = 1,
-            CustomerId = 1,
-            CourierId = 1,
-            RestaurantId = 1,
-            Address = "123 Main St",
-            PaymentMethodId = 1,
-            OrderStatusId = 1,
-            CreatedOn = DateTime.UtcNow,
-            DeliveredOn = DateTime.UtcNow.AddHours(1),
-            TotalAmount = 25.00M
-        };
-
-        await repository.AddAsync(order);
-        await repository.SaveChangesAsync();
-
-        Order retrievedOrder = await orderService.GetOrderAsync(1);
+        Order retrievedOrder = await orderService.GetOrderAsync(Order.Id);
 
         Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(order.Id, retrievedOrder.Id);
-        Assert.AreEqual(order.CustomerId, retrievedOrder.CustomerId);
-        Assert.AreEqual(order.CourierId, retrievedOrder.CourierId);
-        Assert.AreEqual(order.RestaurantId, retrievedOrder.RestaurantId);
-        Assert.AreEqual(order.Address, retrievedOrder.Address);
-        Assert.AreEqual(order.PaymentMethodId, retrievedOrder.PaymentMethodId);
-        Assert.AreEqual(order.OrderStatusId, retrievedOrder.OrderStatusId);
-        Assert.AreEqual(order.CreatedOn, retrievedOrder.CreatedOn);
-        Assert.AreEqual(order.DeliveredOn, retrievedOrder.DeliveredOn);
-        Assert.AreEqual(order.TotalAmount, retrievedOrder.TotalAmount);
+        Assert.AreEqual(Order.Id, retrievedOrder.Id);
+        Assert.AreEqual(Order.CustomerId, retrievedOrder.CustomerId);
+        Assert.AreEqual(Order.CourierId, retrievedOrder.CourierId);
+        Assert.AreEqual(Order.RestaurantId, retrievedOrder.RestaurantId);
+        Assert.AreEqual(Order.Address, retrievedOrder.Address);
+        Assert.AreEqual(Order.PaymentMethodId, retrievedOrder.PaymentMethodId);
+        Assert.AreEqual(Order.OrderStatusId, retrievedOrder.OrderStatusId);
+        Assert.AreEqual(Order.CreatedOn, retrievedOrder.CreatedOn);
+        Assert.AreEqual(Order.DeliveredOn, retrievedOrder.DeliveredOn);
+        Assert.AreEqual(Order.TotalAmount, retrievedOrder.TotalAmount);
     }
-    [Test]
-    public async Task GetOrderAsync_Should_Return_Correct_Null()
+    [TestCase(10)]
+    public async Task GetOrderAsync_Should_Return_Correct_Null(int orderId)
     {
-        Order retrievedOrder = await orderService.GetOrderAsync(1);
+        Order retrievedOrder = await orderService.GetOrderAsync(orderId);
 
         Assert.IsNull(retrievedOrder);
     }
+
     [Test]
     public async Task GetDetailedOrderViewModelAsync_Should_Return_Null_When_Id_Not_Found()
     {
@@ -157,63 +169,7 @@ public class OrderServiceUnitTests
 
         Assert.IsNull(order);
     }
-
-    [Test]
-    public async Task GetDetailedOrderViewModelAsync_Should_Return_Correct_Order_When_Id_Found()
-    {
-        Order orderInDatabase = new Order()
-        {
-            Id = 1,
-            RestaurantId = 1,
-            Address = "123 Main St",
-            TotalAmount = 25.00M,
-            CreatedOn = DateTime.UtcNow,
-            Customer = new Customer()
-            {
-                Id = 1,
-                User = new ApplicationUser()
-                {
-                    FirstName = "John",
-                    LastName = "Doe"
-                }
-            },
-            Items = new List<OrderItem>()
-        {
-            new OrderItem()
-            {
-                Id = 1,
-                MenuItem = Margheritta,
-                Quantity = 2
-            },
-            new OrderItem()
-            {
-                Id = 2,
-                MenuItem = Pepperoni,
-                Quantity = 1
-            }
-        },
-            OrderStatus = new OrderStatus()
-            {
-                Id = 1,
-                Name = "Delivered"
-            }
-        };
-
-        await repository.AddAsync(orderInDatabase);
-        await repository.SaveChangesAsync();
-
-        DetailedOrderViewModel? retrievedOrder = await orderService.GetDetailedOrderViewModelAsync(1);
-
-        Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(orderInDatabase.Id, retrievedOrder.Id);
-        Assert.AreEqual(orderInDatabase.Restaurant.Name, retrievedOrder.Restaurant);
-        Assert.AreEqual(orderInDatabase.Address, retrievedOrder.Address);
-        Assert.AreEqual(orderInDatabase.TotalAmount, retrievedOrder.Amount);
-        Assert.AreEqual(orderInDatabase.CreatedOn.ToString(DataConstants.DateFormat), retrievedOrder.CreatedOn);
-        Assert.AreEqual($"{orderInDatabase.Customer.User.FirstName} {orderInDatabase.Customer.User.LastName}", retrievedOrder.Customer);
-        Assert.AreEqual(orderInDatabase.Items.Count, retrievedOrder.OrderItems.Count());
-        Assert.AreEqual(orderInDatabase.OrderStatus.Name, retrievedOrder.Status);
-    }
+    
     [Test]
     public async Task GetStatusNamesAsync_Should_Return_Status_Names()
     {
@@ -238,5 +194,124 @@ public class OrderServiceUnitTests
         {
             Assert.Contains(statusName, (System.Collections.ICollection?)statusNames);
         }
+    }
+
+    [Test]
+    public async Task GetOrderItemNamesAsync_Should_Return_OrderItem_Names()
+    {
+        IEnumerable<string> itemNames = await orderService.GetOrderItemNamesAsync(Order.Id);
+        
+        Assert.IsNotNull(itemNames);
+        Assert.AreEqual(OrderItems.Count, itemNames.Count());
+
+        Assert.IsTrue(OrderItems.All(orderItem => itemNames.Contains(orderItem.MenuItem.Name)));
+    }
+
+    [TestCase(-1)]
+    [TestCase(10)]
+    public async Task GetOrderItemNamesAsync_InvalidOrderId_Should_Return_EmptyList(int invalidOrderId)
+    {
+        IEnumerable<string> itemNames = await orderService.GetOrderItemNamesAsync(invalidOrderId);
+        Assert.IsNotNull(itemNames);
+        Assert.IsEmpty(itemNames);
+    }
+
+    [Test]
+    public async Task GetOrderMenuItemWithQuantityViewmodelAsync_Should_Return_OrderItems_With_Quantity()
+    {
+        IEnumerable<OrderMenuItemWithQuantityViewModel> result = await orderService.GetOrderMenuItemWithQuantityViewmodelAsync(Order.Id);
+
+        // Assert
+        Assert.IsNotNull(result);
+        Assert.AreEqual(OrderItems.Count, result.Count());
+
+        foreach (var orderItem in result)
+        {
+            bool itemExists = OrderItems.Any(x => x.OrderId == orderItem.Id && x.MenuItem.Name == orderItem.Name && x.Quantity == orderItem.Quantity);
+            Assert.IsTrue(itemExists);
+        }
+    }
+
+    [Test]
+    public async Task GetOrderMenuItemWithQuantityViewmodelAsync_Should_Return_OrderItems_With_Correct_Quantity()
+    {
+        IEnumerable<OrderMenuItemWithQuantityViewModel> result = await orderService.GetOrderMenuItemWithQuantityViewmodelAsync(Order.Id);
+
+        Assert.IsNotNull(result);
+        Assert.AreEqual(OrderItems.Count, result.Count());
+
+        foreach (var orderItem in result)
+        {
+            var matchingItem = OrderItems.FirstOrDefault(x => x.OrderId == orderItem.Id && x.MenuItem.Name == orderItem.Name);
+            Assert.IsNotNull(matchingItem);
+
+            Assert.AreEqual(matchingItem.Quantity, orderItem.Quantity);
+        }
+    }
+
+    [Test]
+    public async Task GetDetailedOrderViewModelAsync_Should_Return_DetailedOrderViewModel_When_Id_Found()
+    {
+        Order orderInDatabase = new Order()
+        {
+            Id = 2,
+            CustomerId = 1,
+            CourierId = 1,
+            RestaurantId = 1,
+            PaymentMethodId = 1,
+            Address = "123 Main St",
+            TotalAmount = 25.00M,
+            CreatedOn = DateTime.UtcNow,
+            OrderStatusId = 4,
+            DeliveredOn = DateTime.UtcNow.AddHours(1), // Just an example for DeliveredOn
+            Customer = new Customer()
+            {
+                Id = 1,
+                User = new()
+                {
+                    FirstName = "John",
+                    LastName = "Doe"
+                }
+            },
+            Items = new List<OrderItem>()
+            {
+                new OrderItem()
+                {
+                    Id = 5,
+                    OrderId = 1,
+                    MenuItem = Margheritta,
+                    Quantity = 2
+                },
+                new OrderItem()
+                {
+                    Id = 6,
+                    OrderId = 1,
+                    MenuItem = Pepperoni,
+                    Quantity = 1
+                }
+            },
+            OrderStatus = new OrderStatus()
+            {
+                Id = 1,
+                Name = "Delivered"
+            }
+        };
+
+        await repository.AddAsync(orderInDatabase);
+        await repository.SaveChangesAsync();
+
+        // Act
+        DetailedOrderViewModel? retrievedOrder = await orderService.GetDetailedOrderViewModelAsync(2);
+
+        // Assert
+        Assert.IsNotNull(retrievedOrder);
+        Assert.AreEqual(orderInDatabase.Id, retrievedOrder.Id);
+        Assert.AreEqual(orderInDatabase.Restaurant.Name, retrievedOrder.Restaurant);
+        Assert.AreEqual(orderInDatabase.Address, retrievedOrder.Address);
+        Assert.AreEqual(orderInDatabase.TotalAmount, retrievedOrder.Amount);
+        Assert.AreEqual(orderInDatabase.CreatedOn.ToString(DataConstants.DateFormat), retrievedOrder.CreatedOn);
+        Assert.AreEqual($"{orderInDatabase.Customer.User.FirstName} {orderInDatabase.Customer.User.LastName}", retrievedOrder.Customer);
+        Assert.AreEqual(orderInDatabase.Items.Count, retrievedOrder.OrderItems.Count());
+        Assert.AreEqual(orderInDatabase.OrderStatus.Name, retrievedOrder.Status);
     }
 }

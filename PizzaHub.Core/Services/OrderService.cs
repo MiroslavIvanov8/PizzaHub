@@ -156,26 +156,6 @@ namespace PizzaHub.Core.Services
 
         //TODO those methods are not good better to think of a way to do them async or just drop them 
         //TODO tho they will work only with orders with given courier but it would be better if they are async
-        public async Task<IEnumerable<DetailedOrderViewModel>> GetAllReadOnlyDetailedOrdersViewModelAsync(IEnumerable<Order> orders)
-        {
-            return orders.Select(o => new DetailedOrderViewModel()
-            {
-                Id = o.Id,
-                Restaurant = o.Restaurant.Name,
-                Address = o.Address,
-                Amount = o.TotalAmount,
-                CreatedOn = o.CreatedOn.ToString(DataConstants.DateFormat),
-                Customer = $"{o.Customer.User.FirstName} {o.Customer.User.LastName}",
-                OrderItems = o.Items.Select(oi => new OrderMenuItemWithQuantityViewModel()
-                {
-                    Id = oi.Id,
-                    Name = oi.MenuItem.Name,
-                    Quantity = oi.Quantity,
-                }).ToList(),
-                Status = o.OrderStatus.Name
-            }).ToList();
-        }
-
         public async Task<IEnumerable<DetailedOrderViewModel>> GetAllDetailedOrdersViewModelAsync(IEnumerable<Order> orders)
         {
             return orders.Select(o => new DetailedOrderViewModel()
