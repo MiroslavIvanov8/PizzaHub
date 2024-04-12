@@ -1,4 +1,3 @@
-using System.Collections;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Contracts;
 using PizzaHub.Core.Services;
@@ -10,7 +9,7 @@ using PizzaHub.Infrastructure.Data.Models;
 namespace PizzaHub.UnitTests
 {
     [TestFixture]
-    public class RestaurantUnitTests
+    public class RestaurantServiceUnitTests
     {
         private PizzaHubDbContext dbContext;
 
