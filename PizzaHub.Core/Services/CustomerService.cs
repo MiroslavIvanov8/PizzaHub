@@ -5,6 +5,7 @@ using PizzaHub.Core.ViewModels.Order;
 using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Constants;
 using PizzaHub.Infrastructure.Data.Models;
+using PizzaHub.Infrastructure.Enums;
 
 namespace PizzaHub.Core.Services
 {
@@ -34,12 +35,14 @@ namespace PizzaHub.Core.Services
             return await this.repository.AllReadOnly<Customer>().AnyAsync(c => c.UserId == userId);
         }
 
-        public async Task<IEnumerable<OrderViewModel>> ShowOrdersAsync(int userId)
+        public async Task<IEnumerable<OrderViewModel>> ShowPastOrdersAsync(int userId)
         {
             var orders = await this.repository.All<Order>()
-                .Where(o => o.CustomerId == userId).ToListAsync();
+                .Where(o => o.CustomerId == userId &&
+                            o.OrderStatusId == (int)OrderStatusEnum.Delivered ||
+                            o.OrderStatusId == (int)OrderStatusEnum.Canceled)
+                .ToListAsync();
 
-            //TODO change the models so it shows the correct quantity of every item in the order
             var orderViewModels = orders.Select(order => new OrderViewModel()
             {
                 Id = order.Id,
@@ -57,6 +60,33 @@ namespace PizzaHub.Core.Services
 
             return orderViewModels;
         }
+
+        public async Task<IEnumerable<OrderViewModel>> ShowOngoingOrdersAsync(int userId)
+        {
+            var orders = await this.repository.All<Order>()
+                .Where(o => o.CustomerId == userId &&
+                            !(o.OrderStatusId == (int)OrderStatusEnum.Delivered ||
+                              o.OrderStatusId == (int)OrderStatusEnum.Canceled))
+                .ToListAsync();
+
+            var orderViewModels = orders.Select(order => new OrderViewModel()
+            {
+                Id = order.Id,
+                Restaurant = order.Restaurant.Name,
+                Status = order.OrderStatus.Name,
+                Amount = order.TotalAmount,
+                CreatedOn = order.CreatedOn.ToString(DataConstants.DateFormat),
+                OrderItems = order.Items.Select(oi => new OrderMenuItemWithQuantityViewModel
+                {
+                    Name = oi.MenuItem.Name,
+                    Quantity = oi.Quantity,
+                }),
+
+            }).OrderByDescending(o => o.CreatedOn);
+
+            return orderViewModels;
+        }
     }
+
 }
 

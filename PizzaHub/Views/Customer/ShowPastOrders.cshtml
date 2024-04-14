@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PizzaHub.Core.ViewModels.Order.OrderViewModel>
+@{
+    string GetStatusColor(string status)
+    {
+        switch (status.ToLower())
+        {
+            case "delivered":
+                return "#7CFC00"; //green
+            case "canceled":
+                return "gray"; // gray
+            default:
+                return "";
+        }
+    }
+}
+<h1>Previous Orders</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Order Date</th>
+            <th>Restaurant Name</th>
+            <th>Status</th>
+            <th>Order Items</th>
+            <th>Total Amount</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.CreatedOn</td>
+                <td>@order.Restaurant</td>
+                <td style="background-color: @GetStatusColor(order.Status)">
+                    <strong>@order.Status</strong>
+                </td>
+                <td>
+                    <ul>
+                        @foreach (var item in order.OrderItems)
+                        {
+                                <li>@item.Name - @item.Quantity x</li>
+                        }
+                    </ul>
+                </td>
+                    <td><strong>$@order.Amount</strong></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No previous orders found.</p>
+}
