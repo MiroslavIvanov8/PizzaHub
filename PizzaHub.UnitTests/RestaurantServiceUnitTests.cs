@@ -107,24 +107,35 @@ namespace PizzaHub.UnitTests
         }
 
         [Test]
-        public async Task Test_Item_Exists_Returns_Correct()
+        public async Task Test_Item_Exists_Returns_True()
         {
-            bool resultTrue = await this.restaurantService.MenuItemExistsAsync(1);
-            bool resultFalse = await this.restaurantService.MenuItemExistsAsync(5);
+            bool result = await this.restaurantService.MenuItemExistsAsync(1);
 
-            Assert.AreEqual(resultTrue, true);
-            Assert.AreEqual(resultFalse, false);
+            Assert.AreEqual(result, true);
+        }
+
+        [Test]
+        public async Task Test_Item_Exists_Returns_False()
+        {
+            bool result = await this.restaurantService.MenuItemExistsAsync(11);
+
+            Assert.AreEqual(result, false);
         }
 
         [Test]
         public async Task Test_GetItemReturns_Correct()
         {
            MenuItemViewModel margherita = await this.restaurantService.GetItemAsync(1);
-           MenuItemViewModel aNull = await this.restaurantService.GetItemAsync(10);
-
-
+            
            Assert.AreEqual(margherita.Id, 1);
-           Assert.AreEqual(aNull,null);
+        }
+
+        [Test]
+        public async Task Test_GetItemReturns_Null()
+        {
+            MenuItemViewModel aNull = await this.restaurantService.GetItemAsync(10);
+
+            Assert.AreEqual(aNull, null);
         }
 
         [Test]
@@ -279,6 +290,7 @@ namespace PizzaHub.UnitTests
                 MenuItemId = 4,
                 Quantity = 1
             };
+
             await repository.AddAsync(orderItem1);
             await repository.AddAsync(orderItem2);
             await repository.AddAsync(orderItem3);
