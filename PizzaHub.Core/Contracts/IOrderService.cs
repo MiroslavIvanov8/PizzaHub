@@ -14,5 +14,6 @@ namespace PizzaHub.Core.Contracts
         Task<Order?> GetOrderAsync(int id);
         Task<DetailedOrderViewModel?> GetDetailedOrderViewModelAsync(int id);
         Task<IEnumerable<DetailedOrderViewModel>> GetAllDetailedOrdersViewModelAsync(IEnumerable<Order> orders);
+        Task<bool> CancelOrder(int orderId, int customerId);
     }
 }

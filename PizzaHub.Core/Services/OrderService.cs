@@ -87,14 +87,25 @@ namespace PizzaHub.Core.Services
 
             return false;
         }
+        public async Task<bool> CancelOrder(int orderId, int customerId)
+        {
+            Order? order = await this.GetOrderAsync(orderId);
 
+            if (order != null && order.CustomerId == customerId)
+            {
+                order.OrderStatusId = (int)OrderStatusEnum.Canceled;
+                await this.repository.SaveChangesAsync();
+                return true;
+            }
+
+            return false;
+        }
         public async Task<IEnumerable<string>> GetOrderItemNamesAsync(int orderId)
         {
             var orderItems = await repository.All<OrderItem>()
                 .Where(oi => oi.OrderId == orderId)
                 .ToListAsync();
 
-            // Extract MenuItem names from OrderItems
             var menuItemNames = orderItems.Select(oi => oi.MenuItem.Name);
 
             return menuItemNames;
@@ -175,6 +186,7 @@ namespace PizzaHub.Core.Services
                 Status = o.OrderStatus.Name
             }).ToList();
         }
+        
     }
 }
   

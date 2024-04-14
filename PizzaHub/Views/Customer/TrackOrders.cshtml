@@ -1,0 +1,78 @@
+﻿@model IEnumerable<PizzaHub.Core.ViewModels.Order.OrderViewModel>
+
+@{
+    string GetStatusColor(string status)
+    {
+        switch (status.ToLower())
+        {
+            case "pending":
+                return "orange"; // orange
+            case "in progress":
+                return "#14D1D1"; // sky blue
+            case "out for delivery":
+                return "#FAFC43"; // yellow
+            default:
+                return "";
+        }
+    }
+}
+
+<h1>Current Live Orders</h1>
+
+@if (Model.Any())
+{
+    @if (TempData["CanceledOrder"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @TempData["CanceledOrder"]
+        </div>
+    }
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Order Date</th>
+                <th>Restaurant Name</th>
+                <th>Status</th>
+                <th>Order Items</th>
+                <th>Total Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.CreatedOn</td>
+                    <td>@order.Restaurant</td>
+                    @{
+                        string statusColor = GetStatusColor(order.Status);
+                        bool showCancelButton = order.Status.Equals("Pending", StringComparison.OrdinalIgnoreCase);
+                    }
+
+                    <td style="position: relative; background-color: @statusColor; padding: 10px;">
+                        <strong>@order.Status</strong>
+                        @if (showCancelButton)
+                        {
+                            <form asp-controller="Order" asp-action="CancelOrder" asp-route-orderId="@order.Id" method="post" style="position: absolute; bottom: 3px; right: 3px;">
+                                <button type="submit" class="btn btn-danger">Cancel</button>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <li>@item.Name - @item.Quantity x</li>
+                            }
+                        </ul>
+                    </td>
+                    <td><strong>$@order.Amount</strong></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No current orders found.</p>
+}

@@ -52,6 +52,8 @@
 
             public const string UserMessageSuccess = "UserMessageSuccess";
 
+            public const string OrderCanceled = "Your order with Id {0} has been canceled successfully.";
+
         }
 
     }
