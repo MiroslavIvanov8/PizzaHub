@@ -11,6 +11,9 @@ using MenuItem = PizzaHub.Infrastructure.Data.Models.MenuItem;
 using Order = PizzaHub.Infrastructure.Data.Models.Order;
 using OrderStatus = PizzaHub.Infrastructure.Data.Models.OrderStatus;
 using Restaurant = PizzaHub.Infrastructure.Data.Models.Restaurant;
+using PizzaHub.Core.Contracts;
+using ApplicationUser = PizzaHub.Infrastructure.Data.Models.ApplicationUser;
+using System.Globalization;
 
 namespace PizzaHub.UnitTests;
 
@@ -18,21 +21,42 @@ namespace PizzaHub.UnitTests;
 public class OrderServiceUnitTests
 {
     private PizzaHubDbContext dbContext;
-            
+
     private IRepository repository;
-            
-    private OrderService orderService;
-            
-    private ICollection<MenuItem> MenuItems;
-    private ICollection<OrderItem> OrderItems;
+
+    private IOrderService orderService;
 
     private Restaurant Restaurant;
+
+    private ICollection<MenuItem> MenuItems;
+    private ICollection<Order> Orders;
+    private ICollection<OrderStatus> OrderStatuses;
+    private ICollection<CustomerCart> CustomerCarts;
+
+    private Customer Customer;
+    private Customer CustomerEmptyCart;
+    private ApplicationUser ApplicationUserCustomer;
+    private ApplicationUser ApplicationUser;
+
     private MenuItem Margheritta;
     private MenuItem Pepperoni;
     private MenuItem Toscana;
     private MenuItem Hawaii;
-            
-    private Order Order;
+
+    private OrderStatus Pending;
+    private OrderStatus InProgress;
+    private OrderStatus OutForDelivery;
+    private OrderStatus Delivered;
+    private OrderStatus Canceled;
+
+    private Order PendingOrder;
+    private Order InProgressOrder;
+    private Order OutForDeliveryOrder;
+    private Order DeliveredOrder;
+    private Order CanceledOrder;
+
+    private CustomerCart CartMargherita;
+    private CustomerCart CartPepperoni;
 
     [SetUp]
     public async Task Setup()
@@ -42,6 +66,44 @@ public class OrderServiceUnitTests
             Id = 1,
             Name = "PizzaHub"
         };
+        ApplicationUserCustomer = new ApplicationUser
+        {
+            Id = Guid.NewGuid().ToString(),
+            FirstName = "Miroslav",
+            LastName = "Ivanov",
+            BirthDate = DateTime.ParseExact("01.10.1998", "dd.MM.yyyy", CultureInfo.InvariantCulture),
+            Email = "starskriim@abv.bg",
+            PasswordHash = "123123123123123"
+        };
+        ApplicationUser = new ApplicationUser()
+        {
+            Id = Guid.NewGuid().ToString(),
+            FirstName = "Test",
+            LastName = "Testov",
+            BirthDate = DateTime.ParseExact("01.10.1998", "dd.MM.yyyy", CultureInfo.InvariantCulture),
+            Email = "star@abv.bg",
+            PasswordHash = "123123123123123"
+        };
+        Customer = new Customer()
+        {
+            Id = 1,
+            UserId = ApplicationUserCustomer.Id,
+        };
+        CustomerEmptyCart = new Customer()
+        {
+            Id = 2,
+            UserId = ApplicationUser.Id
+        };
+
+        Pending = new OrderStatus { Id = 1, Name = "Pending" };
+        InProgress = new OrderStatus { Id = 2, Name = "In Progress" };
+        OutForDelivery = new OrderStatus { Id = 3, Name = "Out for Delivery" };
+        Delivered = new OrderStatus { Id = 4, Name = "Delivered" };
+        Canceled = new OrderStatus { Id = 5, Name = "Cancelled" };
+        OrderStatuses = new List<OrderStatus>()
+            {
+                Pending, InProgress, OutForDelivery, Delivered, Canceled
+            };
 
         Margheritta = new MenuItem()
         {
@@ -92,40 +154,151 @@ public class OrderServiceUnitTests
                 Margheritta, Pepperoni, Toscana, Hawaii
             };
 
-        Order = new Order()
+        PendingOrder = new Order()
         {
             Id = 1,
             CustomerId = 1,
+            Customer = Customer,
             CourierId = 1,
             RestaurantId = 1,
-            Address = "123 Main St",
             PaymentMethodId = 1,
-            OrderStatusId = 1,
+            Address = "123 Main St",
+            TotalAmount = 25.00M,
             CreatedOn = DateTime.UtcNow,
+            OrderStatusId = 4,
             DeliveredOn = DateTime.UtcNow.AddHours(1),
-            TotalAmount = 25.00M
+            OrderStatus = Pending,
+            Items = new List<OrderItem>
+            {
+                new OrderItem() { Id = 1, OrderId = 1, MenuItem = Margheritta, Quantity = 3},
+                new OrderItem() { Id = 2, OrderId = 1, MenuItem = Pepperoni, Quantity = 2},
+                new OrderItem() { Id = 3, OrderId = 1, MenuItem = Toscana, Quantity = 1}
+            }
         };
-        OrderItems = new List<OrderItem>()
+        InProgressOrder = new Order()
         {
-            new OrderItem() { Id = 1, OrderId = Order.Id, MenuItem = Margheritta, Quantity = 3, Order = this.Order },
-            new OrderItem() { Id = 2, OrderId = Order.Id, MenuItem = Pepperoni, Quantity = 2, Order = this.Order},
-            new OrderItem() { Id = 3, OrderId = Order.Id, MenuItem = Toscana, Quantity = 1, Order = this.Order }
+            Id = 2,
+            CustomerId = 1,
+            Customer = Customer,
+            CourierId = 1,
+            RestaurantId = 1,
+            PaymentMethodId = 1,
+            Address = "123 Main St",
+            TotalAmount = 25.00M,
+            CreatedOn = DateTime.UtcNow,
+            OrderStatusId = 4,
+            DeliveredOn = DateTime.UtcNow.AddHours(1),
+            OrderStatus = InProgress,
+            Items = new List<OrderItem>
+                {
+                    new OrderItem() { Id = 4, OrderId = 2, MenuItem = Margheritta, Quantity = 3},
+                    new OrderItem() { Id = 5, OrderId = 2, MenuItem = Pepperoni, Quantity = 2,},
+                    new OrderItem() { Id = 6, OrderId = 2, MenuItem = Toscana, Quantity = 1}
+                }
         };
-        
+        OutForDeliveryOrder = new Order()
+        {
+            Id = 3,
+            CustomerId = 1,
+            Customer = Customer,
+            CourierId = 1,
+            RestaurantId = 1,
+            PaymentMethodId = 1,
+            Address = "123 Main St",
+            TotalAmount = 25.00M,
+            CreatedOn = DateTime.UtcNow,
+            OrderStatusId = 4,
+            DeliveredOn = DateTime.UtcNow.AddHours(1),
+            OrderStatus = OutForDelivery,
+            Items = new List<OrderItem>
+                {
+                    new OrderItem() { Id = 7, OrderId = 3, MenuItem = Margheritta, Quantity = 3},
+                    new OrderItem() { Id = 8, OrderId = 3, MenuItem = Pepperoni, Quantity = 2},
+                    new OrderItem() { Id = 9, OrderId = 3, MenuItem = Toscana, Quantity = 1}
+                }
+        };
+        DeliveredOrder = new Order()
+        {
+            Id = 4,
+            CustomerId = 1,
+            Customer = Customer,
+            CourierId = 1,
+            RestaurantId = 1,
+            PaymentMethodId = 1,
+            Address = "123 Main St",
+            TotalAmount = 25.00M,
+            CreatedOn = DateTime.UtcNow,
+            OrderStatusId = 4,
+            DeliveredOn = DateTime.UtcNow.AddHours(1),
+            OrderStatus = Delivered,
+            Items = new List<OrderItem>
+                {
+                    new OrderItem() { Id = 10, OrderId = 4, MenuItem = Margheritta, Quantity = 3},
+                    new OrderItem() { Id = 11, OrderId = 4, MenuItem = Pepperoni, Quantity = 2},
+                    new OrderItem() { Id = 12, OrderId = 4, MenuItem = Toscana, Quantity = 1}
+                }
+        };
+        CanceledOrder = new Order()
+        {
+            Id = 5,
+            CustomerId = 1,
+            Customer = Customer,
+            CourierId = 1,
+            RestaurantId = 1,
+            PaymentMethodId = 1,
+            Address = "123 Main St",
+            TotalAmount = 25.00M,
+            CreatedOn = DateTime.UtcNow,
+            OrderStatusId = 4,
+            DeliveredOn = DateTime.UtcNow.AddHours(1),
+            OrderStatus = Canceled,
+            Items = new List<OrderItem>
+                {
+                    new OrderItem() { Id = 13, OrderId = 5, MenuItem = Margheritta, Quantity = 3},
+                    new OrderItem() { Id = 14, OrderId = 5, MenuItem = Pepperoni, Quantity = 2},
+                    new OrderItem() { Id = 15, OrderId = 5, MenuItem = Toscana, Quantity = 1}
+                }
+        };
+        Orders = new List<Order>()
+            {
+                PendingOrder, InProgressOrder, OutForDeliveryOrder, DeliveredOrder, CanceledOrder
+            };
+
+        CartMargherita = new CustomerCart()
+        {
+            CustomerId = Customer.Id,
+            MenuItemId = Margheritta.Id,
+            Quantity = 2
+        };
+        CartPepperoni = new CustomerCart()
+        {
+            CustomerId = Customer.Id,
+            MenuItemId = Pepperoni.Id,
+            Quantity = 2
+        };
+        CustomerCarts = new List<CustomerCart>()
+        {
+            CartMargherita, CartPepperoni
+        };
+
         var options = new DbContextOptionsBuilder<PizzaHubDbContext>()
             .UseInMemoryDatabase(databaseName: "PizzaHub" + Guid.NewGuid().ToString())
             .Options;
 
         dbContext = new PizzaHubDbContext(options);
-
-        await dbContext.AddAsync(Restaurant);
-        await dbContext.AddAsync(Order);
-        await dbContext.AddRangeAsync(OrderItems);
-        await dbContext.AddRangeAsync(MenuItems);
-        await dbContext.SaveChangesAsync();
-
         repository = new Repository(dbContext);
         orderService = new OrderService(repository);
+
+        await dbContext.AddAsync(Restaurant);
+        await dbContext.AddAsync(ApplicationUserCustomer);
+        await dbContext.AddAsync(Customer);
+        await dbContext.AddAsync(ApplicationUser);
+        await dbContext.AddAsync(CustomerEmptyCart);
+        await dbContext.AddRangeAsync(OrderStatuses);
+        await dbContext.AddRangeAsync(MenuItems);
+        await dbContext.AddRangeAsync(Orders);
+        await dbContext.AddRangeAsync(CustomerCarts);
+        await dbContext.SaveChangesAsync();
     }
 
     [TearDown]
@@ -138,20 +311,21 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetOrderAsync_Should_Return_Correct_Order()
     {
-        Order retrievedOrder = await orderService.GetOrderAsync(Order.Id);
+        Order retrievedOrder = await orderService.GetOrderAsync(1);
 
         Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(Order.Id, retrievedOrder.Id);
-        Assert.AreEqual(Order.CustomerId, retrievedOrder.CustomerId);
-        Assert.AreEqual(Order.CourierId, retrievedOrder.CourierId);
-        Assert.AreEqual(Order.RestaurantId, retrievedOrder.RestaurantId);
-        Assert.AreEqual(Order.Address, retrievedOrder.Address);
-        Assert.AreEqual(Order.PaymentMethodId, retrievedOrder.PaymentMethodId);
-        Assert.AreEqual(Order.OrderStatusId, retrievedOrder.OrderStatusId);
-        Assert.AreEqual(Order.CreatedOn, retrievedOrder.CreatedOn);
-        Assert.AreEqual(Order.DeliveredOn, retrievedOrder.DeliveredOn);
-        Assert.AreEqual(Order.TotalAmount, retrievedOrder.TotalAmount);
+        Assert.AreEqual(PendingOrder.Id, retrievedOrder.Id);
+        Assert.AreEqual(PendingOrder.CustomerId, retrievedOrder.CustomerId);
+        Assert.AreEqual(PendingOrder.CourierId, retrievedOrder.CourierId);
+        Assert.AreEqual(PendingOrder.RestaurantId, retrievedOrder.RestaurantId);
+        Assert.AreEqual(PendingOrder.Address, retrievedOrder.Address);
+        Assert.AreEqual(PendingOrder.PaymentMethodId, retrievedOrder.PaymentMethodId);
+        Assert.AreEqual(PendingOrder.OrderStatusId, retrievedOrder.OrderStatusId);
+        Assert.AreEqual(PendingOrder.CreatedOn, retrievedOrder.CreatedOn);
+        Assert.AreEqual(PendingOrder.DeliveredOn, retrievedOrder.DeliveredOn);
+        Assert.AreEqual(PendingOrder.TotalAmount, retrievedOrder.TotalAmount);
     }
+
     [TestCase(10)]
     public async Task GetOrderAsync_Should_Return_Correct_Null(int orderId)
     {
@@ -173,24 +347,12 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetStatusNamesAsync_Should_Return_Status_Names()
     {
-        var orderStatuses = new List<OrderStatus>()
-        {
-            new OrderStatus() { Id = 1, Name = "Pending" },
-            new OrderStatus() { Id = 2, Name = "In Progress" },
-            new OrderStatus() { Id = 3, Name = "Out for Delivery"},
-            new OrderStatus() { Id = 4, Name = "Delivered" },
-            new OrderStatus() { Id = 5, Name = "Cancelled" }
-        };
-
-        await repository.AddRangeAsync(orderStatuses);
-        await repository.SaveChangesAsync();
-
         IEnumerable<string> statusNames = await orderService.GetStatusNamesAsync();
 
         Assert.IsNotNull(statusNames);
-        Assert.AreEqual(orderStatuses.Count, statusNames.Count());
+        Assert.AreEqual(OrderStatuses.Count, statusNames.Count());
 
-        foreach (var statusName in orderStatuses.Select(s => s.Name))
+        foreach (var statusName in OrderStatuses.Select(s => s.Name))
         {
             Assert.Contains(statusName, (System.Collections.ICollection?)statusNames);
         }
@@ -199,12 +361,12 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetOrderItemNamesAsync_Should_Return_OrderItem_Names()
     {
-        IEnumerable<string> itemNames = await orderService.GetOrderItemNamesAsync(Order.Id);
+        IEnumerable<string> itemNames = await orderService.GetOrderItemNamesAsync(PendingOrder.Id);
         
         Assert.IsNotNull(itemNames);
-        Assert.AreEqual(OrderItems.Count, itemNames.Count());
+        Assert.AreEqual(PendingOrder.Items.Count, itemNames.Count());
 
-        Assert.IsTrue(OrderItems.All(orderItem => itemNames.Contains(orderItem.MenuItem.Name)));
+        Assert.IsTrue(PendingOrder.Items.All(orderItem => itemNames.Contains(orderItem.MenuItem.Name)));
     }
 
     [TestCase(-1)]
@@ -212,6 +374,7 @@ public class OrderServiceUnitTests
     public async Task GetOrderItemNamesAsync_InvalidOrderId_Should_Return_EmptyList(int invalidOrderId)
     {
         IEnumerable<string> itemNames = await orderService.GetOrderItemNamesAsync(invalidOrderId);
+
         Assert.IsNotNull(itemNames);
         Assert.IsEmpty(itemNames);
     }
@@ -219,15 +382,15 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetOrderMenuItemWithQuantityViewmodelAsync_Should_Return_OrderItems_With_Quantity()
     {
-        IEnumerable<OrderMenuItemWithQuantityViewModel> result = await orderService.GetOrderMenuItemWithQuantityViewmodelAsync(Order.Id);
+        IEnumerable<OrderMenuItemWithQuantityViewModel> result = await orderService.GetOrderMenuItemWithQuantityViewmodelAsync(1);
 
         // Assert
         Assert.IsNotNull(result);
-        Assert.AreEqual(OrderItems.Count, result.Count());
+        Assert.AreEqual(PendingOrder.Items.Count, result.Count());
 
         foreach (var orderItem in result)
         {
-            bool itemExists = OrderItems.Any(x => x.OrderId == orderItem.Id && x.MenuItem.Name == orderItem.Name && x.Quantity == orderItem.Quantity);
+            bool itemExists = PendingOrder.Items.Any(x => x.OrderId == orderItem.Id && x.MenuItem.Name == orderItem.Name && x.Quantity == orderItem.Quantity);
             Assert.IsTrue(itemExists);
         }
     }
@@ -235,14 +398,14 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetOrderMenuItemWithQuantityViewmodelAsync_Should_Return_OrderItems_With_Correct_Quantity()
     {
-        IEnumerable<OrderMenuItemWithQuantityViewModel> result = await orderService.GetOrderMenuItemWithQuantityViewmodelAsync(Order.Id);
+        IEnumerable<OrderMenuItemWithQuantityViewModel> result = await orderService.GetOrderMenuItemWithQuantityViewmodelAsync(1);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(OrderItems.Count, result.Count());
+        Assert.AreEqual(PendingOrder.Items.Count, result.Count());
 
         foreach (var orderItem in result)
         {
-            var matchingItem = OrderItems.FirstOrDefault(x => x.OrderId == orderItem.Id && x.MenuItem.Name == orderItem.Name);
+            var matchingItem = PendingOrder.Items.FirstOrDefault(x => x.OrderId == orderItem.Id && x.MenuItem.Name == orderItem.Name);
             Assert.IsNotNull(matchingItem);
 
             Assert.AreEqual(matchingItem.Quantity, orderItem.Quantity);
@@ -252,66 +415,151 @@ public class OrderServiceUnitTests
     [Test]
     public async Task GetDetailedOrderViewModelAsync_Should_Return_DetailedOrderViewModel_When_Id_Found()
     {
-        Order orderInDatabase = new Order()
-        {
-            Id = 2,
-            CustomerId = 1,
-            CourierId = 1,
-            RestaurantId = 1,
-            PaymentMethodId = 1,
-            Address = "123 Main St",
-            TotalAmount = 25.00M,
-            CreatedOn = DateTime.UtcNow,
-            OrderStatusId = 4,
-            DeliveredOn = DateTime.UtcNow.AddHours(1), // Just an example for DeliveredOn
-            Customer = new Customer()
-            {
-                Id = 1,
-                User = new()
-                {
-                    FirstName = "John",
-                    LastName = "Doe"
-                }
-            },
-            Items = new List<OrderItem>()
-            {
-                new OrderItem()
-                {
-                    Id = 5,
-                    OrderId = 1,
-                    MenuItem = Margheritta,
-                    Quantity = 2
-                },
-                new OrderItem()
-                {
-                    Id = 6,
-                    OrderId = 1,
-                    MenuItem = Pepperoni,
-                    Quantity = 1
-                }
-            },
-            OrderStatus = new OrderStatus()
-            {
-                Id = 1,
-                Name = "Delivered"
-            }
-        };
-
-        await repository.AddAsync(orderInDatabase);
-        await repository.SaveChangesAsync();
-
         // Act
-        DetailedOrderViewModel? retrievedOrder = await orderService.GetDetailedOrderViewModelAsync(2);
+        DetailedOrderViewModel? retrievedOrder = await orderService.GetDetailedOrderViewModelAsync(1);
 
         // Assert
         Assert.IsNotNull(retrievedOrder);
-        Assert.AreEqual(orderInDatabase.Id, retrievedOrder.Id);
-        Assert.AreEqual(orderInDatabase.Restaurant.Name, retrievedOrder.Restaurant);
-        Assert.AreEqual(orderInDatabase.Address, retrievedOrder.Address);
-        Assert.AreEqual(orderInDatabase.TotalAmount, retrievedOrder.Amount);
-        Assert.AreEqual(orderInDatabase.CreatedOn.ToString(DataConstants.DateFormat), retrievedOrder.CreatedOn);
-        Assert.AreEqual($"{orderInDatabase.Customer.User.FirstName} {orderInDatabase.Customer.User.LastName}", retrievedOrder.Customer);
-        Assert.AreEqual(orderInDatabase.Items.Count, retrievedOrder.OrderItems.Count());
-        Assert.AreEqual(orderInDatabase.OrderStatus.Name, retrievedOrder.Status);
+        Assert.AreEqual(PendingOrder.Id, retrievedOrder.Id);
+        Assert.AreEqual(PendingOrder.Restaurant.Name, retrievedOrder.Restaurant);
+        Assert.AreEqual(PendingOrder.Address, retrievedOrder.Address);
+        Assert.AreEqual(PendingOrder.TotalAmount, retrievedOrder.Amount);
+        Assert.AreEqual(PendingOrder.CreatedOn.ToString(DataConstants.DateFormat), retrievedOrder.CreatedOn);
+        Assert.AreEqual($"{PendingOrder.Customer.User.FirstName} {PendingOrder.Customer.User.LastName}", retrievedOrder.Customer);
+        Assert.AreEqual(PendingOrder.Items.Count, retrievedOrder.OrderItems.Count());
+        Assert.AreEqual(PendingOrder.OrderStatus.Name, retrievedOrder.Status);
+    }
+
+    [Test]
+    public async Task CancelOrder_Should_Return_True()
+    {
+        bool result = await this.orderService.CancelOrder(PendingOrder.Id, Customer.Id);
+
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public async Task CancelOrder_Should_Return_False_With_Wrong_CustomerId()
+    {
+        bool result = await this.orderService.CancelOrder(PendingOrder.Id,100);
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public async Task CancelOrder_Should_Return_False_With_Wrong_OrderId()
+    {
+        bool result = await this.orderService.CancelOrder(100, Customer.Id);
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public async Task CancelOrder_Should_Return_False()
+    {
+        bool result = await this.orderService.CancelOrder(100, 100);
+
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public async Task GetAllDetailedOrdersViewModelAsync_Should_Return_Correct_Number_Of_ViewModels()
+    {
+        var orders = new List<Order>
+        {
+            DeliveredOrder, CanceledOrder
+        };
+
+        var detailedOrderViewModels = await orderService.GetAllDetailedOrdersViewModelAsync(orders);
+
+        Assert.AreEqual(orders.Count, detailedOrderViewModels.Count());
+    }
+
+    [Test]
+    public async Task GetAllDetailedOrdersViewModelAsync_Should_Return_Correct_OrderViewModel_Properties()
+    {
+        var orders = new List<Order>
+        {
+            DeliveredOrder, CanceledOrder
+        };
+        
+        var detailedOrderViewModels = await orderService.GetAllDetailedOrdersViewModelAsync(orders);
+
+        foreach (var viewModel in detailedOrderViewModels)
+        {
+            var correspondingOrder = orders.FirstOrDefault(o => o.Id == viewModel.Id);
+            Assert.IsNotNull(correspondingOrder);
+
+            Assert.AreEqual(viewModel.Id, correspondingOrder.Id);
+            Assert.AreEqual(viewModel.Restaurant, correspondingOrder.Restaurant.Name);
+            Assert.AreEqual(viewModel.Address, correspondingOrder.Address);
+            Assert.AreEqual(viewModel.Amount, correspondingOrder.TotalAmount);
+            Assert.AreEqual(viewModel.CreatedOn, correspondingOrder.CreatedOn.ToString(DataConstants.DateFormat));
+            Assert.AreEqual(viewModel.Customer, $"{correspondingOrder.Customer.User.FirstName} {correspondingOrder.Customer.User.LastName}");
+            Assert.AreEqual(viewModel.Status, correspondingOrder.OrderStatus.Name);
+
+            Assert.AreEqual(correspondingOrder.Items.Count, viewModel.OrderItems.Count());
+            foreach (var orderItemViewModel in viewModel.OrderItems)
+            {
+                var correspondingOrderItem = correspondingOrder.Items.FirstOrDefault(oi => oi.Id == orderItemViewModel.Id);
+                Assert.IsNotNull(correspondingOrderItem);
+
+                Assert.AreEqual(orderItemViewModel.Id, correspondingOrderItem.Id);
+                Assert.AreEqual(orderItemViewModel.Name, correspondingOrderItem.MenuItem.Name);
+                Assert.AreEqual(orderItemViewModel.Quantity, correspondingOrderItem.Quantity);
+            }
+        }
+    }
+
+    [Test]
+    public async Task GetAllDetailedOrdersViewModelAsync_Should_Return_Empty_List_When_Input_Orders_Empty()
+    {
+        var emptyOrders = new List<Order>();
+
+        var detailedOrderViewModels = await orderService.GetAllDetailedOrdersViewModelAsync(emptyOrders);
+
+        Assert.IsEmpty(detailedOrderViewModels);
+    }
+
+    [Test]
+    public async Task CreateOrderFromCartAsync_Should_Return_True()
+    {
+        bool result = await this.orderService.CreateOrderFromCartAsync(Customer.Id, "Some Address", "cash");
+
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public async Task CreateOrderFromCartAsync_Should_Return_False_When_MenuItem_Do_Not_Exist()
+    {
+        CustomerCart cart = new CustomerCart()
+        {
+            CustomerId = 1,
+            MenuItemId = 10
+        };
+        await dbContext.AddAsync(cart);
+        await dbContext.SaveChangesAsync();
+
+        bool result = await this.orderService.CreateOrderFromCartAsync(Customer.Id, "Some Address", "cash");
+
+        Assert.AreEqual(5,repository.AllReadOnly<Order>().Count());
+        Assert.IsFalse(result);
+    }
+
+    [Test]
+    public async Task CreateOrderFromCartAsync_Should_Remove_CustomerCart()
+    {
+        bool result = await this.orderService.CreateOrderFromCartAsync(Customer.Id, "Some Address", "cash");
+
+        Assert.AreEqual(0,repository.AllReadOnly<CustomerCart>().Count());
+        Assert.IsTrue(result);
+    }
+
+    [Test]
+    public async Task CreateOrderFromCartAsync_Should_Return_False_When_CustomerCart_Is_Empty()
+    {
+        bool result = await this.orderService.CreateOrderFromCartAsync(CustomerEmptyCart.Id, "Some Address", "cash");
+
+        Assert.IsFalse(result);
     }
 }

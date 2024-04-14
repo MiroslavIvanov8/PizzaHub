@@ -20,7 +20,6 @@ namespace PizzaHub.Core.Services
 
         public async Task<bool> CreateOrderFromCartAsync(int customerId, string address, string paymentMethod)
         {
-            
             // Get customer cart items
             var cartItems = await this.repository.All<CustomerCart>()
                 .Where(cart => cart.CustomerId == customerId)
@@ -69,6 +68,7 @@ namespace PizzaHub.Core.Services
                     }
                     else
                     {
+                        await this.repository.Remove(order);
                         return false;
                     }
                 }
@@ -87,6 +87,7 @@ namespace PizzaHub.Core.Services
 
             return false;
         }
+
         public async Task<bool> CancelOrder(int orderId, int customerId)
         {
             Order? order = await this.GetOrderAsync(orderId);
@@ -164,9 +165,6 @@ namespace PizzaHub.Core.Services
                 .FirstOrDefaultAsync();
         }
 
-
-        //TODO those methods are not good better to think of a way to do them async or just drop them 
-        //TODO tho they will work only with orders with given courier but it would be better if they are async
         public async Task<IEnumerable<DetailedOrderViewModel>> GetAllDetailedOrdersViewModelAsync(IEnumerable<Order> orders)
         {
             return orders.Select(o => new DetailedOrderViewModel()
