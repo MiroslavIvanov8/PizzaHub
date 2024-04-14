@@ -35,10 +35,10 @@ namespace PizzaHub.Core.Services
             return await this.repository.AllReadOnly<Customer>().AnyAsync(c => c.UserId == userId);
         }
 
-        public async Task<IEnumerable<OrderViewModel>> ShowPastOrdersAsync(int userId)
+        public async Task<IEnumerable<OrderViewModel>> ShowPastOrdersAsync(int customerId)
         {
             var orders = await this.repository.All<Order>()
-                .Where(o => o.CustomerId == userId &&
+                .Where(o => o.CustomerId == customerId &&
                             o.OrderStatusId == (int)OrderStatusEnum.Delivered ||
                             o.OrderStatusId == (int)OrderStatusEnum.Canceled)
                 .ToListAsync();
