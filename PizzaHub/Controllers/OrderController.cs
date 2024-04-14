@@ -51,5 +51,22 @@ namespace PizzaHub.Controllers
             ViewData["OrderAccepted"] = OrderSendSuccessfully;
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CancelOrder(int orderId)
+        {
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
+
+            bool result = await this.orderService.CancelOrder(orderId, customerId);
+
+            if (result == false)
+            {
+                return BadRequest();
+            }
+
+            TempData["CanceledOrder"] = string.Format(OrderCanceled, orderId);
+
+            return RedirectToAction("TrackOrders", "Customer");
+        }
     }
 }

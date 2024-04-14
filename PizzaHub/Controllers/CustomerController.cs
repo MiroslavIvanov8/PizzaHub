@@ -15,11 +15,19 @@ namespace PizzaHub.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> ShowOrders()
+        public async Task<IActionResult> ShowPastOrders()
         {
             int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
 
-            return View(await this.customerService.ShowOrdersAsync(customerId));
+            return View(await this.customerService.ShowPastOrdersAsync(customerId));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> TrackOrders()
+        {
+            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
+
+            return View(await this.customerService.ShowOngoingOrdersAsync(customerId));
         }
     }
 }
