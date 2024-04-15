@@ -69,6 +69,7 @@ namespace PizzaHub.Core.Services
                     }
                     else
                     {
+                        await this.repository.Remove(order);
                         return false;
                     }
                 }
