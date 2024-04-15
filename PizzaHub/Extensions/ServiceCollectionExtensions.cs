@@ -37,8 +37,8 @@
         }
 
         public static IServiceCollection AddApplicationDbContext(this IServiceCollection services, IConfiguration config)
-        {
-            var connectionString = config.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+        { 
+            var connectionString = config.GetConnectionString("PizzaHubDbContextConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             services.AddDbContext<PizzaHubDbContext>(options =>
                 {
                     options.UseSqlServer(connectionString);
