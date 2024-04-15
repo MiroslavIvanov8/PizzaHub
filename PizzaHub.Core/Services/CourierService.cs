@@ -167,8 +167,8 @@ namespace PizzaHub.Core.Services
                 .Include(o => o.OrderStatus)
                 .Where(o => o.CourierId == courierId && o.OrderStatusId == (int)OrderStatusEnum.OutForDelivery)
                 .AsQueryable();
-            
-            var model = await this.orderService.GetAllDetailedOrdersViewModelAsync(orders);
+
+           var model = await this.orderService.GetAllDetailedOrdersViewModelAsync(orders);
 
             return model;
         }
