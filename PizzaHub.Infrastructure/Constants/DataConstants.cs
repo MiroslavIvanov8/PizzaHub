@@ -5,7 +5,9 @@ namespace PizzaHub.Infrastructure.Constants
     public static class DataConstants
     {
         public const string DateFormat = "dd/MM/yyyy HH:mm:ss";
-        
+        public const string CacheHomeKey = "cacheHomeKey";
+
+
         public static class ApplicationUser
         {
             public const int NameMaxLength = 50;

@@ -1,24 +1,26 @@
-﻿
-
-using PizzaHub.Core.Contracts;
-using PizzaHub.Core.ViewModels.Home;
+﻿using PizzaHub.Infrastructure.Constants;
 
 namespace PizzaHub.Controllers
 {
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.AspNetCore.Mvc;
     using System.Diagnostics;
-    using PizzaHub.Core.ViewModels;
+
+    using Core.Contracts;
+    using Core.ViewModels.Home;
+    using Core.ViewModels;
+    using static DataConstants;
 
     public class HomeController : Controller
     {
         private readonly IRestaurantService restaurantService;
-        private readonly ILogger<HomeController> _logger;
+        private readonly IMemoryCache cache;
 
-        public HomeController(IRestaurantService restaurantService,
-            ILogger<HomeController> logger)
+        public HomeController(IRestaurantService restaurantService
+            ,IMemoryCache cache)
         {
             this.restaurantService = restaurantService;
-            _logger = logger;
+            this.cache = cache;
         }
 
         public async Task<IActionResult> Index()
@@ -27,15 +29,31 @@ namespace PizzaHub.Controllers
             {
                 return RedirectToAction("Index", "Admin", new { area = "Admin" });
             }
-
-            bool isCourier = User.IsInRole("Courier");
-
-            var models = await this.restaurantService.ShowBestSellersAsync();
-            HomeViewModel homeModel = new HomeViewModel()
+            
+            if (cache.TryGetValue(CacheHomeKey, out HomeViewModel homeModel))
             {
-                IsCourier = isCourier,
-                BestSellers = models
-            };
+               
+            }
+            else
+            {
+
+                bool isCourier = User.IsInRole("Courier");
+
+                var models = await this.restaurantService.ShowBestSellersAsync();
+                homeModel = new HomeViewModel()
+                {
+                    IsCourier = isCourier,
+                    BestSellers = models
+                };
+
+                var cacheEntryOptions = new MemoryCacheEntryOptions()
+                    .SetSlidingExpiration(TimeSpan.FromSeconds(60))
+                    .SetAbsoluteExpiration(TimeSpan.FromSeconds(3600))
+                    .SetPriority(CacheItemPriority.Normal);
+
+                cache.Set(CacheHomeKey, homeModel, cacheEntryOptions);
+            }
+            
             return View("Index", homeModel);
         }
 
