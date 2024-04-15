@@ -9,7 +9,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7221;http://localhost:5267"
     },
-    {
+    "Production": { 
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
