@@ -10,6 +10,7 @@ namespace PizzaHub.Controllers
     using Core.ViewModels.Home;
     using Core.ViewModels;
     using static DataConstants;
+    using PizzaHub.Infrastructure.Data.Models;
 
     public class HomeController : Controller
     {
@@ -36,13 +37,9 @@ namespace PizzaHub.Controllers
             }
             else
             {
-
-                bool isCourier = User.IsInRole("Courier");
-
                 var models = await this.restaurantService.ShowBestSellersAsync();
                 homeModel = new HomeViewModel()
                 {
-                    IsCourier = isCourier,
                     BestSellers = models
                 };
 
@@ -53,6 +50,8 @@ namespace PizzaHub.Controllers
 
                 cache.Set(CacheHomeKey, homeModel, cacheEntryOptions);
             }
+
+            homeModel.IsCourier = User.IsInRole("Courier");
 
             return View("Index", homeModel);
         }

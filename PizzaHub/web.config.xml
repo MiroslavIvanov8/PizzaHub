@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<system.webServer>
+		<handlers>
+			<add name="aspNetCore" path="*" verb="*" modules="AspNetCoreModuleV2" resourceType="Unspecified" />
+		</handlers>
+		<aspNetCore processPath="dotnet" arguments=".\PizzaHub.dll" stdoutLogEnabled="false" stdoutLogFile=".\logs\PizzaHub\stdout" hostingModel="inprocess">
+			<environmentVariables>
+				<environmentVariable name="ASPNETCORE_ENVIRONMENT" value="Production" />
+			</environmentVariables>
+		</aspNetCore>
+		<security>
+			<requestFiltering>
+				<hiddenSegments>
+					<remove segment="bin" />
+				</hiddenSegments>
+			</requestFiltering>
+		</security>
+	</system.webServer>
+</configuration>
