@@ -1,5 +1,8 @@
-﻿using PizzaHub.Areas.Admin.Models.Order;
+﻿using System.Text.RegularExpressions;
+using Castle.Core.Internal;
+using PizzaHub.Areas.Admin.Models.Order;
 using MessageConstants = PizzaHub.Infrastructure.Constants.MessageConstants;
+using static PizzaHub.Infrastructure.Constants.DataConstants.BecomeCourierForm;
 
 namespace PizzaHub.Core.Services
 {
@@ -35,7 +38,7 @@ namespace PizzaHub.Core.Services
         {
             try
             {
-                if (await this.IsApplicantInLegalAge(userId))
+                if (await this.IsApplicantInLegalAge(userId) && !phoneNumber.IsNullOrEmpty()  && Regex.IsMatch(phoneNumber, PhoneNumberNumberRegex))
                 {
 
                     if (await this.repository.AllReadOnly<CourierApplicationRequest>().AnyAsync(r => r.UserId == userId))
@@ -92,6 +95,7 @@ namespace PizzaHub.Core.Services
                     Restaurant = o.Restaurant.Name,
                     Address = o.Address,
                     Amount = o.TotalAmount,
+                    Status = o.OrderStatus.Name,
                     CreatedOn = o.CreatedOn.ToString(DataConstants.DateFormat),
                     Customer = $"{o.Customer.User.FirstName} {o.Customer.User.LastName}",
                     OrderItems = o.Items.Select(oi => new OrderMenuItemWithQuantityViewModel()
@@ -99,8 +103,8 @@ namespace PizzaHub.Core.Services
                         Id = oi.Id,
                         Name = oi.MenuItem.Name,
                         Quantity = oi.Quantity,
-                    }).ToList(),
-                    Status = o.OrderStatus.Name
+                    })
+                        .ToList()
                 });
 
             var orders = await inProgressOrders
@@ -121,18 +125,18 @@ namespace PizzaHub.Core.Services
         {
             Order? order = await this.orderService.GetOrderAsync(orderId);
 
-            if (order != null)
+            if (order != null && order.OrderStatusId == (int)OrderStatusEnum.InProgress)
             {
                 order.OrderStatusId = (int)OrderStatusEnum.OutForDelivery;
                 order.CourierId = courierId;
 
-                string subject = "Delivery on the way!";
-                await this.emailSender.SendEmailAsync(
-                    FromAppEmail,
-                    FromAppTeam,
-                    order.Customer.User.Email,
-                    subject,
-                    OrderOutForDelivery);
+                   string subject = "Delivery on the way!";
+                    await this.emailSender.SendEmailAsync(
+                        FromAppEmail,
+                        FromAppTeam,
+                        order.Customer.User.Email,
+                        subject,
+                        OrderOutForDelivery);
 
                 await this.repository.SaveChangesAsync();
 
@@ -177,11 +181,14 @@ namespace PizzaHub.Core.Services
         {
             Order? order = await this.orderService.GetOrderAsync(orderId);
 
-            if (order != null)
+            if (order != null && order.OrderStatusId == (int)OrderStatusEnum.OutForDelivery)
             {
                 order.OrderStatusId = (int)OrderStatusEnum.Delivered;
+
                 order.DeliveredOn = DateTime.UtcNow;
+
                 await this.repository.SaveChangesAsync();
+
                 return true;
             }
 
