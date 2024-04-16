@@ -111,6 +111,11 @@ namespace PizzaHub.Core.Services
 
             if (cartItem != null)
             {
+                if (cartItem.Quantity == 1)
+                {
+                    return false;
+                }
+
                 cartItem.Quantity--;
                 await this.repository.SaveChangesAsync();
                 return true;
@@ -156,7 +161,6 @@ namespace PizzaHub.Core.Services
             return false;
 
         }
-
         
     }
 }

@@ -1,4 +1,5 @@
-﻿using PizzaHub.Core.Contracts;
+﻿using System.Collections;
+using PizzaHub.Core.Contracts;
 using PizzaHub.Infrastructure;
 using PizzaHub.Infrastructure.Common;
 using PizzaHub.Infrastructure.Data.Models;
@@ -10,29 +11,31 @@ using MenuItem = PizzaHub.Infrastructure.Data.Models.MenuItem;
 using Order = PizzaHub.Infrastructure.Data.Models.Order;
 using OrderStatus = PizzaHub.Infrastructure.Data.Models.OrderStatus;
 using Restaurant = PizzaHub.Infrastructure.Data.Models.Restaurant;
-using PizzaHub.Core.ViewModels.Order;
+using Moq;
 using PizzaHub.Core.ViewModels.Cart;
 
 namespace PizzaHub.UnitTests
 {
     [TestFixture]
-    public class CartServiceUnitTests
+    public class CartServiceUnitTestsMoq
     {
         private PizzaHubDbContext dbContext;
 
         private IRepository repository;
-
         private ICartService cartService;
-        private ICustomerService customerService;
-        private IRestaurantService restaurantService;
+
+        private Mock<IRestaurantService> restaurantServiceMock;
+        private Mock<ICustomerService> customerServiceMock;
 
         private Restaurant Restaurant;
 
         private ICollection<MenuItem> MenuItems;
         private ICollection<OrderStatus> OrderStatuses;
+
         private ICollection<CustomerCart> CustomerCarts;
         
         private Customer Customer;
+        private Courier Courier;
         private ApplicationUser CustomerUser;
 
         private MenuItem Margheritta;
@@ -40,16 +43,15 @@ namespace PizzaHub.UnitTests
         private MenuItem Toscana;
         private MenuItem Hawaii;
 
-        private CustomerCart MargharittaCart;
-        private CustomerCart PeperroniCart;
-        private CustomerCart ToscanaCart;
-
         private OrderStatus Pending;
         private OrderStatus InProgress;
         private OrderStatus OutForDelivery;
         private OrderStatus Delivered;
         private OrderStatus Canceled;
 
+        private CustomerCart MargharittaCart;
+        private CustomerCart PeperroniCart;
+        private CustomerCart ToscanaCart;
 
         [SetUp]
         public async Task Setup()
@@ -73,6 +75,11 @@ namespace PizzaHub.UnitTests
             {
                 Id = 1,
                 UserId = CustomerUser.Id,
+            };
+            Courier = new Courier()
+            {
+                Id = 1,
+                UserId = CustomerUser.Id
             };
 
             Pending = new OrderStatus { Id = 1, Name = "Pending" };
@@ -157,21 +164,44 @@ namespace PizzaHub.UnitTests
             {
                 MargharittaCart, PeperroniCart, ToscanaCart
             };
-
+            
             var options = new DbContextOptionsBuilder<PizzaHubDbContext>()
                 .UseInMemoryDatabase(databaseName: "PizzaHub" + Guid.NewGuid().ToString())
                 .Options;
 
             dbContext = new PizzaHubDbContext(options);
-            repository = new Repository(dbContext);
 
-            restaurantService = new RestaurantService(repository);
-            customerService = new CustomerService(repository);
-            cartService = new CartService(repository, restaurantService, customerService);
+            repository = new Repository(dbContext);
+            restaurantServiceMock = new Mock<IRestaurantService>();
+            customerServiceMock = new Mock<ICustomerService>();
+
+            cartService = new CartService(repository, restaurantServiceMock.Object, customerServiceMock.Object);
+
+            customerServiceMock
+                .Setup(x => x.CustomerExistsAsync(Customer.UserId))
+                .Returns(Task.FromResult(true));
+            customerServiceMock
+                .Setup(x => x.GetCustomerIdAsync(Customer.UserId))
+                .Returns(Task.FromResult(Customer.Id));
+
+            customerServiceMock
+                .Setup(x => x.CustomerExistsAsync("abc"))
+                .Returns(Task.FromResult(false));
+
+            restaurantServiceMock
+                .Setup(x => x.MenuItemExistsAsync(Margheritta.Id))
+                .Returns(Task.FromResult(true));
+            restaurantServiceMock
+                .Setup(x => x.MenuItemExistsAsync(Hawaii.Id))
+                .Returns(Task.FromResult(true));
+            restaurantServiceMock
+                .Setup(x => x.MenuItemExistsAsync(10))
+                .Returns(Task.FromResult(false));
 
             await dbContext.AddAsync(Restaurant);
             await dbContext.AddAsync(CustomerUser);
             await dbContext.AddAsync(Customer);
+            await dbContext.AddAsync(Courier);
             await dbContext.AddRangeAsync(OrderStatuses);
             await dbContext.AddRangeAsync(MenuItems);
             await dbContext.AddRangeAsync(CustomerCarts);
@@ -186,12 +216,210 @@ namespace PizzaHub.UnitTests
         }
 
         [Test]
+        public async Task AddToCartAsync_Should_Return_True_When_Adding_New_Item_To_Cart()
+        {
+            var result = await cartService.AddToCartAsync(Hawaii.Id, Customer.UserId, 1);
+
+            Assert.IsTrue(result);
+            Assert.AreEqual(4, repository.AllReadOnly<CustomerCart>().Count());
+        }
+
+        [Test]
+        public async Task AddToCartAsync_Should_Return_True_When_Adding_Existing_Item_To_Cart()
+        {
+            var result = await cartService.AddToCartAsync(Margheritta.Id, Customer.UserId, 1);
+
+            Assert.IsTrue(result);
+            Assert.AreEqual(2, MargharittaCart.Quantity);
+        }
+
+        [Test]
+        public async Task AddToCartAsync_Should_Return_False_When_Customer_Id_Is_Not_Existing()
+        {
+            var result = await cartService.AddToCartAsync(Margheritta.Id, "abc", 1);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public async Task AddToCartAsync_Should_Return_False_When_Menu_Item_Id_Is_Not_Existing()
+        {
+            var result = await cartService.AddToCartAsync(10, Customer.UserId, 1);
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
         public async Task MyCartAsync_Should_Return_Correct_Model()
         {
             var result = await cartService.MyCartAsync(Customer.Id);
-            
+
+            Assert.IsNotNull(result);
             Assert.IsInstanceOf<ICollection<CartItemViewModel>>(result);
             Assert.AreEqual(3, result.Count);
+        }
+
+        [Test]
+        public async Task MyCartAsync_Should_Return_Empty_Model_When_Customer_Got_No_Items()
+        {
+            var result = await cartService.MyCartAsync(2);
+
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ICollection<CartItemViewModel>>(result);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
+        public async Task IncreaseCartQuantityAsync_Should_Return_True_And_Increase_Quantity()
+        {
+            bool result = await cartService.IncreaseCartQuantityAsync(Customer.Id, Margheritta.Id);
+
+            Assert.True(result);
+            Assert.AreEqual(2,MargharittaCart.Quantity);
+        }
+
+        [Test]
+        public async Task IncreaseCartQuantityAsync_Should_Return_False_When_Customer_Id_Missing()
+        {
+            bool result = await cartService.IncreaseCartQuantityAsync(2, Margheritta.Id);
+
+            Assert.False(result);
+        }
+        [Test]
+        public async Task IncreaseCartQuantityAsync_Should_Return_False_When_MenuItem_Id_Missing()
+        {
+            bool result = await cartService.IncreaseCartQuantityAsync(Customer.Id, 10);
+
+            Assert.False(result);
+        }
+
+        [Test]
+        public async Task DecreaseCartQuantityAsync_Should_Return_True_And_Decrease_Quantity()
+        {
+            await cartService.IncreaseCartQuantityAsync(Customer.Id, Margheritta.Id);
+            await cartService.IncreaseCartQuantityAsync(Customer.Id, Margheritta.Id);
+
+            bool result = await cartService.DecreaseCartQuantityAsync(Customer.Id, Margheritta.Id);
+
+            Assert.True(result);
+            Assert.AreEqual(2, MargharittaCart.Quantity);
+        }
+
+        [Test]
+        public async Task DecreaseCartQuantityAsync_Should_Return_False_If_Quantity_Is_One_And_Decrease_Goes_To_Zero()
+        {
+            bool result = await cartService.DecreaseCartQuantityAsync(Customer.Id, Margheritta.Id);
+
+            Assert.False(result);
+            Assert.AreEqual(1, MargharittaCart.Quantity);
+        }
+
+        [Test]
+        public async Task DecreaseCartQuantityAsync_Should_Return_False_When_Customer_Id_Missing()
+        {
+            bool result = await cartService.DecreaseCartQuantityAsync(2, Margheritta.Id);
+
+            Assert.False(result);
+        }
+
+        [Test]
+        public async Task DecreaseCartQuantityAsync_Should_Return_False_When_MenuItem_Id_Missing()
+        {
+            bool result = await cartService.DecreaseCartQuantityAsync(Customer.Id, 10);
+
+            Assert.False(result);
+        }
+
+        [Test]
+        public async Task CalculateTotalCartSum_Should_Return_Correct_Sum()
+        {
+            decimal sum1 = await cartService.CalculateTotalCartSum(Customer.Id);
+
+            Assert.IsNotNull(sum1);
+            Assert.AreEqual(81.96, sum1);
+
+            await cartService.IncreaseCartQuantityAsync(Customer.Id, Margheritta.Id);
+
+            decimal sum2 = await cartService.CalculateTotalCartSum(Customer.Id);
+
+            Assert.IsNotNull(sum2);
+            Assert.AreEqual(91.95,sum2);
+        }
+
+        [Test]
+        public async Task CalculateTotalCartSum_Should_Return_Zero_If_Customer_Cart_Is_Empty()
+        {
+            await cartService.DeleteFromCartAsync(Margheritta.Id, Customer.Id);
+            await cartService.DeleteFromCartAsync(Pepperoni.Id, Customer.Id);
+            await cartService.DeleteFromCartAsync(Toscana.Id, Customer.Id);
+
+            decimal sum = await cartService.CalculateTotalCartSum(Customer.Id);
+
+            Assert.IsNotNull(sum);
+            Assert.AreEqual(0,sum);
+        }
+
+        [Test]
+        public async Task CalculateTotalCartSum_Should_Return_Zero_If_Customer_Id_Is_Missing()
+        {
+            decimal sum = await cartService.CalculateTotalCartSum(2);
+
+            Assert.IsNotNull(sum);
+            Assert.AreEqual(0,sum);
+        }
+
+        [Test]
+        public async Task CalculateItemCartSum_Should_Return_Correct_Sum()
+        {
+            decimal margharittaSum = await cartService.CalculateItemCartSum(Customer.Id, Margheritta.Id);
+            decimal pepperoniSum = await cartService.CalculateItemCartSum(Customer.Id, Pepperoni.Id);
+
+            Assert.AreEqual(9.99,margharittaSum);
+            Assert.AreEqual(27, pepperoniSum);
+        }
+
+        [Test]
+        public async Task CalculateItemCartSum_Should_Return_Zero_If_Customer_Id_Missing()
+        {
+            decimal margharittaSum = await cartService.CalculateItemCartSum(2, Margheritta.Id);
+            
+            Assert.AreEqual(0, margharittaSum);
+        }
+
+        [Test]
+        public async Task CalculateItemCartSum_Should_Return_Zero_If_MenuItem_Id_Missing()
+        {
+            decimal margharittaSum = await cartService.CalculateItemCartSum(Customer.Id, 10);
+
+            Assert.AreEqual(0, margharittaSum);
+        }
+
+        [Test]
+        public async Task DeleteFromCartAsync_Should_Return_True_And_Delete()
+        {
+            bool result = await cartService.DeleteFromCartAsync(Margheritta.Id, Customer.Id);
+
+            Assert.True(result);
+            Assert.True(!await repository.AllReadOnly<CustomerCart>().AnyAsync(cc => cc.MenuItemId == Margheritta.Id));
+            Assert.AreEqual(2,repository.AllReadOnly<CustomerCart>().Count());
+        }
+
+        [Test]
+        public async Task DeleteFromCartAsync_Should_Return_False_If_Customer_Id_Missing()
+        {
+            bool result = await cartService.DeleteFromCartAsync(Margheritta.Id, 2);
+
+            Assert.False(result);
+            Assert.AreEqual(3, repository.AllReadOnly<CustomerCart>().Count());
+        }
+
+        [Test]
+        public async Task DeleteFromCartAsync_Should_Return_False_If_MenuItem_Id_Missing()
+        {
+            bool result = await cartService.DeleteFromCartAsync(10, Customer.Id);
+
+            Assert.False(result);
+            Assert.AreEqual(3, repository.AllReadOnly<CustomerCart>().Count());
         }
     }
 }
