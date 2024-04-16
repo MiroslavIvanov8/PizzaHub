@@ -66,15 +66,5 @@ namespace PizzaHub.Controllers
 
             return RedirectToAction("MyCart");
         }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateQuantity(int itemId, int newQuantity)
-        {
-            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
-
-            decimal newTotalAmount = await this.cartService.UpdateQuantityAsync(itemId, newQuantity, customerId);
-
-            return RedirectToAction(nameof(MyCart));
-        }
     }
 }

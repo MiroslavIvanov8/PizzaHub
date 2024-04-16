@@ -86,27 +86,6 @@ namespace PizzaHub.Core.Services
 
             return cartItems;
         }
-        public async Task<decimal> UpdateQuantityAsync(int itemId, int newQuantity, int customerId)
-        {
-            var itemToUpdate = await this.repository
-                                                    .All<CustomerCart>()
-                                                    .Where(cc => cc.MenuItemId == itemId && cc.CustomerId == customerId)
-                                                    .FirstOrDefaultAsync();
-            if (itemToUpdate != null)
-            {
-                itemToUpdate.Quantity = newQuantity;
-                await this.repository.SaveChangesAsync();
-            }
-
-            // Calculate the total amount of the cart
-            decimal totalAmount = await this.repository
-                    .AllReadOnly<CustomerCart>()
-                    .Where(cc => cc.CustomerId == customerId)
-                    .Include(cc => cc.MenuItem)
-                    .SumAsync(cc => cc.Quantity * cc.MenuItem.Price);
-
-            return totalAmount;
-        }
         
         public async Task<bool> IncreaseCartQuantityAsync(int customerId, int itemId)
         {
