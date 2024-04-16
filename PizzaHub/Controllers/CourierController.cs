@@ -29,8 +29,9 @@ namespace PizzaHub.Controllers
             return View(form);
         }
 
-        [Authorize(Policy = "CustomerOnlyPolicy")]
         [HttpPost]
+        [Authorize(Policy = "CustomerOnlyPolicy")]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> BecomeCourier(BecomeCourierForm form)
         {
             form.UserId = User.GetUserId();

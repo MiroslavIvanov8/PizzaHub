@@ -22,6 +22,7 @@ namespace PizzaHub.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> AddMenuItem(MenuItemFormModel model)
         {
             if (!ModelState.IsValid)
