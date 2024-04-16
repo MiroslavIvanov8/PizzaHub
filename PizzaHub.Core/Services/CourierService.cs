@@ -36,35 +36,28 @@ namespace PizzaHub.Core.Services
         }
         public async Task<bool> CreateApplicationRequestAsync(string userId, string phoneNumber, string description)
         {
-            try
+            if (await this.IsApplicantInLegalAge(userId) && !phoneNumber.IsNullOrEmpty() && Regex.IsMatch(phoneNumber, PhoneNumberNumberRegex))
             {
-                if (await this.IsApplicantInLegalAge(userId) && !phoneNumber.IsNullOrEmpty()  && Regex.IsMatch(phoneNumber, PhoneNumberNumberRegex))
+
+                if (await this.repository.AllReadOnly<CourierApplicationRequest>().AnyAsync(r => r.UserId == userId))
                 {
-
-                    if (await this.repository.AllReadOnly<CourierApplicationRequest>().AnyAsync(r => r.UserId == userId))
-                    {
-                        return false;
-                    }
-
-                    CourierApplicationRequest request = new CourierApplicationRequest()
-                    {
-                        UserId = userId,
-                        Description = description,
-                        PhoneNumber = phoneNumber
-                    };
-
-                    await this.repository.AddAsync(request);
-                    await this.repository.SaveChangesAsync();
-
-                    return true;
+                    return false;
                 }
 
-                return false;
+                CourierApplicationRequest request = new CourierApplicationRequest()
+                {
+                    UserId = userId,
+                    Description = description,
+                    PhoneNumber = phoneNumber
+                };
+
+                await this.repository.AddAsync(request);
+                await this.repository.SaveChangesAsync();
+
+                return true;
             }
-            catch (Exception ex)
-            {
-                return false; 
-            }
+
+            return false;
         }
 
         public async Task<bool> IsApplicantInLegalAge(string userId)
