@@ -1,88 +1,123 @@
-PizzaHub - Pizza Delivery App
-ASP .NET Core 6.0 Web Application Project
 
-C# Web Development Path at Software University, Bulgaria
-ABOUT my web project:
+<h3 style="display: flex; align-items: center; justify-content: center;">
+  <img src="https://img.icons8.com/?size=48&id=lxxwrZV7q7Yr&format=png" alt="Pizza Icon" width="48" height="48" style="margin-right: 10px;">
+  PizzaHub - Pizza Delivery App
+</h3>
+  <p align="center">
+    PizzaHub Delivery App (PDP) is an online platform for ordering pizza. Customers can search the menu by ingredients and track their orders. The platform creates one environment where customers, couriers, and admins meet, dividing the app into three areas to simulate the working process of a delivery app.
+  </p>
+  <p align="center">
+    <a href="https://github.com/MiroslavIvanov8/PizzaHub">
+      <img src="https://i.postimg.cc/j2SmPjsM/Pizza-Hub-Preview.gif" alt="Project Name" width=800 height=500>
+    </a>
+  </p>
 
-PizzaHub Delivery App (PDP) is an online platform for ordering pizza. Customes can search the menu by ingredients and track their orders.
 
-The platform creates one enviroment where customers, couriers and admins meet. Dividing the app into 3 areas it tries to simulate the working proccess of a delivery app that creates a smooth workflow.
-Access to the website: HOMY at AZURE
+<br>
 
-PizzaHub
-Database
+## Table of Contents
+
+- [Database Schema](#database-schema)
+- [Backend Features](#backend-features)
+- [Technologies Used](#technologies-used)
+- [License](#license)
+---
+
+### Database Schema
+
 Microsoft SQL Server along with Entity Framework Core were used to create and store the values. The database schema consists of the following main entities:
 
-Users
-Customers
-Couriers
-Admins
-Restaurants
-Menu Items
-CustomerCart
-Orders
-Order Status
-Payment Methods
-Courier Application Requests
-Order Items
+- Users
+- Customers
+- Couriers
+- Admins
+- Restaurants
+- Menu Items
+- CustomerCart
+- Orders
+- Order Status
+- Payment Methods
+- Courier Application Requests
+- Order Items
 
-See the Schema here: DatabaseSchema
+See the Schema here: [DatabaseSchema](https://i.postimg.cc/0QwL9N83/Database-Schema.png)
 
-Backend
-The web project contains:
+---
 
-3 different areas: Customer, Courier, Admin
-85+ service methods
-29 controllers
-35+ views
-Features
+### Backend Features
 
-This web platform allows a guest to the website to view and menu but requires him to register in order to make an order Activating an account requires a confirming account's email.
+#### Areas
 
-A user can confirm his email, create a request in case he forgot his email or password and regain his account back.
+- Customer
+- Courier
+- Admin
 
-Signed in user(customer) has three main choices:
+#### Service Methods
 
-To browse the menu, thus adding an item to his cart and creating an order.
-Every customer gets a list of his ongoing and previous orders.
-To submit a request of becoming a courier and joining PizzaHub Team
+- 40+ service methods
 
-Using a searchbar to filter all the items in the menu by entering ingedients that he wants his pizza to have and being show only the results that contain ALL of them.
-By utilizing Ajax requests the customer has been given the ability to dinamically change the quantities of the items in his cart.
-He can also dinamically remove and item from his cart without reloading the page and aall those actions will alter the entities in the database.
-Feature that allows customer to track his ongoing orders statues being updated. Customer receives an email when his order has reached certain points. E.g. being picked by courier for delivery.
+#### Controllers
 
-If customer chooses to submit a request to become a courier he'll be asked to submit a form
-In the case this form being accepted, he will get whole different options and **** to the website
+- 15 controllers
 
-A courier has a different layout from the other users. 
-Upon login he'll be asked wheter he is here to order or deliver. Based on his choice user will be redirected to his desired layout.
+#### Views
 
-A courier can list with details of the available orders for pick up (orders in the procces of being prepaired)
-When courier picks and order, its status is changed and the customer accociated with that order is notified via email that his order is on the way.
-A courier can check the details of his currently picked orders and the ones he already delivered.
-Upon delivery courier can send an email notification that he is on the given adress and when he give the order to the customer to mark the order as delivered.
-If a courier still has an order waiting to be delivered he is not given the right to logout.
+- 25+ views
 
-Admin upon login is redirected to his layout.
-He have different set of options along changing the menu/create/edit/delete.
-Approving/decline courier application requests
-List, filter and track orders by given criteria through an implemented pagination logic.
+---
 
-Technologies Used
-This website is designed and runs using the main technologies below:
+### Features
 
-C#
-ASP.NET Core 6.0
-Entity Framework Core 6.0.28
-MS SQL Server
-Bootstrap 5
-JavaScript
-AJAX
-HTML5
-CSS
-MS Visual Studio 2022
-MS SQL Server Management Studio 2019
-Sendgrid API
+- Guest viewing of the menu; registration required for orders
+- Account activation via confirming email
+- Email confirmation, password recovery, and account regain options
 
-This website has been created solely for educational purposes
+**Customer-specific actions:**
+- Browsing the menu
+- Creating orders
+- Tracking ongoing and previous orders
+- Submitting a courier application request
+- Dynamic cart management (Ajax requests)
+- Email notifications for order status updates
+
+#### Courier Actions
+
+- Listing available orders for pickup
+- Changing order status and notifying customers
+- Tracking ongoing and delivered orders
+- Email notification upon delivery
+
+#### Admin Features
+
+- Menu management (create/edit/delete)
+- Approving/declining courier applications
+- Order management with pagination
+
+---
+
+### Technologies Used
+
+This project uses:
+
+- [C#](https://docs.microsoft.com/en-us/dotnet/csharp/)
+- [ASP.NET Core 6.0](https://docs.microsoft.com/en-us/aspnet/core)
+- [Entity Framework Core 6.0.28](https://docs.microsoft.com/en-us/ef/core/)
+- [MS SQL Server](https://www.microsoft.com/en-us/sql-server/)
+- [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [AJAX](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX)
+- [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [MS Visual Studio 2022](https://visualstudio.microsoft.com/vs/)
+- [MS SQL Server Management Studio 2019](https://docs.microsoft.com/en-us/sql/ssms/)
+- [Sendgrid API](https://sendgrid.com/docs/)
+
+---
+
+### License
+
+This website has been created solely for educational purposes under the [MIT License](https://opensource.org/licenses/MIT).
+
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source-200x33.png?v=103)](#)
+
+[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
