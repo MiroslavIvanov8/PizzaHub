@@ -1,5 +1,8 @@
 <p align="center">
-  <h3 align="center">PizzaHub - Pizza Delivery App</h3>
+  <h3 align="center">
+  <img src="https://img.icons8.com/?size=48&id=lxxwrZV7q7Yr&format=png" alt="Pizza Icon" width="48" height="48">
+  PizzaHub - Pizza Delivery App
+</h3>
   <p align="center">
     PizzaHub Delivery App (PDP) is an online platform for ordering pizza. Customers can search the menu by ingredients and track their orders. The platform creates one environment where customers, couriers, and admins meet, dividing the app into three areas to simulate the working process of a delivery app.
   </p>
