@@ -1,13 +1,12 @@
 <p align="center">
-  <a href="https://github.com/MiroslavIvanov8/PizzaHub)">
-    <img src="https://cdn1.vectorstock.com/i/1000x1000/91/15/cartoon-pizza-delivery-guy-vector-9059115.jpg" alt="Project Name" width=150 height=150>
-  </a>
   <h3 align="center">PizzaHub - Pizza Delivery App</h3>
-
   <p align="center">
-    PizzaHub Delivery App (PDP) is an online platform for ordering pizza. <br>
-    Customers can search the menu by ingredients and track their orders. The platform creates one environment where customers, couriers, and admins meet, dividing the app into three areas to simulate the working process of a delivery app.
-    <br>
+    PizzaHub Delivery App (PDP) is an online platform for ordering pizza. Customers can search the menu by ingredients and track their orders. The platform creates one environment where customers, couriers, and admins meet, dividing the app into three areas to simulate the working process of a delivery app.
+  </p>
+  <p align="center">
+    <a href="https://github.com/MiroslavIvanov8/PizzaHub">
+      <img src="https://i.postimg.cc/j2SmPjsM/Pizza-Hub-Preview.gif" alt="Project Name" width=800 height=500>
+    </a>
   </p>
 </p>
 
@@ -38,7 +37,7 @@ Microsoft SQL Server along with Entity Framework Core were used to create and st
 - Courier Application Requests
 - Order Items
 
-See the Schema here: DatabaseSchema
+See the Schema here: [DatabaseSchema](https://i.postimg.cc/0QwL9N83/Database-Schema.png)
 
 ---
 
@@ -69,14 +68,14 @@ See the Schema here: DatabaseSchema
 - Guest viewing of the menu; registration required for orders
 - Account activation via confirming email
 - Email confirmation, password recovery, and account regain options
-  
-- **Customer-specific actions:**
-  - Browsing the menu
-  - Creating orders
-  - Tracking ongoing and previous orders
-  - Submitting a courier application request
-  - Dynamic cart management (Ajax requests)
-  - Email notifications for order status updates
+
+**Customer-specific actions:**
+- Browsing the menu
+- Creating orders
+- Tracking ongoing and previous orders
+- Submitting a courier application request
+- Dynamic cart management (Ajax requests)
+- Email notifications for order status updates
 
 #### Courier Actions
 
@@ -97,18 +96,18 @@ See the Schema here: DatabaseSchema
 
 This project uses:
 
-- C#
-- ASP.NET Core 6.0
-- Entity Framework Core 6.0.28
-- MS SQL Server
-- Bootstrap 5
-- JavaScript
-- AJAX
-- HTML5
-- CSS
-- MS Visual Studio 2022
-- MS SQL Server Management Studio 2019
-- Sendgrid API
+- [C#](https://docs.microsoft.com/en-us/dotnet/csharp/)
+- [ASP.NET Core 6.0](https://docs.microsoft.com/en-us/aspnet/core)
+- [Entity Framework Core 6.0.28](https://docs.microsoft.com/en-us/ef/core/)
+- [MS SQL Server](https://www.microsoft.com/en-us/sql-server/)
+- [Bootstrap 5](https://getbootstrap.com/docs/5.0/getting-started/introduction/)
+- [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [AJAX](https://developer.mozilla.org/en-US/docs/Web/Guide/AJAX)
+- [HTML5](https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5)
+- [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+- [MS Visual Studio 2022](https://visualstudio.microsoft.com/vs/)
+- [MS SQL Server Management Studio 2019](https://docs.microsoft.com/en-us/sql/ssms/)
+- [Sendgrid API](https://sendgrid.com/docs/)
 
 ---
 
