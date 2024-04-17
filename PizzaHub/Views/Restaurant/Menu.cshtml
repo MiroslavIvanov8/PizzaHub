@@ -30,38 +30,34 @@
 
     @if (Model.Any())
     {
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="500">
-            <div class="carousel-inner">
-                @foreach (var item in Model)
-                {
-                    <div class="carousel-item @if(item == Model.First()) {
-                <text>active</text>
- }">
-                                        <div class="card col-4 m-3" style="width: 20rem;">
-                                            <div class="card-body">
-                                                <img class="card-img-top" style="width: 18rem;" src="@item.ImageUrl" alt="Pizza Image">
-                                                <h5 class="card-title mt-1">@item.Name</h5>
-                                                <h7 class="card-title mt-1">@item.Ingredients</h7>
-                                                <h5 class="card-title mt-1">$@item.Price</h5>
-                                            </div>
-                                            <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
-                                                <input type="hidden" name="itemId" value="@item.Id" />
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="card col-4 m-3 d-flex align-items-center justify-content-center" style="width: 20rem;">
+                    <div class="card-body text-center">
+                        <img class="card-img-top" style="width: 18rem;" src="@item.ImageUrl" alt="Pizza Image">
+                        <h5 class="card-title mt-1">@item.Name</h5>
+                        <h7 class="card-title mt-1">@item.Ingredients</h7>
+                        <h5 class="card-title mt-1">$@item.Price</h5>
+                    </div>
+                    <form asp-controller="Cart" asp-action="Add" method="post" class="mb-2">
+                        <input type="hidden" name="itemId" value="@item.Id" />
 
-                                                <div class="input-group">
-                                                    <input type="number" name="quantity" class="form-control" value="1" min="1" required />
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">Quantity</span>
-                                                    </div>
-                                                </div>
+                        <div class="input-group">
+                            <input type="number" name="quantity" class="form-control" value="1" min="1" required />
+                            <div class="input-group-append">
+                                <span class="input-group-text">Quantity</span>
+                            </div>
+                        </div>
 
-                                                <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">
-                                                    <i class="fas fa-shopping-cart"></i> Add to Cart
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
-                }
-            </div>
+                        <button type="submit" class="btn btn-warning mt-2 w-100 p-3 fw-bold">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                    </form>
+                </div>
+            }
+        </div>    
+        
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
@@ -70,7 +66,6 @@
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
             </button>
-        </div>
     }
     else
     {
@@ -85,14 +80,3 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-
-<script>
-    $(document).ready(function () {
-        $('#carouselExampleControls').carousel(); // Initialize the carousel
-
-        // Automatically slide every 3 seconds
-        setInterval(function () {
-            $('#carouselExampleControls').carousel('next'); // Move to the next slide
-        }, 500);
-    });
-</script>

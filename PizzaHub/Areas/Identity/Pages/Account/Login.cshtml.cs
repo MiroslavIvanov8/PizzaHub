@@ -118,11 +118,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                         return Page();
                     }
                 }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+                
 
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
@@ -142,7 +138,6 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        // Redirect to the default returnUrl for customers
                         return LocalRedirect(returnUrl);
                     }
                 }

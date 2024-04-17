@@ -424,4 +424,22 @@ public class AdminServiceUnitTests
         Assert.AreEqual(5,newItemId);
         Assert.AreEqual(5,repository.AllReadOnly<MenuItem>().Count());
     }
+
+    [Test]
+    public async Task DeclineCourierApplicationAsync_Should_Return_True_And_Delete()
+    {
+        bool result = await adminService.DeclineCourierApplicationAsync(CourierRequest.Id);
+
+        Assert.True(result);
+        Assert.AreEqual(1,repository.AllReadOnly<CourierApplicationRequest>().Count());
+    }
+
+    [Test]
+    public async Task DeclineCourierApplicationAsync_Should_Return_False_When_Id_Is_Invalid()
+    {
+        bool result = await adminService.DeclineCourierApplicationAsync(100);
+
+        Assert.False(result);
+        Assert.AreEqual(2, repository.AllReadOnly<CourierApplicationRequest>().Count());
+    }
 }
