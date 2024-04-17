@@ -113,8 +113,8 @@ This project uses:
 
 ### License
 
-* See [LICENSE](https://github.com/YourUserNameHere/ProjectName/LICENSE.md) file
+This website has been created solely for educational purposes under the [MIT License](https://opensource.org/licenses/MIT).
 
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source-200x33.png?v=103)](#)
 
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)](https://github.com/tamzi/ReadMe-MasterTemplates/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/github/license/mashape/apistatus.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
