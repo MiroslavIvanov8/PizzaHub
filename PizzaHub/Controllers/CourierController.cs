@@ -58,8 +58,8 @@ namespace PizzaHub.Controllers
         [Authorize(Policy = "CustomerOnlyPolicy")]
         public IActionResult ShowRequestSubmission(string message)
         {
-            ViewBag.Message = message;
-            ViewBag.MessageType = message.Contains("successfully") ? "Success" :  "Error";
+            ViewData["Message"] = message;
+            ViewData["MessageType"] = message.Contains("successfully") ? "Success" :  "Error";
 
             return View();
         }

@@ -4,10 +4,10 @@
 
 <h1>Request Submission</h1>
 
-@if (!string.IsNullOrEmpty(ViewBag.Message))
+@if (!string.IsNullOrEmpty(ViewData["Message"].ToString()))
 {
-    <div class="alert @((ViewBag.MessageType == "Success") ? "alert-success" : "alert-danger")" role="alert">
-        @ViewBag.Message
+    <div class="alert @((ViewData["MessageType"].ToString() == "Success") ? "alert-success" : "alert-danger")" role="alert">
+        @ViewData["Message"]
     </div>
 }
 
