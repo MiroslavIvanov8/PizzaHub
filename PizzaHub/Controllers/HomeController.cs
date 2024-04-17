@@ -10,6 +10,7 @@ namespace PizzaHub.Controllers
     using Core.ViewModels.Home;
     using Core.ViewModels;
     using static DataConstants;
+    using PizzaHub.Infrastructure.Data.Models;
 
     public class HomeController : Controller
     {
@@ -17,7 +18,7 @@ namespace PizzaHub.Controllers
         private readonly IMemoryCache cache;
 
         public HomeController(IRestaurantService restaurantService
-            ,IMemoryCache cache)
+            , IMemoryCache cache)
         {
             this.restaurantService = restaurantService;
             this.cache = cache;
@@ -25,24 +26,20 @@ namespace PizzaHub.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if(User.IsInRole("Admin")) 
+            if (User.IsInRole("Admin"))
             {
                 return RedirectToAction("Index", "Admin", new { area = "Admin" });
             }
-            
+
             if (cache.TryGetValue(CacheHomeKey, out HomeViewModel homeModel))
             {
-               
+
             }
             else
             {
-
-                bool isCourier = User.IsInRole("Courier");
-
                 var models = await this.restaurantService.ShowBestSellersAsync();
                 homeModel = new HomeViewModel()
                 {
-                    IsCourier = isCourier,
                     BestSellers = models
                 };
 
@@ -53,7 +50,9 @@ namespace PizzaHub.Controllers
 
                 cache.Set(CacheHomeKey, homeModel, cacheEntryOptions);
             }
-            
+
+            homeModel.IsCourier = User.IsInRole("Courier");
+
             return View("Index", homeModel);
         }
 
@@ -70,18 +69,14 @@ namespace PizzaHub.Controllers
             {
                 return View("Error400");
             }
-            if(statusCode == 401)
+            if (statusCode == 401)
             {
                 return View("Error401");
             }
-            if(statusCode == 404)
+            if (statusCode == 404)
             {
                 return View("Error404");
             }
-            //if(statusCode == 0)
-            //{
-            //    return View("Error500");
-            //}
 
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
