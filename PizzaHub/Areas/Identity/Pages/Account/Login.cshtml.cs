@@ -134,11 +134,21 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     else if (await _userManager.IsInRoleAsync(user, "Courier"))
                     {
                         // Redirect to the courier area index
+                        if (returnUrl.Contains("Cart"))
+                        {
+                            return RedirectToAction("Menu", "Restaurant", new { area = "" });
+                        }
+
                         return RedirectToAction("Index", "Home",new { area = ""});
                     }
                     else
                     {
-                        return RedirectToAction("Menu", "Restaurant", new { area = "" });
+                        if (returnUrl.Contains("Cart"))
+                        {
+                            return RedirectToAction("Menu", "Restaurant", new { area = "" });
+                        }
+
+                        return RedirectToAction("Index", "Home", new { area = "" });
                     }
                 }
 
