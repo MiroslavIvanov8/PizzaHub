@@ -57,24 +57,5 @@ namespace PizzaHub.Controllers
             return View(models);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> DeleteFromCart(int itemId)
-        {
-            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
-
-            await this.cartService.DeleteFromCartAsync(itemId, customerId);
-
-            return RedirectToAction("MyCart");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateQuantity(int itemId, int newQuantity)
-        {
-            int customerId = await this.customerService.GetCustomerIdAsync(User.GetUserId());
-
-            decimal newTotalAmount = await this.cartService.UpdateQuantityAsync(itemId, newQuantity, customerId);
-
-            return RedirectToAction(nameof(MyCart));
-        }
     }
 }

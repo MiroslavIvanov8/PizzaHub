@@ -10,8 +10,6 @@ namespace PizzaHub.Core.Contracts
         Task<bool> AddToCartAsync(int pizzaId, string userId, int quantity);
         Task<ICollection<CartItemViewModel>> MyCartAsync(int customerId);
         Task<bool> DeleteFromCartAsync(int itemId, int customerId);
-
-        Task<decimal> UpdateQuantityAsync(int itemId, int newQuantity, int customerId);
         Task<bool> IncreaseCartQuantityAsync(int customerId, int itemId);
         Task<bool> DecreaseCartQuantityAsync(int customerId, int itemId);
         Task<decimal> CalculateTotalCartSum(int customerId);
