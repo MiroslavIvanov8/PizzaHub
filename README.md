@@ -1,6 +1,6 @@
-<p align="center">
-  <h3 align="center">
-  <img src="https://img.icons8.com/?size=48&id=lxxwrZV7q7Yr&format=png" alt="Pizza Icon" width="48" height="48">
+
+<h3 style="display: flex; align-items: center; justify-content: center;">
+  <img src="https://img.icons8.com/?size=48&id=lxxwrZV7q7Yr&format=png" alt="Pizza Icon" width="48" height="48" style="margin-right: 10px;">
   PizzaHub - Pizza Delivery App
 </h3>
   <p align="center">
@@ -11,7 +11,7 @@
       <img src="https://i.postimg.cc/j2SmPjsM/Pizza-Hub-Preview.gif" alt="Project Name" width=800 height=500>
     </a>
   </p>
-</p>
+
 
 <br>
 
