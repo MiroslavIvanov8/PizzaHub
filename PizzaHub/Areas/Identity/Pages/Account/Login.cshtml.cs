@@ -138,7 +138,7 @@ namespace PizzaHub.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        return LocalRedirect(returnUrl);
+                        return RedirectToAction("Menu", "Restaurant", new { area = "" });
                     }
                 }
 
