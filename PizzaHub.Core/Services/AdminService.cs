@@ -303,7 +303,8 @@ namespace PizzaHub.Core.Services
 
         public async Task<CourierApplicantModel> GetCourierApplicantsAsync(int id)
         {
-            CourierApplicantModel? model =  await this.repository.All<CourierApplicationRequest>().Where(r => r.Id == id).Select(r => new CourierApplicantModel()
+            CourierApplicantModel? model =  await this.repository.All<CourierApplicationRequest>().Where(r => r.Id == id)
+                .Select(r => new CourierApplicantModel()
             {
                 Id = r.Id,
                 FullName = r.User.FirstName + " " + r.User.LastName,
