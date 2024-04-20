@@ -8,8 +8,8 @@
   </p>
   <p align="center">
     <a href="https://github.com/MiroslavIvanov8/PizzaHub">
-      <img src="https://postimg.cc/BLRmG4PF](https://postimg.cc/BLRmG4PF" alt="Project Name" width=800 height=500>
-    </a>
+  <img src="https://i.postimg.cc/BLRmG4PF/Pizza-Hub-Thumbnail.png" alt="Project Name" width="800" height="500">
+</a>
   </p>
 
 
