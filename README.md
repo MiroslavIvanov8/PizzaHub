@@ -40,7 +40,7 @@ Microsoft SQL Server along with Entity Framework Core were used to create and st
 - Courier Application Requests
 - Order Items
 
-See the Schema here: [DatabaseSchema](https://i.postimg.cc/0QwL9N83/Database-Schema.png](https://ibb.co/VJKzKfz)
+See the Schema here: [DatabaseSchema](https://ibb.co/VJKzKfz)
 
 ---
 
