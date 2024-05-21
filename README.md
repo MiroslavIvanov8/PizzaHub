@@ -8,7 +8,7 @@
   </p>
   <p align="center">
     <a href="https://github.com/MiroslavIvanov8/PizzaHub">
-    <img src="https://gifyu.com/image/SflkA" alt="Project Name" width="800" height="500">
+    <img src="https://s12.gifyu.com/images/SflkA.gif" alt="Project Name" width="800" height="500">
 </a>
   </p>
 
