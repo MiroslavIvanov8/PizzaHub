@@ -8,7 +8,7 @@
   </p>
   <p align="center">
     <a href="https://github.com/MiroslavIvanov8/PizzaHub">
-      <img src="https://i.postimg.cc/tgG7Fm5P/Pizza-Hub-Preview.gif" alt="Project Name" width="800" height="500">
+      <img src="[https://i.postimg.cc/tgG7Fm5P/Pizza-Hub-Preview.gif](https://ezgif.com/loop-count/ezgif-4-8a61c49485.gif)" alt="Project Name" width="800" height="500">
   </a>
   </p>
 
