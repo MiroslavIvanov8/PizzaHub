@@ -226,6 +226,7 @@ namespace PizzaHub.Core.Services
         {
             CourierApplicationRequest? request = await this.repository
                 .All<CourierApplicationRequest>().Where(r => r.Id == id)
+                .Include(r => r.User)
                 .FirstOrDefaultAsync();
 
             if (request != null)
