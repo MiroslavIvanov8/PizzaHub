@@ -8,8 +8,8 @@
   </p>
   <p align="center">
     <a href="https://github.com/MiroslavIvanov8/PizzaHub">
-      <img src="https://i.postimg.cc/j2SmPjsM/Pizza-Hub-Preview.gif" alt="Project Name" width=800 height=500>
-    </a>
+    <img src="https://s12.gifyu.com/images/SflkA.gif" alt="Project Name" width="800" height="500">
+</a>
   </p>
 
 
@@ -40,7 +40,7 @@ Microsoft SQL Server along with Entity Framework Core were used to create and st
 - Courier Application Requests
 - Order Items
 
-See the Schema here: [DatabaseSchema](https://i.postimg.cc/0QwL9N83/Database-Schema.png)
+See the Schema here: [DatabaseSchema](https://ibb.co/VJKzKfz)
 
 ---
 
