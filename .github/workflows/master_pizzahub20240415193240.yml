@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy ASP.Net Core app to Azure Web App - PizzaHub20240415193240
 
 on:
@@ -22,17 +19,20 @@ jobs:
           dotnet-version: '6.0'
           include-prerelease: true
 
-      - name: Build with dotnet
-        run: dotnet build --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore D:\GitHub\PizzaHub\PizzaHub\PizzaHub.csproj  # Replace with the actual path to your .csproj file
 
-      - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+      - name: Build with dotnet
+        run: dotnet build D:\GitHub\PizzaHub\PizzaHub\PizzaHub.csproj --configuration Release  # Replace with the actual path to your .csproj file
+
+      - name: Publish project
+        run: dotnet publish path/to/your/project.csproj -c Release -o ${{ github.workspace }}/myapp  # Replace with the actual path to your .csproj file
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ${{ github.workspace }}/myapp  # Upload the published output folder
 
   deploy:
     runs-on: windows-latest
@@ -41,8 +41,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
-
+      id-token: write  # Required for requesting the JWT
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
