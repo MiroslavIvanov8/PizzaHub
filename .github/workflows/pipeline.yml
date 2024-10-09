@@ -25,8 +25,8 @@ jobs:
 
     # Build the solution
     - name: Build
-      run: dotnet build PizzaHub/PizzaHub.csproj --no-restore  
+      run: dotnet build PizzaHub/PizzaHub.csproj   
     # Run tests
     - name: Test
-      run: dotnet test PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --no-build --verbosity detailed
+      run: dotnet test PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --verbosity detailed
   
