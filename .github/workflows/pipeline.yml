@@ -28,5 +28,5 @@ jobs:
       run: dotnet build PizzaHub/PizzaHub.csproj   
     # Run tests
     - name: Test
-      run: dotnet test PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --no build --verbosity normal
+      run: dotnet test PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --verbosity normal
   
