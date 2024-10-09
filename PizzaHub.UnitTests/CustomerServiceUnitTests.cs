@@ -5,6 +5,7 @@ using PizzaHub.Infrastructure.Data.Models;
 using System.Globalization;
 using Microsoft.EntityFrameworkCore;
 using PizzaHub.Core.Services;
+using PizzaHub.Infrastructure.Constants;
 using ApplicationUser = PizzaHub.Infrastructure.Data.Models.ApplicationUser;
 using MenuItem = PizzaHub.Infrastructure.Data.Models.MenuItem;
 using Order = PizzaHub.Infrastructure.Data.Models.Order;
@@ -378,7 +379,8 @@ namespace PizzaHub.UnitTests
 
             var orderViewModels = await customerService.ShowPastOrdersAsync(Customer.Id);
 
-            var orderedByCreatedOn = orderViewModels.OrderByDescending(o => DateTime.ParseExact(o.CreatedOn, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
+            //TODO FIX this test as well. TryParse needed
+            var orderedByCreatedOn = orderViewModels.OrderByDescending(o => DateTime.ParseExact(o.CreatedOn, DateFormat, CultureInfo.InvariantCulture)).ToList();
             for (int i = 0; i < orderedByCreatedOn.Count; i++)
             {
                 if (i == 0)
@@ -470,7 +472,8 @@ namespace PizzaHub.UnitTests
 
             var orderViewModels = await customerService.ShowOngoingOrdersAsync(Customer.Id);
 
-            var orderedByCreatedOn = orderViewModels.OrderByDescending(o => DateTime.ParseExact(o.CreatedOn, "dd.MM.yyyy HH:mm:ss", CultureInfo.InvariantCulture)).ToList();
+            //TODO pipeline error when testing, FIX
+            var orderedByCreatedOn = orderViewModels.OrderByDescending(o => DateTime.ParseExact(o.CreatedOn, DateFormat, CultureInfo.InvariantCulture)).ToList();
             for (int i = 0; i < orderedByCreatedOn.Count; i++)
             {
                 if (i == 0)
