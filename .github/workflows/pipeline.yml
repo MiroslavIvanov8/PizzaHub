@@ -1,32 +1,32 @@
-name: Build & Test
+name: .NET Tests
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "master" ]
 
-jobs: 
+jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4  
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4  
-      with:
-        dotnet-version: 8.0.x
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '8.0.x'  # Specify your .NET SDK version here
 
-    # Restore dependencies
-    - name: Restore dependencies
-      run: dotnet restore PizzaHub/PizzaHub.csproj
+      - name: Clean
+        run: dotnet clean PizzaHub.UnitTests/PizzaHub.UnitTests.csproj
 
-    # Build the solution
-    - name: Build
-      run: dotnet build PizzaHub/PizzaHub.csproj --no-restore  
-    # Run tests
-    - name: Test
-      run: dotnet test PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --no-build --verbosity detailed
-  
+      - name: Restore dependencies
+        run: dotnet restore PizzaHub.UnitTests/PizzaHub.UnitTests.csproj
+
+      - name: Build
+        run: dotnet build PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --configuration Release
+
+      - name: Run tests
+        run: dotnet test PizzaHub.UnitTests/PizzaHub.UnitTests.csproj --verbosity normal
