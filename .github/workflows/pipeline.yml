@@ -21,11 +21,11 @@ jobs:
 
     # Restore dependencies
     - name: Restore dependencies
-      run: dotnet restore GitHub/PizzaHub/PizzaHub/PizzaHub.sln  
+      run: dotnet restore GitHub/PizzaHub/PizzaHub/PizzaHub.csproj 
 
     # Build the solution
     - name: Build
-      run: dotnet build GitHub/PizzaHub/PizzaHub/PizzaHub.sln --no-restore  
+      run: dotnet build GitHub/PizzaHub/PizzaHub/PizzaHub.csproj --no-restore  
     # Run tests
     - name: Test
-      run: dotnet test GitHub/PizzaHub/PizzaHub/PizzaHub.sln --no-build --verbosity normal  
+      run: dotnet test GitHub/PizzaHub/PizzaHub/PizzaHub.csproj --no-build --verbosity normal  
